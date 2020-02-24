@@ -7,7 +7,8 @@ export function users(user) {
   function getUsers() {
     var names = []
     var request = new XMLHttpRequest();
-    request.open("GET", "http://localhost:8000/db.cfc?method=retrieveUsers", false);
+    // NOTE BY JOSH: I set mine to 8500 as that's the default for me
+    request.open("GET", "http://localhost:8500/db.cfc?method=retrieveUsers", false);
     request.send();
     var parser = new DOMParser()
     var xml = (parser.parseFromString(request.responseText, "text/xml"))
@@ -25,7 +26,7 @@ export function users(user) {
 
   function checkUsers(user) {
     var request = new XMLHttpRequest();
-    request.open("GET", `http://localhost:8000/db.cfc?method=check&username=${user[0]}&password=${user[1]}`, false);
+    request.open("GET", `http://localhost:8500/db.cfc?method=check&username=${user[0]}&password=${user[1]}`, false);
     request.send();
     console.log(request.responseText)
   }

@@ -1,4 +1,5 @@
 <cfcomponent displayname="User">
+   <!---
    <cffunction name="retrieveUsers"
      hint="Gets all Users from the database" returntype="array" access="remote">
 
@@ -21,22 +22,35 @@
 
       <cfreturn UserList>
    </cffunction>
+   --->
+
+   <cfheader name="Access-Control-Allow-Origin" value="*">
+   <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
+   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
 
    <cffunction name="check" returntype="boolean" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
-      <cfquery name="user" datasource="localDB">
+      <cfscript>
+         myfile = FileOpen("C:\ColdFusion2018\cfusion\wwwroot\dbinfo.txt", "read");
+         dbUsername = FileReadLine(myfile);
+         dbPassword = FileReadLine(myfile);
+         FileClose(myfile);
+      </cfscript>
+
+
+      <cfquery name="user" datasource="awsMicrosoftSQLServer" username="#dbUsername#" password="#dbPassword#">
           SELECT *
-          FROM Users
-          WHERE Username = '#username#' AND Pass = '#password#'
+          FROM hcUser
+          WHERE username = '#username#' AND pswd = '#password#'
       </cfquery>
 
-      <cfif user.recordCount eq 0>
+      <cfif user.recordCount EQ 0>
          <cfreturn false>
       </cfif>
 
       <cfreturn true>
   </cffunction>
-  </cfcomponent>
+</cfcomponent>
