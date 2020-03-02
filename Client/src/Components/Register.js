@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Register.css';
 
 const emailRegex = RegExp(
   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
@@ -23,7 +23,7 @@ const formValid =  ({formErrors, ...rest}) => {
   return valid;
 }
 
-class App extends Component{
+class Register extends Component{
   constructor(props) {
     super(props);
 
@@ -242,4 +242,4 @@ handleChange = e => {
   }
 }
 
-export default App;
+export default Register;
