@@ -6,14 +6,13 @@ class Register extends Component {
         super(props)
         this.state = {
             username: "",
-            password: "",
             fName: "",
             lName: "",
             pswd: "",
             cpswd: "",
             email: "",
             phone: "",
-            question: -1,
+            question: 0,
             answer: ""
         }
     }
@@ -77,7 +76,7 @@ class Register extends Component {
         if(this.state.username !== "" && this.state.pswd !== "" && this.state.fName !== "" &&
         this.state.phone !== "" && this.state.email !== "" && this.state.cpswd == this.state.pswd && this.state.lName !=="" ){
           console.log(`Username: ${this.state.username}, 
-                      Password: ${this.state.password},
+                      Password: ${this.state.pswd},
                       ConfirmPass: ${this.state.cpswd},
                       First: ${this.state.fName},
                       Last: ${this.state.lName},
@@ -87,7 +86,7 @@ class Register extends Component {
                       Answer: ${this.state.answer},`);
           console.log(typeof this.state.question)
           var request = new XMLHttpRequest();
-          request.open("GET", `http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.password}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, false);
+          request.open("GET", `http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, false);
           request.send();
           this.props.history.push('/')
         }
@@ -123,11 +122,11 @@ class Register extends Component {
                         </tr>
                         <tr>
                             <th><label>Password:</label></th>
-                            <td><input value={this.state.pswd} onChange={this.pswdChange} type="text" required /></td>
+                            <td><input value={this.state.pswd} onChange={this.pswdChange} type="password" required /></td>
                         </tr>
                         <tr>
                             <th><label>Confirm Password:</label></th>
-                            <td><input value={this.state.cpswd} onChange={this.cpswdChange} type="text" required /></td>
+                            <td><input value={this.state.cpswd} onChange={this.cpswdChange} type="password" required /></td>
                         </tr>
                         <tr>
                             <th><label>Email:</label></th>
@@ -140,7 +139,7 @@ class Register extends Component {
                         <tr>
                             <th><label>Security Question:</label></th>
                             <td><select value={this.state.question} onChange={this.questionChange}>
-                                <option value="0">What is your mother’s maiden name?</option>
+                                <option defaultValue value="0">What is your mother’s maiden name?</option>
                                 <option value="1">What was the name of your first pet?</option>
                                 <option value="2">What was the name of your elementary school?</option>
                                 <option value="3">What is your favorite movie?</option>

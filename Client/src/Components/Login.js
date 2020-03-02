@@ -28,8 +28,6 @@ export default class Login extends Component {
     submit = (e) => {
         e.preventDefault()
 
-        console.log('log fire');
-
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
             var request = new XMLHttpRequest();
