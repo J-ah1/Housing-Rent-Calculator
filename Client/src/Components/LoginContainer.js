@@ -9,17 +9,18 @@ import Login from './Login';
 import ForgotPassword from './ForgotPassword';
 import Register from './Register';
 
+
+
+
 function LoginContainer(props) {
     return (
        <Router>
             <Switch>  
-                <Route path="/register">
-                    <Register/>
-                </Route>
-                <Route path='/fpass'>
-                    <ForgotPassword/>
-                </Route>
-                <Route exact path='/'>
+                <Route path="/register" component={Register}/>
+                    
+                <Route path='/fpass' component={ForgotPassword}/>
+                   
+                <Route path='/'>
                     <Login handler={props.loginHandler}/>
                 </Route>
             </Switch>

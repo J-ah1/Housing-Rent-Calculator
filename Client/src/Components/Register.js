@@ -7,7 +7,14 @@ class Register extends Component {
         this.state = {
             username: "",
             password: "",
-            errorMessage: ""
+            fName: "",
+            lName: "",
+            pswd: "",
+            cpswd: "",
+            email: "",
+            phone: "",
+            question: -1,
+            answer: ""
         }
     }
 
@@ -15,72 +22,80 @@ class Register extends Component {
         this.setState({
             username: e.target.value
         })
-    }  // function is used for fill the default states
+    }
 
     fNameChange = (e) => {
         this.setState({
             fName: e.target.value
         })
-    } // function is used for fill the default states
+    }
 
     lNameChange = (e) => {
         this.setState({
             lName: e.target.value
         })
-    }// function is used for fill the default states
+    }
 
     pswdChange = (e) => {
         this.setState({
             pswd: e.target.value
         })
-    }// function is used for fill the default states
+    }
 
     cpswdChange = (e) => {
         this.setState({
             cpswd: e.target.value
         })
-    }// function is used for fill the default states
+    }
 
     emailChange = (e) => {
         this.setState({
             email: e.target.value
         })
-    }// function is used for fill the default states
+    }
 
     phoneChange = (e) => {
         this.setState({
             phone: e.target.value
         })
-    }// function is used for fill the default states
+    }
+
+    questionChange = (e) => {
+      this.setState({
+          question: parseInt(e.target.value)
+      })
+    }
+
+    answerChange = (e) => {
+      this.setState({
+          answer: e.target.value
+      })
+    }
 
     submit = (e) => {
         e.preventDefault();
-        //if condition is check the field is empty or not
         if(this.state.username !== "" && this.state.pswd !== "" && this.state.fName !== "" &&
-        this.state.phone !== "" && this.state.email !== "" && this.state.cpswd !=="" && this.state.lName !=="" ){
-            var request = new XMLHttpRequest();//create object for ajax calling
-            request.open("POST", "http://localhost:8500/rentcalculator/index.cfm/register",false);//set ajax call url
-            request.setRequestHeader("Content-Type", "application/json");//set header
-            request.send(JSON.stringify({"username":this.state.username,"fName":this.state.fName,"phone":this.state.phone,
-            "email":this.state.email,"cpswd":this.state.cpswd,"pswd":this.state.pswd,"lName":this.state.lName}));//set body with json type
-            const resposedata=JSON.parse(request.responseText);// request.responseText response which gives ajax calling
-            if(resposedata.status===true){
-                alert("login:  "+resposedata.message);
-                this.setState({errorMessage:""})
-                this.props.handler();//this function handle the login
-
-            }else{
-
-                this.setState({errorMessage:resposedata.message})//set the errorMessage when ajax response error
-            }
-
+        this.state.phone !== "" && this.state.email !== "" && this.state.cpswd == this.state.pswd && this.state.lName !=="" ){
+          console.log(`Username: ${this.state.username}, 
+                      Password: ${this.state.password},
+                      ConfirmPass: ${this.state.cpswd},
+                      First: ${this.state.fName},
+                      Last: ${this.state.lName},
+                      Phone: ${this.state.phone},
+                      Email: ${this.state.email},
+                      Question: ${this.state.question},
+                      Answer: ${this.state.answer},`);
+          console.log(typeof this.state.question)
+          var request = new XMLHttpRequest();
+          request.open("GET", `http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.password}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, false);
+          request.send();
+          this.props.history.push('/')
         }
         else {
-            this.setState({errorMessage: "All Field  Cannot be Empty"})// when field are empty
-
+            alert("Please enter information in all fields")
         }
-
     }
+    
     render() {
         return (
             <div id="mydiv">
@@ -108,11 +123,11 @@ class Register extends Component {
                         </tr>
                         <tr>
                             <th><label>Password:</label></th>
-                            <td><input value={this.state.pswd} onChange={this.pswdChange} type="password" required /></td>
+                            <td><input value={this.state.pswd} onChange={this.pswdChange} type="text" required /></td>
                         </tr>
                         <tr>
                             <th><label>Confirm Password:</label></th>
-                            <td><input value={this.state.cpswd} onChange={this.cpswdChange} type="password" required /></td>
+                            <td><input value={this.state.cpswd} onChange={this.cpswdChange} type="text" required /></td>
                         </tr>
                         <tr>
                             <th><label>Email:</label></th>
@@ -121,6 +136,20 @@ class Register extends Component {
                         <tr>
                             <th><label>Phone Number:</label></th>
                             <td><input value={this.state.phone} onChange={this.phoneChange} type="text" required/></td>
+                        </tr>
+                        <tr>
+                            <th><label>Security Question:</label></th>
+                            <td><select value={this.state.question} onChange={this.questionChange}>
+                                <option value="0">What is your mother’s maiden name?</option>
+                                <option value="1">What was the name of your first pet?</option>
+                                <option value="2">What was the name of your elementary school?</option>
+                                <option value="3">What is your favorite movie?</option>
+                                <option value='4'>What is your favorite book?</option>
+                              </select></td>
+                        </tr>
+                        <tr>
+                            <th><label>Security Answer:</label></th>
+                            <td><input value={this.state.answer} onChange={this.answerChange} type="text" required/></td>
                         </tr>
                         <tr>
                             <td colSpan="2"><input type="submit" value="SIGN UP" required/></td>

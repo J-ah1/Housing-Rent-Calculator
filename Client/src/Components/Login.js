@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import {users} from './Users';
+//import {users} from './Users';
 
 import {Link} from 'react-router-dom';
 
 export default class Login extends Component {
+    
     constructor(props) {
         super(props)
         this.state = {
             username: "",
-            password: ""
+            password: "",
         }
     }
 
@@ -26,18 +27,27 @@ export default class Login extends Component {
 
     submit = (e) => {
         e.preventDefault()
+
+        console.log('log fire');
+
+        // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            if(users([this.state.username, this.state.password])){
-                //Check db so see if username and password pass
-                //vV Change this.state.loggedIn on App to true Vv
-                this.props.handler();
-            }else{
+            var request = new XMLHttpRequest();
+            request.open("GET", `http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, false);
+            request.send();
+            var parser = new DOMParser()
+            var xml = (parser.parseFromString(request.responseText, "text/xml"))
+            var ans = xml.getElementsByTagName("string");
+            ans = ans[0].textContent
+            if(ans == "YES"){
+                alert("Successful")
+            }
+            else {
                 alert('Invalid Log In');
             }
-
         }
         else {
-            console.log("ERROR")
+            alert("Please enter a value for both fields")
         }
     }
 
@@ -53,11 +63,9 @@ export default class Login extends Component {
                     <br />
                     <input type="submit" value="Submit" />
                 </form>
-
                 <Link to='/fpass'>
                     <button>Forgot Password</button>
                 </Link>
-
                 <Link to="/register">
                     <button>Register</button>
                 </Link>

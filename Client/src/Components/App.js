@@ -13,12 +13,10 @@ class App extends Component {
         this.handleLogin = this.handleLogin.bind(this);
     }
     
-
     handleLogin = () =>{
-        // this.setState({
-        //     loggedIn : true
-        // })
-        console.log('test fire');
+        this.setState({
+            loggedIn : true
+        })
     }
 
     render() {
