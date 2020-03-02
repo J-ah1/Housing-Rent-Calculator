@@ -1,9 +1,9 @@
 <cfcomponent displayname="User">
  
-   <!--- Bypass CORS Policy --->
+   <!--- Bypass CORS Policy
    <cfheader name="Access-Control-Allow-Origin" value="*">
    <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
-   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
+   <cfheader name="Access-Control-Allow-Headers" value="Content-Type"> --->
 
 
    <!---
@@ -30,7 +30,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="boolean" access="remote">
+   <cffunction name="checkUser" returntype="string" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -53,17 +53,23 @@
       <cfargument name="password" type="string" required="true">
       <cfargument name="email" type="string" required="true">
       <cfargument name="phone" type="string" required="true">
-      
+      <cfargument name="squestion" type="string" required="true">
+      <cfargument name="sanswer" type="string" required="true">
+
+
       <cfset password = Hash(#password#, "SHA-512")> 
+      <cfset squestion = val(#squestion#)>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
-          INSERT INTO hcUser (username, fName, lName, pswd, email, phone)
+          INSERT INTO hcUser (username, fName, lName, pswd, email, phone, sQuestion, sAnswer)
           VALUES (<cfqueryparam value='#username#'>,
                   <cfqueryparam value='#firstname#'>,
                   <cfqueryparam value='#lastname#'>,
                   <cfqueryparam value='#password#'>,
                   <cfqueryparam value='#email#'>,
-                  <cfqueryparam value='#phone#'>)
+                  <cfqueryparam value='#phone#'>,
+                  <cfqueryparam value='#squestion#'>,
+                  <cfqueryparam value='#sanswer#'>)
       </cfquery>
 
       <cfreturn true>
@@ -71,60 +77,45 @@
    </cffunction>
 
 
-
-
-
-   <!--- check if user in database (w previous functions), then "send email" (front or back work...?) --->
-   <cffunction name="forgetPassword" returntype="boolean" access="remote">
-      <!--- Getting with email...? --->
+   <!--- Check if user in database and send corresponding security question --->
+   <cffunction name="forgetPassword" returntype="any" access="remote">
 
       <cfargument name="username" type="string" required="true">
+
       <cfset user = getUserInfo('#username#')>
       <cfif user.recordCount EQ 1>
-         <!--- Update temporary password here? Then "send email" --->
-         
-         <cfreturn true>
+         <cfreturn user.sQuestion>
       </cfif>
 
-      <cfreturn false>
+      <cfreturn -1>
+   </cffunction>
+
+   <!--- Check if user answer matches corresponding database record --->
+   <cffunction name="checkSecurityAnswer" returntype="string" access="remote">
+
+      <cfargument name="username" type="string" required="true">
+      <cfargument name="answer" type="string" required="true">
+
+      <cfset user = getUserInfo('#username#')>
+
+      <cfreturn user.sAnswer EQ '#answer#'>
 
    </cffunction>
 
 
-   <!--- createForgetPasswordPage() function???--->
-   <cffunction name="createForgetPasswordPage" returntype="boolean" access="private">
-   </cffunction>
+   <!--- Update a user's password in database --->
+   <cffunction name="updateUserPassword" returntype="void" access="remote">
+      <cfargument name="username" type="string" required="true">
+      <cfargument name="password" type="string" required="true">
 
+      <cfset password = Hash(#password#, "SHA-512")>
 
-   <!--- check if user in database (w previous functions), validate data, update user (only really password)--->
-   <!--- Can change returntype to "void", left in in-case further validation checks are needed --->
-   <cffunction name="updateUser" returntype="boolean" access="private">
-
-       
-       <cfargument name="username" type="string" required="true">
-       <cfargument name="firstname" type="string">
-       <cfargument name="lastname" type="string">
-       <cfargument name="password" type="string">
-       <cfargument name="email" type="string">
-       <cfargument name="phone" type="string">
- 
-       <!-- Better validations goes here and cfreturn false for errors -->
-
-       <cfset password = Hash(#password#, "SHA-512")>
-
-       <!--- Should NOT change values if value is null... --->
-       <cfquery name="user" datasource="awsMicrosoftSQLServer">
-            UPDATE hcUser (username, fName, lName, pswd, email, phone)
-            SET   fName = <cfqueryparam value='#firstname#'>,
-                  lName = <cfqueryparam value='#lastname#'>,
-                  pswd = <cfqueryparam value='#password#'>,
-                  email = <cfqueryparam value='#email#'>,
-                  phone = <cfqueryparam value='#phone#'>
+      <cfquery name="user" datasource="awsMicrosoftSQLServer">
+            UPDATE hcUser
+            SET   pswd = <cfqueryparam value='#password#'>
             WHERE username = <cfqueryparam value='#username#'>
-       </cfquery>
-
+      </cfquery>
    </cffunction>
-
 
    <!---
    
@@ -132,6 +123,7 @@
    
    --->
 
+   <!--- (Future: Client Profile Work) --->
 
    <!--- Return clientinfo with a given... (id?) --->
    <cffunction name="getClientInfo" access="private">
