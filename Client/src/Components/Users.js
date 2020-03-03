@@ -1,5 +1,3 @@
-import './App.css';
-
 // Notes: CORS disabled on ColdFusion (Solution: Disable the calling server?)
 
 export function users(user) {

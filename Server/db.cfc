@@ -1,10 +1,10 @@
 <cfcomponent displayname="User">
  
-   <!--- Bypass CORS Policy --->
+   <!--- Bypass CORS Policy
    <cfheader name="Access-Control-Allow-Origin" value="*">
    <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
    <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
-
+    --->
 
    <!---
       
@@ -22,7 +22,7 @@
          SELECT *
          FROM hcUser
          WHERE username = <cfqueryparam value='#username#'>
-     </cfquery>
+      </cfquery>
 
       <cfreturn user>
 
@@ -30,7 +30,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="boolean" access="remote">
+   <cffunction name="checkUser" returntype="string" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -43,7 +43,6 @@
 
 
    <!--- Validate arguments and query a new user into hcUser --->
-   <!--- Can change returntype to "void", left in in-case further validation checks are needed --->
    <cffunction name="registerUser" returntype="boolean" access="remote">
       
       
@@ -53,11 +52,12 @@
       <cfargument name="password" type="string" required="true">
       <cfargument name="email" type="string" required="true">
       <cfargument name="phone" type="string" required="true">
-      <cfargument name="squestion" type="int" required="true">
+      <cfargument name="squestion" type="string" required="true">
       <cfargument name="sanswer" type="string" required="true">
 
 
       <cfset password = Hash(#password#, "SHA-512")> 
+      <cfset squestion = val(#squestion#)>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
           INSERT INTO hcUser (username, fName, lName, pswd, email, phone, sQuestion, sAnswer)
@@ -76,6 +76,7 @@
    </cffunction>
 
 
+
    <!--- Check if user in database and send corresponding security question --->
    <cffunction name="forgetPassword" returntype="int" access="remote">
 
@@ -90,7 +91,7 @@
    </cffunction>
 
    <!--- Check if user answer matches corresponding database record --->
-   <cffunction name="checkSecurityAnswer" returntype="bool" access="remote">
+   <cffunction name="checkSecurityAnswer" returntype="boolean" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="answer" type="string" required="true">
@@ -98,9 +99,8 @@
       <cfset user = getUserInfo('#username#')>
 
       <cfreturn user.sQuestion EQ '#answer#'>
-
    </cffunction>
-
+   
 
    <!--- Update a user's password in database --->
    <cffunction name="updateUserPassword" returntype="boolean" access="remote">
