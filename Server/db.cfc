@@ -3,8 +3,8 @@
    <!--- Bypass CORS Policy
    <cfheader name="Access-Control-Allow-Origin" value="*">
    <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
-   <cfheader name="Access-Control-Allow-Headers" value="Content-Type"> --->
-
+   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
+    --->
 
    <!---
       
@@ -22,7 +22,7 @@
          SELECT *
          FROM hcUser
          WHERE username = <cfqueryparam value='#username#'>
-     </cfquery>
+      </cfquery>
 
       <cfreturn user>
 
@@ -43,7 +43,6 @@
 
 
    <!--- Validate arguments and query a new user into hcUser --->
-   <!--- Can change returntype to "void", left in in-case further validation checks are needed --->
    <cffunction name="registerUser" returntype="boolean" access="remote">
       
       
@@ -77,8 +76,9 @@
    </cffunction>
 
 
+
    <!--- Check if user in database and send corresponding security question --->
-   <cffunction name="forgetPassword" returntype="any" access="remote">
+   <cffunction name="forgetPassword" returntype="int" access="remote">
 
       <cfargument name="username" type="string" required="true">
 
@@ -91,27 +91,26 @@
    </cffunction>
 
    <!--- Check if user answer matches corresponding database record --->
-   <cffunction name="checkSecurityAnswer" returntype="string" access="remote">
+   <cffunction name="checkSecurityAnswer" returntype="boolean" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="answer" type="string" required="true">
 
       <cfset user = getUserInfo('#username#')>
 
-      <cfreturn user.sAnswer EQ '#answer#'>
-
+      <cfreturn user.sQuestion EQ '#answer#'>
    </cffunction>
-
+   
 
    <!--- Update a user's password in database --->
-   <cffunction name="updateUserPassword" returntype="void" access="remote">
+   <cffunction name="updateUserPassword" returntype="boolean" access="remote">
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
       <cfset password = Hash(#password#, "SHA-512")>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
-            UPDATE hcUser
+            UPDATE hcUser (username, fName, lName, pswd, email, phone)
             SET   pswd = <cfqueryparam value='#password#'>
             WHERE username = <cfqueryparam value='#username#'>
       </cfquery>
