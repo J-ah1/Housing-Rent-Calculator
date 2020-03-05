@@ -54,7 +54,7 @@ class ForgotPassword extends Component {
             case(1):
                 console.log(this.state.username)
                 var request = new XMLHttpRequest();
-                request.open("GET", `http://localhost:8000/db.cfc?method=forgetPassword&username=${this.state.username}`, false);
+                request.open("GET", `http://localhost:8500/db.cfc?method=forgetPassword&username=${this.state.username}`, false);
                 request.send();
                 var parser = new DOMParser()
                 var xml = (parser.parseFromString(request.responseText, "text/xml"))

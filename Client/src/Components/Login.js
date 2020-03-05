@@ -31,7 +31,7 @@ export default class Login extends Component {
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
             var request = new XMLHttpRequest();
-            request.open("GET", `http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, false);
+            request.open("GET", `http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, false);
             request.send();
             var parser = new DOMParser()
             var xml = (parser.parseFromString(request.responseText, "text/xml"))

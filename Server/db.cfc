@@ -137,33 +137,54 @@
 
 
    <!--- Return clientworksheets with a given client (id?) --->
-   <cffunction name="getClientWorksheets" access="private">
+   <cffunction name="getClientWorksheets" returntype="query" access="private">
       <!--- Query for client and return query --->
+      <cfargument name="clientID" type="any" required="true">
+      <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
+         SELECT dateSubmitted, rentSubsidyPayment
+         FROM worksheet
+         WHERE clientID = '#clientID#'
+      </cfquery>
+      <cfreturn clientWorksheets>
    </cffunction>
 
    <!--- Public return of clientworksheets --->
    <cffunction name="clientWorksheetProfile" access="remote">
-      <cfset worksheets=getClientWorksheets()>
+      <cfargument name="clientID" type="any" required="true">
+      <cfset worksheets=getClientWorksheets('#clientID#')>
       <cfreturn worksheets>
    </cffunction>
 
 
+   <!--- function that return clients whose name(s) match the input given --->
+   <cffunction name = "clientSearchRegex" returntype = "query" access = "private">
+      <cfargument name="clientName" type="string" required="true">
+      <cfset splitCName = listToArray(clientName, " ")>
 
-   <!--- (Future: Search Page Work) --->
+      <!-- if first and last name have been entered -->
+      <cfif ArrayLen(splitCName) GT 1> 
+         <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
+               SELECT fName, lName, dob, id
+               FROM wfClient
+               WHERE fName LIKE  '#splitCName[1]#%' AND lName LIKE '#splitCName[2]#%'
+         </cfquery>
+         <cfreturn clientSearchSQL2>
 
-   <!--- Perhaps, only return client firstName, lastName, dob, and an identifier (id?) --->
-   <!--- Return all clients --->
-   <cffunction name="getClients" returntype="array" access="private">
-      <cfquery name="clients" datasource="awsMicrosoftSQLServer">
-        SELECT *
-        FROM wfClient
-      </cfquery>
-      <cfreturn clients>
+      <!-- if only one name has been entered -->
+      <cfelse>
+         <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
+               SELECT fName, lName, dob, id
+               FROM wfClient
+               WHERE fName LIKE '#splitCName[1]#%' OR lName LIKE '#splitCName[1]#%'
+         </cfquery>
+         <cfreturn clientSearchSQL1>
+      </cfif> 
    </cffunction>
 
-   <!--- Public return of all clients --->
-   <cffunction name="getSearchClients" access="remote">
-      <cfset clients=getClients()>
+   <!--- function that return clients whose name(s) matches the input given --->
+   <cffunction name = "getCSearchRegex" access = "remote">
+      <cfargument name="clientName" type="string" required="true">
+      <cfset clients= clientSearchRegex('#clientName#')>
       <cfreturn clients>
    </cffunction>
 
