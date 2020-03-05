@@ -161,7 +161,7 @@
       <cfargument name="clientName" type="string" required="true">
       <cfset splitCName = listToArray(clientName, " ")>
 
-      <!-- if first and last name have been entered -->
+      <!--- if first and last name have been entered --->
       <cfif ArrayLen(splitCName) GT 1> 
          <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
@@ -170,7 +170,7 @@
          </cfquery>
          <cfreturn clientSearchSQL2>
 
-      <!-- if only one name has been entered -->
+      <!--- if only one name has been entered --->
       <cfelse>
          <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
