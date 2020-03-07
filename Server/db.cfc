@@ -126,13 +126,21 @@
 
    <!--- Return clientinfo with a given... (id?) --->
    <cffunction name="getClientInfo" access="private">
+      <cfargument name="clientID" type="any" required="true">
       <!--- Query for client and return query --->
+      <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
+         SELECT *
+         FROM wfClient
+         WHERE clientID = '#clientID#'
+      </cfquery>
+      <cfreturn clientInfo>
    </cffunction>
 
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" access="remote">
-      <cfset wfClient=getClientInfo()>
-      <cfreturn wfClient>
+      <cfargument name="clientID" type="any" required="true">
+      <cfset clientInfo=getClientInfo()>
+      <cfreturn clientInfo>
    </cffunction>
 
 
