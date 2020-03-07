@@ -39,6 +39,7 @@ export default class Login extends Component {
             ans = ans[0].textContent
             if(ans == "YES"){
                 alert("Successful")
+                this.props.handler();
             }
             else {
                 alert('Invalid Log In');
