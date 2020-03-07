@@ -131,7 +131,7 @@
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM wfClient
-         WHERE clientID = '#clientID#'
+         WHERE id = '#clientID#'
       </cfquery>
       <cfreturn clientInfo>
    </cffunction>
@@ -139,7 +139,7 @@
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" access="remote">
       <cfargument name="clientID" type="any" required="true">
-      <cfset clientInfo=getClientInfo()>
+      <cfset clientInfo=getClientInfo('#clientID#')>
       <cfreturn clientInfo>
    </cffunction>
 
