@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import LoginContainer from './LoginContainer';
+import ClientProfile from './ClientProfile';
 
 
 class App extends Component {
@@ -11,12 +12,19 @@ class App extends Component {
             loggedIn: false
         }
         this.handleLogin = this.handleLogin.bind(this);
+
     }
     
     handleLogin = () =>{
-        this.setState({
-            loggedIn : true
-        })
+        if(this.state.loggedIn){
+            this.setState({
+                loggedIn: false
+            })
+        }else{
+            this.setState({
+                loggedIn: true
+            })
+        }
     }
 
     render() {
@@ -27,8 +35,15 @@ class App extends Component {
         if(!loggedIn){
             view = <LoginContainer loginHandler={this.handleLogin}/>
         }else{
-            //render app
-            view = "test";
+            view = 
+                <div>
+                    <button onClick={this.handleLogin}>Logout</button>
+                    <ClientProfile
+                        clientID={1}
+                    />
+                    {/* ^^^ Replace with Client Search ^^^ */}
+                    {/* Client Search needs to pass Client Profile a prop of ID */}
+                </div>
         }
 
         return (
