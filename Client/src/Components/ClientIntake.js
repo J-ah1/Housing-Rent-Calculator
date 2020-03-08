@@ -2,13 +2,13 @@ import React from 'react';
 
 function ClientIntake(props) {
     
-    //handle formating date
+    //handle formatting date
     let dob = props.dob;
     let date = new Date(dob);
-    let formattedDate = date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
+    let formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
 
     
-    //handle formating gender
+    //handle formatting gender
     let clientGender = "";
     if(props.gender === "1.0"){
         clientGender = "Male";
