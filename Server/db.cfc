@@ -78,7 +78,7 @@
 
 
    <!--- Check if user in database and send corresponding security question --->
-   <cffunction name="forgetPassword" returntype="int" access="remote">
+   <cffunction name="forgetPassword" returntype="numeric" access="remote">
 
       <cfargument name="username" type="string" required="true">
 
@@ -98,19 +98,19 @@
 
       <cfset user = getUserInfo('#username#')>
 
-      <cfreturn user.sQuestion EQ '#answer#'>
+      <cfreturn user.sAnswer EQ '#answer#'>
    </cffunction>
    
 
    <!--- Update a user's password in database --->
-   <cffunction name="updateUserPassword" returntype="boolean" access="remote">
+   <cffunction name="updateUserPassword" returntype="void" access="remote">
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
       <cfset password = Hash(#password#, "SHA-512")>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
-            UPDATE hcUser (username, fName, lName, pswd, email, phone)
+            UPDATE hcUser
             SET   pswd = <cfqueryparam value='#password#'>
             WHERE username = <cfqueryparam value='#username#'>
       </cfquery>
@@ -125,7 +125,7 @@
    <!--- (Future: Client Profile Work) --->
 
    <!--- Return clientinfo with a given... (id?) --->
-   <cffunction name="getClientInfo" access="private">
+   <cffunction name="getClientInfo" access="remote">
       <cfargument name="clientID" type="any" required="true">
       <!--- Query for client and return query --->
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
@@ -190,7 +190,7 @@
    </cffunction>
 
    <!--- function that return clients whose name(s) matches the input given --->
-   <cffunction name = "getCSearchRegex" access = "remote">
+   <cffunction name="getCSearchRegex" returntype="any" access="remote">
       <cfargument name="clientName" type="string" required="true">
       <cfset clients= clientSearchRegex('#clientName#')>
       <cfreturn clients>
