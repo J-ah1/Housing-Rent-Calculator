@@ -54,13 +54,13 @@ class ForgotPassword extends Component {
             case(1):
                 console.log(this.state.username)
                 var request = new XMLHttpRequest();
-                request.open("GET", `http://localhost:8500/db.cfc?method=forgetPassword&username=${this.state.username}`, false);
+                request.open("GET", `http://localhost:8000/db.cfc?method=forgetPassword&username=${this.state.username}`, false);
                 request.send();
                 var parser = new DOMParser()
                 var xml = (parser.parseFromString(request.responseText, "text/xml"))
                 var ans = xml.getElementsByTagName("number");
                 ans = parseInt(ans[0].textContent)
-                console.log(ans)
+                console.log(xml)
                 if (ans !== -1.0)
                 {
                     this.setState({
@@ -78,9 +78,9 @@ class ForgotPassword extends Component {
                 request.send();
                 var parser = new DOMParser()
                 var xml = (parser.parseFromString(request.responseText, "text/xml"))
-                var ans = xml.getElementsByTagName("string");
-                ans = ans[0].textContent;
-                if (ans == "YES")
+                var ans = xml.getElementsByTagName("boolean");
+                ans = ans[0].attributes[0].value
+                if (ans === "true")
                 {
                     this.setState({
                         page: 3,

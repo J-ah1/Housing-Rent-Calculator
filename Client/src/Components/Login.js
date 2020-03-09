@@ -31,15 +31,17 @@ export default class Login extends Component {
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
             var request = new XMLHttpRequest();
-            request.open("GET", `http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, false);
+            request.open("GET", `http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, false);
             request.send();
             var parser = new DOMParser()
             var xml = (parser.parseFromString(request.responseText, "text/xml"))
             var ans = xml.getElementsByTagName("string");
             ans = ans[0].textContent
             if(ans == "YES"){
-                alert("Successful")
-                this.props.handler();
+                console.log("Success")
+                this.props.history.push({
+                    pathname: '/search',
+                })
             }
             else {
                 alert('Invalid Log In');
@@ -58,11 +60,11 @@ export default class Login extends Component {
                     <input value={this.state.username} onChange={this.nameChange} type="text" />
                     <br />
                     <label>Password:</label>
-                    <input value={this.state.password} onChange={this.passwordChange} type="text" />
+                    <input value={this.state.password} onChange={this.passwordChange} type="password" />
                     <br />
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Log In" />
                 </form>
-                <Link to='/fpass'>
+                <Link to='/forgot'>
                     <button>Forgot Password</button>
                 </Link>
                 <Link to="/register">

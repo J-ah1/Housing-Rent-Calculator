@@ -86,7 +86,7 @@ class Register extends Component {
                       Answer: ${this.state.answer},`);
           console.log(typeof this.state.question)
           var request = new XMLHttpRequest();
-          request.open("GET", `http://localhost:8500/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, false);
+          request.open("GET", `http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, false);
           request.send();
           this.props.history.push('/')
         }

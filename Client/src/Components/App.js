@@ -1,15 +1,42 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+} from 'react-router-dom';
 
-import LoginContainer from './LoginContainer';
+import Login from './Login';
+import ForgotPassword from './ForgotPassword';
+import Register from './Register';
+import ClientSearch from './ClientSearch';
 import ClientProfile from './ClientProfile';
 
+class App extends Component {
+    render() {
+      return (
+        <Router>
+          <div>
+            <Route exact path='/' component={Login} />
+            <Route path='/forgot' component={ForgotPassword} />
+            <Route path='/register' component={Register} />
+            <Route path='/search' component={ClientSearch} />
+            <Route path='/profile/:id' component={ClientProfile} />
+          </div>
+        </Router>
+      )
+    }
+  }
 
+export default App;
+
+
+/*
 class App extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loggedIn: false
+            loggedIn: true
         }
         this.handleLogin = this.handleLogin.bind(this);
 
@@ -28,30 +55,14 @@ class App extends Component {
     }
 
     render() {
-
-        const loggedIn = this.state.loggedIn;
-        var view;
-
-        if(!loggedIn){
-            view = <LoginContainer loginHandler={this.handleLogin}/>
-        }else{
-            view = 
-                <div>
-                    <button onClick={this.handleLogin}>Logout</button>
-                    <ClientProfile
-                        clientID={1}
-                    />
-                    {/* ^^^ Replace with Client Search ^^^ */}
-                    {/* Client Search needs to pass Client Profile a prop of ID */}
-                </div>
-        }
-
         return (
             <div>
-              {view}  
+              {//this.state.loggedIn ? <ClientContainer /> : <LoginContainer loginHandler={this.handleLogin}/>
+              }
+              {<TestContainer />}
             </div>
         );
     }
 }
 
-export default App;
+export default App;*/
