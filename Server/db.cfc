@@ -131,7 +131,7 @@
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM wfClient
-         WHERE id = '#clientID#'
+         WHERE id = <cfqueryparam value='#clientID#'>
       </cfquery>
       <cfreturn clientInfo>
    </cffunction>
@@ -151,7 +151,7 @@
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT dateSubmitted, rentSubsidyPayment
          FROM worksheet
-         WHERE clientID = '#clientID#'
+         WHERE clientID = <cfqueryparam value='#clientID#'>
       </cfquery>
       <cfreturn clientWorksheets>
    </cffunction>
@@ -168,13 +168,18 @@
    <cffunction name = "clientSearchRegex" returntype = "query" access = "private">
       <cfargument name="clientName" type="string" required="true">
       <cfset splitCName = listToArray(clientName, " ")>
+      <cfset splitCName[1] = splitCName[1]&'%'>
+      <cfif arrayLen(splitCName) GT 1>
+         <cfset splitCName[2] = splitCName[2]&'%'>
+      </cfif>
+
 
       <!--- if first and last name have been entered --->
       <cfif ArrayLen(splitCName) GT 1> 
          <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
                FROM wfClient
-               WHERE fName LIKE  '#splitCName[1]#%' AND lName LIKE '#splitCName[2]#%'
+               WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#'> AND lName LIKE <cfqueryparam value='#splitCName[2]#'>
          </cfquery>
          <cfreturn clientSearchSQL2>
 
@@ -183,7 +188,7 @@
          <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
                FROM wfClient
-               WHERE fName LIKE '#splitCName[1]#%' OR lName LIKE '#splitCName[1]#%'
+               WHERE fName LIKE <cfqueryparam value='#splitCName[1]#'> OR lName LIKE <cfqueryparam value='#splitCName[1]#'>
          </cfquery>
          <cfreturn clientSearchSQL1>
       </cfif> 
