@@ -197,4 +197,45 @@
    </cffunction>
 
 
+   <!---Insert Client into database--->
+   <cffunction name= "addClient" returntype="boolean" access="remote">
+      <cfargument name="fName" type="string" required="true">
+      <cfargument name="lName" type="string" required="true">
+      <cfargument name="addStreet" type="string" required="false">
+      <cfargument name="addCity" type="string" required="false">
+      <cfargument name="addState" type="string" required="false">
+      <cfargument name="addZip" type="string" required="false">
+      <cfargument name="gender" type="any" required="true">
+      <cfargument name="dob" type="date" required="true">
+
+
+      <cfif isNull(#addStreet#)>
+         <!--- when no address has been entered --->
+         <cfquery name="addC1" datasource="awsMicrosoftSQLServer">
+            INSERT INTO wfClient (fName, lName, gender, dob)
+            VALUES (<cfqueryparam value='#fName#'>,
+                    <cfqueryparam value='#lName#'>, 
+                    <cfqueryparam value='#gender#'>, 
+                    <cfqueryparam value='#dob#'>)
+         </cfquery>
+      <cfelse>
+         <!--- when wfClient has an address --->
+         <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
+            INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
+            VALUES (<cfqueryparam value='#fName#'>,
+                    <cfqueryparam value='#lName#'>, 
+                    <cfqueryparam value='#addStreet#'>, 
+                    <cfqueryparam value='#addCity#'>, 
+                    <cfqueryparam value='#addZip#'>, 
+                    <cfqueryparam value='#gender#'>, 
+                    <cfqueryparam value='#gender#'>, 
+                    <cfqueryparam value='#dob#'>)
+         </cfquery>
+      </cfif>
+
+      <cfreturn true>
+   </cffunction>
+
+
+
 </cfcomponent>
