@@ -1,17 +1,10 @@
 <cfcomponent displayname="User">
- 
-   <!--- Bypass CORS Policy
-   <cfheader name="Access-Control-Allow-Origin" value="*">
-   <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
-   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
-    --->
 
    <!---
       
       User Based Functions
    
    --->
-
 
    <!--- Return user info with a given username --->
    <cffunction name="getUserInfo" returntype="query" access="private">
@@ -103,14 +96,14 @@
    
 
    <!--- Update a user's password in database --->
-   <cffunction name="updateUserPassword" returntype="boolean" access="remote">
+   <cffunction name="updateUserPassword" returntype="void" access="remote">
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
       <cfset password = Hash(#password#, "SHA-512")>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
-            UPDATE hcUser (username, fName, lName, pswd, email, phone)
+            UPDATE hcUser
             SET   pswd = <cfqueryparam value='#password#'>
             WHERE username = <cfqueryparam value='#username#'>
       </cfquery>
@@ -122,9 +115,8 @@
    
    --->
 
-   <!--- (Future: Client Profile Work) --->
 
-   <!--- Return clientinfo with a given... (id?) --->
+   <!--- Return clientinfo with a given client ID --->
    <cffunction name="getClientInfo" access="private">
       <cfargument name="clientID" type="any" required="true">
       <!--- Query for client and return query --->
@@ -144,7 +136,7 @@
    </cffunction>
 
 
-   <!--- Return clientworksheets with a given client (id?) --->
+   <!--- Return clientworksheets with a given client ID --->
    <cffunction name="getClientWorksheets" returntype="query" access="private">
       <!--- Query for client and return query --->
       <cfargument name="clientID" type="any" required="true">
@@ -240,7 +232,5 @@
 
       <cfreturn true>
    </cffunction>
-
-
 
 </cfcomponent>
