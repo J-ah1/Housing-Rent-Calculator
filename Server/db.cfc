@@ -91,7 +91,7 @@
 
       <cfset user = getUserInfo('#username#')>
 
-      <cfreturn user.sQuestion EQ '#answer#'>
+      <cfreturn user.sAnswer EQ '#answer#'>
    </cffunction>
    
 
