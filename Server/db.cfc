@@ -29,7 +29,7 @@
       <cfargument name="password" type="string" required="true">
       <cfset password = Hash(#password#, "SHA-512")>
       <cfset user = getUserInfo('#username#')>
-      <cfreturn user.recordCount EQ 1 AND '#password#' EQ user.pswd>
+      <cfreturn user.recordCount EQ 1 AND #password# EQ user.pswd>
 
    </cffunction>
 
@@ -118,7 +118,7 @@
 
    <!--- Return clientinfo with a given client ID --->
    <cffunction name="getClientInfo" access="private">
-      <cfargument name="clientID" type="any" required="true">
+      <cfargument name="clientID" type="string" required="true">
       <!--- Query for client and return query --->
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
@@ -130,7 +130,7 @@
 
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" access="remote">
-      <cfargument name="clientID" type="any" required="true">
+      <cfargument name="clientID" type="string" required="true">
       <cfset clientInfo=getClientInfo('#clientID#')>
       <cfreturn clientInfo>
    </cffunction>
@@ -139,7 +139,7 @@
    <!--- Return clientworksheets with a given client ID --->
    <cffunction name="getClientWorksheets" returntype="query" access="private">
       <!--- Query for client and return query --->
-      <cfargument name="clientID" type="any" required="true">
+      <cfargument name="clientID" type="string" required="true">
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT dateSubmitted, rentSubsidyPayment
          FROM worksheet
@@ -150,7 +150,7 @@
 
    <!--- Public return of clientworksheets --->
    <cffunction name="clientWorksheetProfile" access="remote">
-      <cfargument name="clientID" type="any" required="true">
+      <cfargument name="clientID" type="string" required="true">
       <cfset worksheets=getClientWorksheets('#clientID#')>
       <cfreturn worksheets>
    </cffunction>
@@ -202,7 +202,7 @@
       <cfargument name="addCity" type="string" required="false">
       <cfargument name="addState" type="string" required="false">
       <cfargument name="addZip" type="string" required="false">
-      <cfargument name="gender" type="any" required="true">
+      <cfargument name="gender" type="string" required="true">
       <cfargument name="dob" type="date" required="true">
 
 
