@@ -71,13 +71,13 @@
 
 
    <!--- Check if user in database and send corresponding security question --->
-   <cffunction name="forgetPassword" returntype="int" access="remote">
+   <cffunction name="forgetPassword" returntype="numeric" access="remote">
 
       <cfargument name="username" type="string" required="true">
 
       <cfset user = getUserInfo('#username#')>
       <cfif user.recordCount EQ 1>
-         <cfreturn int('#user.sQuestion#')>
+         <cfreturn val('#user.sQuestion#')>
       </cfif>
 
       <cfreturn -1>
@@ -232,6 +232,17 @@
       <cfreturn true>
    </cffunction>
 
+   <!--- Unit test for non SQL INSERT functions --->
+   <cffunction name="nonInsertTest" returntype="void" access="remote">
 
+      <cfset testUserName = "sharkeisha">
+      <cfset testUserPass = "testPass">
+      <cfset checkUserTest = checkUser('#testUserName#', '#testUserPass#')>
+      <cfoutput>getUserInfo() and checkUser() result: #checkUserTest#</cfoutput>
+      <cfset forgetPasswordTest = forgetPassword('#testUserName#') EQ 0>
+      <cfoutput>forgetPassword() result: #forgetPasswordTest#</cfoutput>
+
+
+   </cffunction>
 
 </cfcomponent>
