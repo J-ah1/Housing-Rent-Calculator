@@ -117,7 +117,7 @@
 
 
    <!--- Return clientinfo with a given client ID --->
-   <cffunction name="getClientInfo" access="private">
+   <cffunction name="getClientInfo" returntype="query" access="private">
       <cfargument name="clientID" type="string" required="true">
       <!--- Query for client and return query --->
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
@@ -129,7 +129,7 @@
    </cffunction>
 
    <!--- Public return of clientinfo --->
-   <cffunction name="clientProfile" access="remote">
+   <cffunction name="clientProfile" returntype="query" access="remote">
       <cfargument name="clientID" type="string" required="true">
       <cfset clientInfo=getClientInfo('#clientID#')>
       <cfreturn clientInfo>
@@ -149,7 +149,7 @@
    </cffunction>
 
    <!--- Public return of clientworksheets --->
-   <cffunction name="clientWorksheetProfile" access="remote">
+   <cffunction name="clientWorksheetProfile" returntype="query" access="remote">
       <cfargument name="clientID" type="string" required="true">
       <cfset worksheets=getClientWorksheets('#clientID#')>
       <cfreturn worksheets>
@@ -232,16 +232,47 @@
       <cfreturn true>
    </cffunction>
 
-   <!--- Unit test for non SQL INSERT functions --->
+   <!--- Unit test for simple non SQL INSERT functions --->
    <cffunction name="nonInsertTest" returntype="void" access="remote">
 
       <cfset testUserName = "sharkeisha">
       <cfset testUserPass = "testPass">
-      <cfset checkUserTest = checkUser('#testUserName#', '#testUserPass#')>
-      <cfoutput>getUserInfo() and checkUser() result: #checkUserTest#</cfoutput>
-      <cfset forgetPasswordTest = forgetPassword('#testUserName#') EQ 0>
-      <cfoutput>forgetPassword() result: #forgetPasswordTest#</cfoutput>
+      <cfset testUserSQuestion = 0>
+      <cfset invalidSQuestion = -1>
 
+      <cfset checkUserTest = checkUser('#testUserName#', '#testUserPass#')>
+      <cfoutput>getUserInfo()_checkUser()_test1: #checkUserTest#</cfoutput>
+
+      <cfset forgetPasswordTest = forgetPassword('#testUserName#') EQ #testUserSQuestion#>
+      <cfoutput>forgetPassword()_test1: #forgetPasswordTest#</cfoutput>
+      <cfset forgetPasswordTest = forgetPassword('INVALIDUSER') EQ #invalidSQuestion#>
+      <cfoutput>forgetPassword()_test1: #forgetPasswordTest#</cfoutput>
+
+      <cfset checkSecurityAnswerTest = checkSecurityAnswer('#testUserName#', 'emptyAnswer')>
+      <cfoutput>checkSecurityAnswer()_test1: #checkSecurityAnswerTest#</cfoutput>
+      <cfset checkSecurityAnswerTest = checkSecurityAnswer('#testUserName#', '') EQ false>
+      <cfoutput>checkSecurityAnswer()_test2: #checkSecurityAnswerTest#</cfoutput>
+
+      <cfset testClientID = 1>
+      <cfset testClientProfileFName = "tom">
+      <cfset testClientWorksheetProfileDateSubmitted = "2013-03-04">
+      <cfset testClientSearch1 = "t">
+      <cfset testClientSearch2 = "h">
+      <cfset testClientSearch3 = "tom h">
+
+      <cfset clientProfileTest = clientProfile('#testClientID#').fName EQ '#testClientProfileFName#'>
+      <cfoutput>getClientInfo()_clientProfile()_test1: #clientProfileTest#</cfoutput>
+
+      <!--- Technically should test for multiple worksheets --->
+      <cfset clientWorksheetProfileTest = clientWorksheetProfile('#testClientID#').dateSubmitted EQ '#testClientWorksheetProfileDateSubmitted#'>
+      <cfoutput>getClientWorksheets()_clientWorksheetProfile()_test1: #clientWorksheetProfileTest#</cfoutput>
+
+      <cfset getCSearchRegexTest = getCSearchRegex('#testClientSearch1#').id EQ #testClientID#>
+      <cfoutput>getCSearchRegex()_clientSearchRegex()_test1: #clientProfileTest#</cfoutput>
+      <cfset getCSearchRegexTest = getCSearchRegex('#testClientSearch2#').id EQ #testClientID#>
+      <cfoutput>getCSearchRegex()_clientSearchRegex()_test2: #clientProfileTest#</cfoutput>
+      <cfset getCSearchRegexTest = getCSearchRegex('#testClientSearch3#').id EQ #testClientID#>
+      <cfoutput>getCSearchRegex()_clientSearchRegex()_test3: #clientProfileTest#</cfoutput>
 
    </cffunction>
 
