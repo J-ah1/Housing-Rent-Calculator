@@ -10,6 +10,7 @@ import ForgotPassword from './ForgotPassword';
 import Register from './Register';
 import ClientSearch from './ClientSearch';
 import ClientProfile from './ClientProfile';
+import RentCalculator0 from './RentCalculator0'
 
 class App extends Component {
     render() {
@@ -21,6 +22,7 @@ class App extends Component {
             <Route path='/register' component={Register} />
             <Route path='/search' component={ClientSearch} />
             <Route path='/profile/:id' component={ClientProfile} />
+            <Route path='/rc0' component={RentCalculator0} />
           </div>
         </Router>
       )
