@@ -27,7 +27,7 @@
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
-      <cfset password = Hash(#password#, "SHA-512")>
+      <cfset password = Hash('#password#', "SHA-512")>
       <cfset user = getUserInfo('#username#')>
       <cfreturn user.recordCount EQ 1 AND '#password#' EQ user.pswd>
 
@@ -49,8 +49,8 @@
       <cfargument name="sanswer" type="string" required="true">
 
 
-      <cfset password = Hash(#password#, "SHA-512")> 
-      <cfset squestion = val(#squestion#)>
+      <cfset password = Hash('#password#', "SHA-512")> 
+      <cfset squestion = val('#squestion#')>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
           INSERT INTO hcUser (username, fName, lName, pswd, email, phone, sQuestion, sAnswer)
@@ -60,7 +60,7 @@
                   <cfqueryparam value='#password#'>,
                   <cfqueryparam value='#email#'>,
                   <cfqueryparam value='#phone#'>,
-                  <cfqueryparam value=#squestion#>,
+                  <cfqueryparam value='#squestion#'>,
                   <cfqueryparam value='#sanswer#'>)
       </cfquery>
 
@@ -77,7 +77,7 @@
 
       <cfset user = getUserInfo('#username#')>
       <cfif user.recordCount EQ 1>
-         <cfreturn user.sQuestion>
+         <cfreturn int('#user.sQuestion#')>
       </cfif>
 
       <cfreturn -1>
@@ -100,7 +100,7 @@
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
-      <cfset password = Hash(#password#, "SHA-512")>
+      <cfset password = Hash('#password#', "SHA-512")>
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
             UPDATE hcUser
@@ -123,7 +123,7 @@
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM wfClient
-         WHERE id = <cfqueryparam value=#clientID#>
+         WHERE id = <cfqueryparam value='#clientID#'>
       </cfquery>
       <cfreturn clientInfo>
    </cffunction>
@@ -131,7 +131,7 @@
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" access="remote">
       <cfargument name="clientID" type="string" required="true">
-      <cfset clientInfo=getClientInfo(#clientID#)>
+      <cfset clientInfo=getClientInfo('#clientID#')>
       <cfreturn clientInfo>
    </cffunction>
 
@@ -143,7 +143,7 @@
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT dateSubmitted, rentSubsidyPayment
          FROM worksheet
-         WHERE clientID = <cfqueryparam value=#clientID#>
+         WHERE clientID = <cfqueryparam value='#clientID#'>
       </cfquery>
       <cfreturn clientWorksheets>
    </cffunction>
@@ -151,7 +151,7 @@
    <!--- Public return of clientworksheets --->
    <cffunction name="clientWorksheetProfile" access="remote">
       <cfargument name="clientID" type="string" required="true">
-      <cfset worksheets=getClientWorksheets(#clientID#)>
+      <cfset worksheets=getClientWorksheets('#clientID#')>
       <cfreturn worksheets>
    </cffunction>
 
@@ -212,7 +212,7 @@
             INSERT INTO wfClient (fName, lName, gender, dob)
             VALUES (<cfqueryparam value='#fName#'>,
                     <cfqueryparam value='#lName#'>, 
-                    <cfqueryparam value=#gender#>, 
+                    <cfqueryparam value='#gender#'>, 
                     <cfqueryparam value='#dob#'>)
          </cfquery>
       <cfelse>
@@ -224,12 +224,14 @@
                     <cfqueryparam value='#addStreet#'>, 
                     <cfqueryparam value='#addCity#'>, 
                     <cfqueryparam value='#addZip#'>, 
-                    <cfqueryparam value=#gender#>, 
+                    <cfqueryparam value='#gender#'>, 
                     <cfqueryparam value='#dob#'>)
          </cfquery>
       </cfif>
 
       <cfreturn true>
    </cffunction>
+
+
 
 </cfcomponent>
