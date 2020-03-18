@@ -14,7 +14,7 @@
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM hcUser
-         WHERE username = <cfqueryparam value='#username#'>
+         WHERE username = <cfqueryparam value='#username#' cfsqltype='cf_sql_varchar' maxlength='50'>
       </cfquery>
 
       <cfreturn user>
@@ -54,14 +54,14 @@
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
           INSERT INTO hcUser (username, fName, lName, pswd, email, phone, sQuestion, sAnswer)
-          VALUES (<cfqueryparam value='#username#'>,
-                  <cfqueryparam value='#firstname#'>,
-                  <cfqueryparam value='#lastname#'>,
-                  <cfqueryparam value='#password#'>,
-                  <cfqueryparam value='#email#'>,
-                  <cfqueryparam value='#phone#'>,
-                  <cfqueryparam value='#squestion#'>,
-                  <cfqueryparam value='#sanswer#'>)
+          VALUES (<cfqueryparam value='#username#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#firstname#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#lastname#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#password#' cfsqltype='cf_sql_varchar' maxlength='128'>,
+                  <cfqueryparam value='#email#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#phone#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#squestion#' cfsqltype='cf_sql_tinyint'>,
+                  <cfqueryparam value='#sanswer#' cfsqltype='cf_sql_varchar' maxlength='50'>)
       </cfquery>
 
       <cfreturn true>
@@ -104,8 +104,8 @@
 
       <cfquery name="user" datasource="awsMicrosoftSQLServer">
             UPDATE hcUser
-            SET   pswd = <cfqueryparam value='#password#'>
-            WHERE username = <cfqueryparam value='#username#'>
+            SET   pswd = <cfqueryparam value='#password#' cfsqltype='cf_sql_varchar' maxlength='128'>
+            WHERE username = <cfqueryparam value='#username#' cfsqltype='cf_sql_varchar' maxlength='50'>
       </cfquery>
    </cffunction>
 
@@ -123,7 +123,7 @@
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM wfClient
-         WHERE id = <cfqueryparam value='#clientID#'>
+         WHERE id = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
       <cfreturn clientInfo>
    </cffunction>
@@ -143,7 +143,7 @@
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT dateSubmitted, rentSubsidyPayment
          FROM worksheet
-         WHERE clientID = <cfqueryparam value='#clientID#'>
+         WHERE clientID = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
       <cfreturn clientWorksheets>
    </cffunction>
@@ -171,7 +171,7 @@
          <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
                FROM wfClient
-               WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#'> AND lName LIKE <cfqueryparam value='#splitCName[2]#'>
+               WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> AND lName LIKE <cfqueryparam value='#splitCName[2]#' cfsqltype='cf_sql_varchar' maxlength='50'>
          </cfquery>
          <cfreturn clientSearchSQL2>
 
@@ -180,7 +180,7 @@
          <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
                FROM wfClient
-               WHERE fName LIKE <cfqueryparam value='#splitCName[1]#'> OR lName LIKE <cfqueryparam value='#splitCName[1]#'>
+               WHERE fName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> OR lName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'>
          </cfquery>
          <cfreturn clientSearchSQL1>
       </cfif> 
@@ -210,27 +210,36 @@
          <!--- when no address has been entered --->
          <cfquery name="addC1" datasource="awsMicrosoftSQLServer">
             INSERT INTO wfClient (fName, lName, gender, dob)
-            VALUES (<cfqueryparam value='#fName#'>,
-                    <cfqueryparam value='#lName#'>, 
-                    <cfqueryparam value='#gender#'>, 
-                    <cfqueryparam value='#dob#'>)
+            VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                    <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
+                    <cfqueryparam value='#gender#' cfsqltype='tinyint'>, 
+                    <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
          </cfquery>
       <cfelse>
          <!--- when wfClient has an address --->
          <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
             INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
-            VALUES (<cfqueryparam value='#fName#'>,
-                    <cfqueryparam value='#lName#'>, 
-                    <cfqueryparam value='#addStreet#'>, 
-                    <cfqueryparam value='#addCity#'>, 
-                    <cfqueryparam value='#addZip#'>, 
-                    <cfqueryparam value='#gender#'>, 
-                    <cfqueryparam value='#dob#'>)
+            VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                    <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
+                    <cfqueryparam value='#addStreet#' cfsqltype='cf_sql_varchar' maxlength='100'>, 
+                    <cfqueryparam value='#addCity#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
+                    <cfqueryparam value='#addZip#' cfsqltype='cf_sql_varchar' maxlength='10'>, 
+                    <cfqueryparam value='#gender#' cfsqltype='cf_sql_tinyint'>, 
+                    <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
          </cfquery>
       </cfif>
 
       <cfreturn true>
    </cffunction>
+
+
+
+   <!---
+   
+      Debugging Functions (Delete Later)
+   
+   --->
+
 
    <!--- Unit test for simple non SQL INSERT functions --->
    <cffunction name="nonInsertTest" returntype="void" access="remote">
