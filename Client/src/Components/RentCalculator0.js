@@ -4,7 +4,6 @@ import React from 'react';
 function RentCalculator0(props){ 
     return(
         <div align="center">
-                {/* <button onClick = { (e) => {props.clickedBack() } } style={{float : 'left', paddingRight : '5px'}}>Back</button> */}
                 <button type = "button" onClick = {props.backHandler} style={{float : 'left', paddingRight : '5px'}}>Back</button>
                 <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button>
                 <h1>Welcome to the Rent Calculator </h1>
