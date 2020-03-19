@@ -3,7 +3,7 @@ import React from 'react';
 
 function ForgotPasswordUsername(props) {
     return(
-        <div>
+        <div className="forgot-password-question-form">
             <label>Enter your username</label>
             <input
                 type='text'

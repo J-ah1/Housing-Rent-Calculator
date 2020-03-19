@@ -6,6 +6,8 @@ import ForgotPasswordUsername from './ForgotPasswordUsername';
 import ForgotPasswordQuestion from './ForgotPasswordQuestion';
 import ResetPassword from './ResetPassword';
 
+import '../Styles/ForgotPassword.css';
+
 class ForgotPassword extends Component {
     constructor(props) {
         super(props);
@@ -121,7 +123,7 @@ class ForgotPassword extends Component {
                     viewHandler = {this.handleViewChange}
                     username = {this.state.username}
                     />
-                    <Link to='/'><button>Log In</button></Link>
+                    <Link to='/'><button id="forgot-password-login-button">Log In</button></Link>
                 </div>
         }
 
@@ -144,7 +146,7 @@ class ForgotPassword extends Component {
                     />
         }
         return (
-            <div>
+            <div id="forgot-password-container">
                 <h1>Forgot Password</h1>
                 <form>
                     {inputs}
