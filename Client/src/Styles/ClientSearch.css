@@ -1,0 +1,44 @@
+#client-search-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 20vh;
+}
+
+#client-search-content{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#client-search-content > h1{
+    align-self: center;
+    font-size: 3em;
+}
+
+#client-search-add-client{
+    padding: 1em 2em;
+    background-color: ghostwhite;
+    color: rgb(23, 83, 161);
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+#client-search-content > label{
+    margin-top: 1em;
+    font-size: 1.5em;
+}
+
+#client-search-content > input{
+    width: 50vh;
+    font-size: 2em;
+}
+
+#client-search-button{
+    align-self: center;
+    margin-top: 1em;
+    padding: 1em 2em;
+    border-radius: 5px;
+}
