@@ -1,17 +1,10 @@
 <cfcomponent displayname="User">
- 
-   <!--- Bypass CORS Policy
-   <cfheader name="Access-Control-Allow-Origin" value="*">
-   <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
-   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
-    --->
 
    <!---
       
       User Based Functions
    
    --->
-
 
    <!--- Return user info with a given username --->
    <cffunction name="getUserInfo" returntype="query" access="private">
@@ -30,7 +23,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="string" access="remote">
+   <cffunction name="checkUser" returntype="string" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -67,7 +60,7 @@
                   <cfqueryparam value='#password#'>,
                   <cfqueryparam value='#email#'>,
                   <cfqueryparam value='#phone#'>,
-                  <cfqueryparam value='#squestion#'>,
+                  <cfqueryparam value=#squestion#>,
                   <cfqueryparam value='#sanswer#'>)
       </cfquery>
 
@@ -78,7 +71,7 @@
 
 
    <!--- Check if user in database and send corresponding security question --->
-   <cffunction name="forgetPassword" returntype="numeric" access="remote">
+   <cffunction name="forgetPassword" returntype="numeric" returnFormat='JSON' access="remote">
 
       <cfargument name="username" type="string" required="true">
 
@@ -91,7 +84,7 @@
    </cffunction>
 
    <!--- Check if user answer matches corresponding database record --->
-   <cffunction name="checkSecurityAnswer" returntype="boolean" access="remote">
+   <cffunction name="checkSecurityAnswer" returntype="boolean" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="answer" type="string" required="true">
@@ -122,59 +115,63 @@
    
    --->
 
-   <!--- (Future: Client Profile Work) --->
 
-   <!--- Return clientinfo with a given... (id?) --->
-   <cffunction name="getClientInfo" access="remote">
-      <cfargument name="clientID" type="any" required="true">
+   <!--- Return clientinfo with a given client ID --->
+   <cffunction name="getClientInfo" access="private">
+      <cfargument name="clientID" type="string" required="true">
       <!--- Query for client and return query --->
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM wfClient
-         WHERE id = '#clientID#'
+         WHERE id = <cfqueryparam value=#clientID#>
       </cfquery>
       <cfreturn clientInfo>
    </cffunction>
 
    <!--- Public return of clientinfo --->
-   <cffunction name="clientProfile" access="remote">
-      <cfargument name="clientID" type="any" required="true">
-      <cfset clientInfo=getClientInfo('#clientID#')>
+   <cffunction name="clientProfile" returnFormat="JSON" access="remote">
+      <cfargument name="clientID" type="string" required="true">
+      <cfset clientInfo=getClientInfo(#clientID#)>
       <cfreturn clientInfo>
    </cffunction>
 
 
-   <!--- Return clientworksheets with a given client (id?) --->
-   <cffunction name="getClientWorksheets" returntype="query" access="private">
+   <!--- Return clientworksheets with a given client ID --->
+   <cffunction name="getClientWorksheets" returntype="query" returnFormat="JSON" access="private">
       <!--- Query for client and return query --->
-      <cfargument name="clientID" type="any" required="true">
+      <cfargument name="clientID" type="string" required="true">
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT dateSubmitted, rentSubsidyPayment
          FROM worksheet
-         WHERE clientID = '#clientID#'
+         WHERE clientID = <cfqueryparam value=#clientID#>
       </cfquery>
       <cfreturn clientWorksheets>
    </cffunction>
 
    <!--- Public return of clientworksheets --->
-   <cffunction name="clientWorksheetProfile" access="remote">
-      <cfargument name="clientID" type="any" required="true">
-      <cfset worksheets=getClientWorksheets('#clientID#')>
+   <cffunction name="clientWorksheetProfile"  returnFormat="JSON" access="remote">
+      <cfargument name="clientID" type="string" required="true">
+      <cfset worksheets=getClientWorksheets(#clientID#)>
       <cfreturn worksheets>
    </cffunction>
 
 
    <!--- function that return clients whose name(s) match the input given --->
-   <cffunction name = "clientSearchRegex" returntype = "query" access = "private">
+   <cffunction name="clientSearchRegex" returntype="query" returnFormat="JSON" access="private">
       <cfargument name="clientName" type="string" required="true">
       <cfset splitCName = listToArray(clientName, " ")>
+      <cfset splitCName[1] = splitCName[1]&'%'>
+      <cfif arrayLen(splitCName) GT 1>
+         <cfset splitCName[2] = splitCName[2]&'%'>
+      </cfif>
+
 
       <!--- if first and last name have been entered --->
       <cfif ArrayLen(splitCName) GT 1> 
          <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
                FROM wfClient
-               WHERE fName LIKE  '#splitCName[1]#%' AND lName LIKE '#splitCName[2]#%'
+               WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#'> AND lName LIKE <cfqueryparam value='#splitCName[2]#'>
          </cfquery>
          <cfreturn clientSearchSQL2>
 
@@ -183,18 +180,56 @@
          <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
                SELECT fName, lName, dob, id
                FROM wfClient
-               WHERE fName LIKE '#splitCName[1]#%' OR lName LIKE '#splitCName[1]#%'
+               WHERE fName LIKE <cfqueryparam value='#splitCName[1]#'> OR lName LIKE <cfqueryparam value='#splitCName[1]#'>
          </cfquery>
          <cfreturn clientSearchSQL1>
       </cfif> 
    </cffunction>
 
    <!--- function that return clients whose name(s) matches the input given --->
-   <cffunction name="getCSearchRegex" returntype="any" access="remote">
+   <cffunction name="getCSearchRegex" returnFormat="JSON" access="remote">
       <cfargument name="clientName" type="string" required="true">
       <cfset clients= clientSearchRegex('#clientName#')>
       <cfreturn clients>
    </cffunction>
 
+
+   <!---Insert Client into database--->
+   <cffunction name= "addClient" returntype="boolean" access="remote">
+      <cfargument name="fName" type="string" required="true">
+      <cfargument name="lName" type="string" required="true">
+      <cfargument name="addStreet" type="string" required="false">
+      <cfargument name="addCity" type="string" required="false">
+      <cfargument name="addState" type="string" required="false">
+      <cfargument name="addZip" type="string" required="false">
+      <cfargument name="gender" type="string" required="true">
+      <cfargument name="dob" type="date" required="true">
+
+
+      <cfif isNull(#addStreet#)>
+         <!--- when no address has been entered --->
+         <cfquery name="addC1" datasource="awsMicrosoftSQLServer">
+            INSERT INTO wfClient (fName, lName, gender, dob)
+            VALUES (<cfqueryparam value='#fName#'>,
+                    <cfqueryparam value='#lName#'>, 
+                    <cfqueryparam value=#gender#>, 
+                    <cfqueryparam value='#dob#'>)
+         </cfquery>
+      <cfelse>
+         <!--- when wfClient has an address --->
+         <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
+            INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
+            VALUES (<cfqueryparam value='#fName#'>,
+                    <cfqueryparam value='#lName#'>, 
+                    <cfqueryparam value='#addStreet#'>, 
+                    <cfqueryparam value='#addCity#'>, 
+                    <cfqueryparam value='#addZip#'>, 
+                    <cfqueryparam value=#gender#>, 
+                    <cfqueryparam value='#dob#'>)
+         </cfquery>
+      </cfif>
+
+      <cfreturn true>
+   </cffunction>
 
 </cfcomponent>
