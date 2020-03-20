@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from 'react-router-dom'; 
-
+import axios from 'axios';
 import ClientIntake from './ClientIntake';
 import Worksheet from './Worksheet';
 
@@ -21,6 +15,7 @@ class ClientProfile extends Component {
             LNAME:'',
             ADDSTREET:'',
             ADDCITY:'',
+            ADDSTATE: '',
             ADDZIP:'',
             GENDER:'',
             DOB:'',
@@ -35,25 +30,26 @@ class ClientProfile extends Component {
     }
 
     handleGetClientInformation(ID){
-        var request = new XMLHttpRequest();
-        request.open("GET", `http://localhost:8000/db.cfc?method=getClientInfo&clientID=${ID}`, false);
-        request.send()
-        var parser = new DOMParser();
-        var xml = (parser.parseFromString(request.response, "text/xml"))      
-        this.handleSettingState(xml);
-        this.handleView()
+        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
+                .then(res => {
+                    console.log(res.data)
+                    this.handleSettingState(res.data.DATA[0])
+                })
     }
 
-    handleSettingState = (xml) => {
-        let root = xml.getElementsByTagName('field');
-        for(let i = 0; i < root.length; i++){
-            let nameOfState = root[i].attributes[0].value;
-            let dataOfState = root[i].textContent
-            console.log(`${[nameOfState]}: ${dataOfState}`)
-            this.setState({
-                [nameOfState]: dataOfState
-            })
-        }
+    handleSettingState = (clientData) => {
+        console.log(clientData)
+        this.setState({
+            ID: clientData[0],
+            FNAME: clientData[1],
+            LNAME: clientData[2],
+            ADDSTREET: clientData[3],
+            ADDCITY: clientData[4],
+            ADDSTATE: clientData[5],
+            ADDZIP: clientData[6],
+            GENDER: clientData[7],
+            DOB: clientData[8]
+        })
     }
 
     handleView = (e) => {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 
  class Worksheet extends Component {
     constructor(props) {
@@ -10,21 +11,18 @@ import React, { Component } from 'react'
     }
 
     componentDidMount(){
-        var request = new XMLHttpRequest();
-        request.open("GET", `http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${parseInt(this.props.id)}`, false);
-        request.send();
-        var parser = new DOMParser()
-        this.handleSettingState(parser.parseFromString(request.responseText, "text/xml"))
+        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${this.props.id}`)
+            .then(res => this.handleSettingState(res.data.DATA));
     }
 
-    handleSettingState = (xml) => {
-        let root = xml.getElementsByTagName('field');
-        let sheets = []
-        for(let i = 0; i < root.length; i += 2){
-            let date = new Date(root[i].textContent);
+    handleSettingState = (worksheets) => {
+        let sheets = [];
+        console.log(worksheets)
+        worksheets.forEach(worksheet => {
+            let date = new Date(worksheet[0]);
             date = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
-            sheets.push({Date: date, Calculation: root[i+1].textContent})
-        }
+            sheets.push({Date: date, Calculation: worksheet[1]})
+        })
         this.setState({
             worksheets: sheets
         })
@@ -60,18 +58,3 @@ import React, { Component } from 'react'
 }
 
 export default Worksheet
-
-/*this.state.data.map((row, i) =>
-                        row.dateSubmitted?
-                                        <tr key={i+1}>
-                                        <td>{row.dateSubmitted?row.dateSubmitted:null}</td> 
-                                        <td>{row.tenantRentResponsibility?row.tenantRentResponsibility:null}</td> 
-                                        
-                                        <td>
-                                            <button type="submit" size="md" color="success "   onClick={() => {  this.props.history.push("/result/"+row.id);}} > View </button>
-                                            <button Style="margin-left:10px" type="submit" size="md" color="primary " onClick={() => {  this.props.history.push("/result/"+row.id+"?isprint=true&cid="+this.state.cid);}} > Print </button>
-                                        </td> 
-                                            
-                                        </tr>
-                                        :null
-                        )*/

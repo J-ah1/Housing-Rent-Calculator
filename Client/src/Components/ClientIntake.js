@@ -10,14 +10,18 @@ function ClientIntake(props) {
     
     //handle formatting gender
     let clientGender = "";
-    if(props.gender === "1.0"){
-        clientGender = "Male";
-    }else if (props.gender === "2.0"){
-        clientGender = "Female"
-    }else{
-        clientGender = "Other"
+    switch(props.gender){
+        case(1):
+            clientGender = "Male";
+            break;
+        case(2):
+            clientGender = "Female";
+            break;
+        default:
+            clientGender = "Other";
+            break;
     }
-    
+
     return (
         <div>
             <ul>

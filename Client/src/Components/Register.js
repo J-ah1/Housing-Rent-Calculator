@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import axios from 'axios';
 
 class Register extends Component {
     constructor(props) {
@@ -74,7 +74,7 @@ class Register extends Component {
     submit = (e) => {
         e.preventDefault();
         if(this.state.username !== "" && this.state.pswd !== "" && this.state.fName !== "" &&
-        this.state.phone !== "" && this.state.email !== "" && this.state.cpswd == this.state.pswd && this.state.lName !=="" ){
+        this.state.phone !== "" && this.state.email !== "" && this.state.cpswd === this.state.pswd && this.state.lName !=="" ){
           console.log(`Username: ${this.state.username}, 
                       Password: ${this.state.pswd},
                       ConfirmPass: ${this.state.cpswd},
@@ -84,10 +84,8 @@ class Register extends Component {
                       Email: ${this.state.email},
                       Question: ${this.state.question},
                       Answer: ${this.state.answer},`);
-          console.log(typeof this.state.question)
-          var request = new XMLHttpRequest();
-          request.open("GET", `http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, false);
-          request.send();
+          axios.get(`http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`)
+            .then()
           this.props.history.push('/')
         }
         else {

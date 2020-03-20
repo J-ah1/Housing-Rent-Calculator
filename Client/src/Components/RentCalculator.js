@@ -37,34 +37,25 @@ class RentCalculator extends Component {
     render(){
         let page = this.state.page;
         var inputs;
-        if(page === 0){
-            inputs =
-            <RentCalculator0 
+        
+        switch(page){
+            case(1):
+                break;
+            case(2):
+                break;
+            case(3):
+                break;
+            case(4):
+                break;
+            case(5):
+                break;
+            default:
+                inputs = <RentCalculator0 
                 backHandler = {this.clickedBack}
                 logOffHandler = {this.clickedLogOff}
                 startHandler = {this.clickedStart}
-            />
-            //<Link to></Link>
-        }
-
-        if(page === 1){
-            
-        }
-
-        if(page === 2){
-            
-        }
-
-        if(page === 3){
-            
-        }
-
-        if(page === 4){
-            
-        }
-
-        if(page === 5){
-            
+                />
+                break;
         }
 
         return(
