@@ -23,7 +23,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="string" access="remote">
+   <cffunction name="checkUser" returntype="boolean" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -34,9 +34,8 @@
    </cffunction>
 
 
-
    <!--- Validate arguments and query a new user into hcUser --->
-   <cffunction name="registerUser" returntype="boolean" access="remote">
+   <cffunction name="registerUser" returntype="void" access="remote">
       
       
       <cfargument name="username" type="string" required="true">
@@ -64,7 +63,6 @@
                   <cfqueryparam value='#sanswer#' cfsqltype='cf_sql_varchar' maxlength='50'>)
       </cfquery>
 
-      <cfreturn true>
 
    </cffunction>
 
@@ -195,7 +193,7 @@
 
 
    <!---Insert Client into database--->
-   <cffunction name= "addClient" returntype="boolean" access="remote">
+   <cffunction name= "addClient" returntype="void" access="remote">
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
       <cfargument name="addStreet" type="string" default="" required="false">
@@ -217,7 +215,6 @@
                   <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
       </cfquery>
 
-      <cfreturn true>
    </cffunction>
 
    <cffunction name="addWorksheet" returntype="void" access="remote">
