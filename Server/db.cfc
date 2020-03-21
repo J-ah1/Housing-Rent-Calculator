@@ -198,39 +198,128 @@
    <cffunction name= "addClient" returntype="boolean" access="remote">
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
-      <cfargument name="addStreet" type="string" required="false">
-      <cfargument name="addCity" type="string" required="false">
-      <cfargument name="addState" type="string" required="false">
-      <cfargument name="addZip" type="string" required="false">
+      <cfargument name="addStreet" type="string" default="" required="false">
+      <cfargument name="addCity" type="string" default="" required="false">
+      <cfargument name="addState" type="string" default="" required="false">
+      <cfargument name="addZip" type="string" default="" required="false">
       <cfargument name="gender" type="string" required="true">
       <cfargument name="dob" type="date" required="true">
 
-
-      <cfif isNull(#addStreet#)>
-         <!--- when no address has been entered --->
-         <cfquery name="addC1" datasource="awsMicrosoftSQLServer">
-            INSERT INTO wfClient (fName, lName, gender, dob)
-            VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
-                    <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
-                    <cfqueryparam value='#gender#' cfsqltype='tinyint'>, 
-                    <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
-         </cfquery>
-      <cfelse>
-         <!--- when wfClient has an address --->
-         <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
-            INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
-            VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
-                    <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
-                    <cfqueryparam value='#addStreet#' cfsqltype='cf_sql_varchar' maxlength='100'>, 
-                    <cfqueryparam value='#addCity#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
-                    <cfqueryparam value='#addZip#' cfsqltype='cf_sql_varchar' maxlength='10'>, 
-                    <cfqueryparam value='#gender#' cfsqltype='cf_sql_tinyint'>, 
-                    <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
-         </cfquery>
-      </cfif>
+      <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
+         INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
+         VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
+                  <cfqueryparam value='#addStreet#' null='#NOT len(trim(addStreet))#' cfsqltype='cf_sql_varchar' maxlength='100'>, 
+                  <cfqueryparam value='#addCity#' null='#NOT len(trim(addCity))#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
+                  <cfqueryparam value='#addState#' null='#NOT len(trim(addState))#' cfsqltype='cf_sql_varchar' maxlength='50'>,
+                  <cfqueryparam value='#addZip#' null='#NOT len(trim(addZip))#' cfsqltype='cf_sql_varchar' maxlength='10'>,
+                  <cfqueryparam value='#gender#' cfsqltype='cf_sql_tinyint'>, 
+                  <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
+      </cfquery>
 
       <cfreturn true>
    </cffunction>
+
+   <cffunction name="addWorksheet" returntype="void" access="remote">
+      <cfargument name="userID" type="string" required="true">
+      <cfargument name="clientID" type="string" required="true">
+      <cfargument name="dateSubmitted" type="string" required="true">
+
+      <cfargument name="annualHouseHoldWages" type="string" default="0.00" required="false">
+      <cfargument name="periodicPayment" type="string" default="0.00" required="false">
+      <cfargument name="unearnedIncome" type="string" default="0.00" required="false">
+      <cfargument name="receivedIncome" type="string" default="0.00" required="false">
+      <cfargument name="businessIncome" type="string" default="0.00" required="false">
+      <cfargument name="investments" type="string" default="0.00" required="false">
+      <cfargument name="armedForcesPay" type="string" default="0.00" required="false">
+      <cfargument name="publicAssistanceReceived" type="string" default="0.00" required="false">
+      <cfargument name="welfareReliant" type="string" default="0" required="false">
+      <cfargument name="annualGrossIncome" type="string" default="0.00" required="false">
+      <cfargument name="monthlyGrossIncome" type="string" default="0.00" required="false">
+
+      <cfargument name="numDependents" type="string" default="0" required="false">
+      <cfargument name="disabledDeduction" type="string" default="0.00" required="false">
+      <cfargument name="childcareExp" type="string" default="0.00" required="false">
+      <cfargument name="attendExp" type="string" default="0.00" required="false">
+      <cfargument name="elderlyExp" type="string" default="0.00" required="false">
+      <cfargument name="medExp" type="string" default="0.00" required="false">
+      <cfargument name="perAGI" type="string" default="0.00" required="false">
+      <cfargument name="medDeduction" type="string" default="0.00" required="false">
+      
+      <cfargument name="inHOPWA" type="string" default="0" required="false">
+      <cfargument name="employmentIncomeIncrease" type="string" default="0" required="false">
+      <cfargument name="selfSufficientIncome" type="string" default="0" required="false">
+      <cfargument name="incomeWSixMo" type="string" default="0" required="false">
+      <cfargument name="incomeIncreaseDate" type="string" default="0001-01-01" required="false">
+      <cfargument name="baselineIncome" type="string" default="0.00" required="false">
+      <cfargument name="incomeEID" type="string" default="0.00" required="false">
+      <cfargument name="otherIncomeEID" type="string" default="0.00" required="false">
+      <cfargument name="applicableEID" type="string" default="0.00" required="false">
+      
+      <cfargument name="totalAllowance" type="string" default="0.00" required="false">
+      <cfargument name="annualAdjustedIncome" type="string" default="0.00" required="false">
+      <cfargument name="monthlyAdjustedIncome" type="string" default="0.00" required="false">
+      
+      <cfargument name="totalMontlyRent" type="string" default="0.00" required="false">
+      <cfargument name="currentLeasePeriod" type="string" default="0.00" required="false">
+      <cfargument name="utilitiesIncluded" type="string" default="0" required="false">
+      <cfargument name="utilityAllowance" type="string" default="0.00" required="false">
+      <cfargument name="tenantRentResponsibility" type="string" default="0.00" required="false">
+      <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
+      
+
+      <cfquery name="addedSheet" datasource="awsMicrosoftSQLServer">
+         INSERT INTO worksheet
+         VALUES (<cfqueryparam value='#userID#' cfsqltype='cf_sql_integer'>,
+                  <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>, 
+                  <cfqueryparam value='#dateSubmitted#' cfsqltype='cf_sql_date'>,
+
+                  <cfqueryparam value='#annualHouseHoldWages#' cfsqltype='cf_sql_money'>,
+                  <cfqueryparam value='#periodicPayment#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#unearnedIncome#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#receivedIncome#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#businessIncome#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#investments#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#armedForcesPay#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#publicAssistanceReceived#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#welfareReliant#' cfsqltype='cf_sql_bit'>, 
+                  <cfqueryparam value='#annualGrossIncome#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#monthlyGrossIncome#' cfsqltype='cf_sql_money'>,
+
+                  <cfqueryparam value='#numDependents#' cfsqltype='cf_sql_tinyint'>,
+                  <cfqueryparam value='#disabledDeduction#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#childcareExp#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#attendExp#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#elderlyExp#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#medExp#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#perAGI#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#medDeduction#' cfsqltype='cf_sql_money'>,
+
+                  <cfqueryparam value='#inHOPWA#' cfsqltype='cf_sql_bit'>, 
+                  <cfqueryparam value='#employmentIncomeIncrease#' cfsqltype='cf_sql_bit'>, 
+                  <cfqueryparam value='#selfSufficientIncome#' cfsqltype='cf_sql_bit'>,
+                  <cfqueryparam value='#incomeWSixMo#' cfsqltype='cf_sql_bit'>,
+                  <cfqueryparam value='#incomeIncreaseDate#' cfsqltype='cf_sql_date'>, 
+                  <cfqueryparam value='#baselineIncome#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#incomeEID#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#otherIncomeEID#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#applicableEID#' cfsqltype='cf_sql_money'>, 
+
+                  <cfqueryparam value='#totalAllowance#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#annualAdjustedIncome#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#monthlyAdjustedIncome#' cfsqltype='cf_sql_money'>,
+
+                  <cfqueryparam value='#totalMontlyRent#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#currentLeasePeriod#' cfsqltype='cf_sql_tinyint'>,
+                  <cfqueryparam value='#utilitiesIncluded#' cfsqltype='cf_sql_bit'>, 
+                  <cfqueryparam value='#utilityAllowance#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#tenantRentResponsibility#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#rentSubsidyPayment#' cfsqltype='cf_sql_money'>)
+      </cfquery>
+
+
+   </cffunction>
+
 
 
 
