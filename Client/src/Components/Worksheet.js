@@ -11,7 +11,7 @@ import axios from 'axios';
     }
 
     componentDidMount(){
-        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${this.props.id}`)
+        axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${this.props.id}`)
             .then(res => this.handleSettingState(res.data.DATA));
     }
 

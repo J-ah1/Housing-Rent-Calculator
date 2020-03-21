@@ -54,7 +54,7 @@ submit = (e) => {
         console.log(this.state)
         /*console.log(this.state)
         var request = new XMLHttpRequest();
-        request.open("GET", `http://localhost:8000/db.cfc?method=addClient&fName=${this.state.fName}&lName=${this.state.lName}&addStreet=${this.state.addStreet}&addCity=${this.state.addCity}&addState=${this.state.addState}&addZip=${this.state.addZip}&gender=${this.state.gender}&dob=${isoDate}`, false);
+        request.open("GET", `http://localhost:8500/db.cfc?method=addClient&fName=${this.state.fName}&lName=${this.state.lName}&addStreet=${this.state.addStreet}&addCity=${this.state.addCity}&addState=${this.state.addState}&addZip=${this.state.addZip}&gender=${this.state.gender}&dob=${isoDate}`, false);
         request.send();*/
         //this.props.history.push('/')
     }

@@ -11,20 +11,12 @@ class RentCalculator extends Component {
         }
     }
 
-    clickedStart = (e) =>{
-        console.log('Take the user to the first page of the rent calculator.')
-        //redirect to first page of rent calculator
-        /*this.props.history.push({
-            pathname: '/rc1',
-        })*/
-    }
-
     clickedBack = (e) =>{
         console.log('Take the user back to the client worksheets page.')
         //this needs to be changed so that it redirects to the profile page with client ID
-        this.props.history.push({
-            pathname: '/profile/${id}',
-        })
+        // this.props.history.push({
+        //     pathname: '/profile/${id}',
+        // })
     }
 
     clickedLogOff = (e) =>{
@@ -34,12 +26,31 @@ class RentCalculator extends Component {
         })
     }
 
+    handleViewChange = (e) => {
+        switch(this.state.page){
+            case(1):
+                break;
+            case(2):
+                break;
+            case(3):  
+                break;
+            case(4):
+                break;
+            case(5):  
+                break;
+            default:
+                this.setState({page:1})
+                break;
+        }    
+    }
+
     render(){
         let page = this.state.page;
         var inputs;
         
         switch(page){
             case(1):
+                console.log("show page 1 of rent calculator")
                 break;
             case(2):
                 break;
@@ -51,9 +62,9 @@ class RentCalculator extends Component {
                 break;
             default:
                 inputs = <RentCalculator0 
-                backHandler = {this.clickedBack}
-                logOffHandler = {this.clickedLogOff}
-                startHandler = {this.clickedStart}
+                    backHandler = {this.clickedBack}
+                    logOffHandler = {this.clickedLogOff}
+                    viewHandler = {this.handleViewChange}
                 />
                 break;
         }

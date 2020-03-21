@@ -30,7 +30,7 @@ class ClientProfile extends Component {
     }
 
     handleGetClientInformation(ID){
-        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
                     console.log(res.data)
                     this.handleSettingState(res.data.DATA[0])

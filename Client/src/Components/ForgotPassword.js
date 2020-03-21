@@ -55,7 +55,7 @@ class ForgotPassword extends Component {
         switch(this.state.page){
             case(2):
                 console.log("answer: " + this.state.answer)
-                axios.get(`http://localhost:8000/db.cfc?method=checkSecurityAnswer&username=${this.state.username}&answer=${this.state.answer}`)
+                axios.get(`http://localhost:8500/db.cfc?method=checkSecurityAnswer&username=${this.state.username}&answer=${this.state.answer}`)
                 .then(res => {
                     if(res.data){
                         this.setState({
@@ -71,7 +71,7 @@ class ForgotPassword extends Component {
                 console.log("New Password: " + this.state.newPassword)
                 console.log("Check: " + this.state.checkNew)
                 if (this.state.newPassword === this.state.checkNew){
-                    axios.get(`http://localhost:8000/db.cfc?method=updateUserPassword&username=${this.state.username}&password=${this.state.newPassword}`)
+                    axios.get(`http://localhost:8500/db.cfc?method=updateUserPassword&username=${this.state.username}&password=${this.state.newPassword}`)
                     .then()
                     this.props.history.push('/')
                 } else {
@@ -82,7 +82,7 @@ class ForgotPassword extends Component {
             default:
                 e.preventDefault();
                 console.log(this.state.username)
-                axios.get(`http://localhost:8000/db.cfc?method=forgetPassword&username=${this.state.username}`)
+                axios.get(`http://localhost:8500/db.cfc?method=forgetPassword&username=${this.state.username}`)
                 .then(res => {
                     if(res.data !== -1){
                         this.setState({
