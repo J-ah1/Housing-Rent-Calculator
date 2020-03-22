@@ -3,9 +3,8 @@ import React from 'react';
 function ClientIntake(props) {
     
     //handle formatting date
-    let dob = props.dob;
-    let date = new Date(dob);
-    let formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+    const date = new Date(props.dob);
+    const formattedDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
 
     
     //handle formatting gender
@@ -16,6 +15,9 @@ function ClientIntake(props) {
             break;
         case(2):
             clientGender = "Female";
+            break;
+        case('loading'):
+            clientGender = "Loading";
             break;
         default:
             clientGender = "Other";

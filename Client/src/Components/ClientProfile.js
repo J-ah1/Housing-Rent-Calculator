@@ -3,7 +3,8 @@ import axios from 'axios';
 import ClientIntake from './ClientIntake';
 import Worksheet from './Worksheet';
 
-//import '../Styles/ClientProfile.css'
+// import '../Styles/ClientProfile.css'
+
 
 class ClientProfile extends Component {
 
@@ -11,34 +12,38 @@ class ClientProfile extends Component {
         super(props);
         this.state = {
             ID: -1,
-            FNAME: '',
-            LNAME:'',
-            ADDSTREET:'',
-            ADDCITY:'',
-            ADDSTATE: '',
-            ADDZIP:'',
-            GENDER:'',
-            DOB:'',
-            view: ''
+            FNAME: 'loading',
+            LNAME:'loading',
+            ADDSTREET:'loading',
+            ADDCITY:'loading',
+            ADDSTATE: 'loading',
+            ADDZIP:'loading',
+            GENDER:'loading',
+            DOB:'loading',
+            view: 'intake',
+            worksheets: []
         }
-        this.handleGetClientInformation = this.handleGetClientInformation.bind(this);
-        this.handleSettingState = this.handleSettingState.bind(this);
     }
 
     componentDidMount(){
-        this.handleGetClientInformation(parseInt(this.props.match.params.id))
+        this.handleGetClientInformation(parseInt(this.props.match.params.id));   
+        
+        
     }
 
     handleGetClientInformation(ID){
+        // Get Client Basic Client Information => Set State
         axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
-                    console.log(res.data)
-                    this.handleSettingState(res.data.DATA[0])
+                    this.handleSettingClientInfoState(res.data.DATA[0])
                 })
+
+        // Get Client Worksheets => Set State 
+        axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+                .then(res => this.handleSettingWorksheetState(res.data.DATA));
     }
 
-    handleSettingState = (clientData) => {
-        console.log(clientData)
+    handleSettingClientInfoState = (clientData) => {
         this.setState({
             ID: clientData[0],
             FNAME: clientData[1],
@@ -49,13 +54,31 @@ class ClientProfile extends Component {
             ADDZIP: clientData[6],
             GENDER: clientData[7],
             DOB: clientData[8]
+        });
+    }
+
+    handleSettingWorksheetState = (worksheets) => {
+        let sheets = [];
+        console.log(worksheets)
+        worksheets.forEach(worksheet => {
+            let date = new Date(worksheet[0]);
+            date = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+            sheets.push({Date: date, Calculation: worksheet[1]})
+        })
+        this.setState({
+            worksheets: sheets
         })
     }
 
-    handleView = (e) => {
+    render() {
+        let currentView = this.state.view;
         let view;
-        switch(e){
+        switch(currentView){
+            case('worksheet'):
+                view = <Worksheet worksheets={this.state.worksheets}/>
+                break;
             case('intake'):
+            default:
                 view = <ClientIntake 
                 name={this.state.FNAME + ' ' + this.state.LNAME}
                 dob={this.state.DOB}
@@ -63,32 +86,21 @@ class ClientProfile extends Component {
                 address={this.state.ADDSTREET + ' ' + this.state.ADDCITY + ' ' + this.state.ADDZIP}
                 />
                 break;
-            case('rent'):
-                view = <Worksheet id={this.state.ID}/>
-                break;
-            default:
-                view = <h1>Welcome</h1>
-                break;
         }
-        this.setState({
-            view: view 
-        })
-    }
 
-    render() {
         return (
             <div>
                 <nav>
                     <ul>
                         <li>
-                            <button onClick={() => this.handleView('intake')}>Intake Page</button>
+                            <button onClick={() => this.setState({view:'intake'})}>Intake Page</button>
                         </li>
                         <li>
-                            <button onClick={() => this.handleView('rent')}>Rent Worksheets</button>
+                            <button onClick={() => this.setState({view:'worksheet'})}>Rent Worksheets</button>
                         </li>
                     </ul>
                 </nav>
-                {this.state.view}
+                {view}
             </div>
         );
     }
