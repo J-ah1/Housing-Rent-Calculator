@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Link, Redirect} from 'react-router-dom';
 
 import RentCalculator0 from './RentCalculator0'
+import RentCalculator1 from './RentCalculator1'
 
 class RentCalculator extends Component {
     constructor(props){
@@ -29,6 +30,7 @@ class RentCalculator extends Component {
     handleViewChange = (e) => {
         switch(this.state.page){
             case(1):
+                this.setState({page:2})
                 break;
             case(2):
                 break;
@@ -51,14 +53,22 @@ class RentCalculator extends Component {
         switch(page){
             case(1):
                 console.log("show page 1 of rent calculator")
+                inputs = <RentCalculator1 
+                    //add other variables that can call functions that RentCalculator1.js might need
+                    viewHandler = {this.handleViewChange}
+                />
                 break;
             case(2):
+                console.log("show page 2 of rent calculator")
                 break;
             case(3):
+                console.log("show page 3 of rent calculator")
                 break;
             case(4):
+                console.log("show page 4 of rent calculator")
                 break;
             case(5):
+                console.log("show page 5 of rent calculator")
                 break;
             default:
                 inputs = <RentCalculator0 
