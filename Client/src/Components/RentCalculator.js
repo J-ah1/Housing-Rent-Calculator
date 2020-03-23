@@ -61,14 +61,15 @@ class RentCalculator extends Component {
     page1Answers = (event) => {
         let temp = this.state.page1Results;
         temp[event.target.id] = event.target.value;
-        if(event.target.id !== 8){
-            temp[9] = 0
-            for(let i = 0; i < 8; i++){
+    
+        temp[9] = 0
+        for(let i = 0; i < 8; i++){
+            //later we have to check, if some expected number is NaN to default to 0
+            if(!isNaN(parseInt(temp[i]))){ 
                 temp[9] += parseFloat(temp[i])
-                console.log(temp[9])
             }
-            temp[10] = temp[9]/12;
         }
+        temp[10] = temp[9]/12;
         this.setState({
             page1Results: temp
         });
