@@ -10,7 +10,8 @@ class RentCalculator extends Component {
         this.state={
             id: -1,
             page: 0,
-            page2Results: [],
+            page1Results: [],
+            page2Results: []
         }
     }
 
@@ -48,6 +49,25 @@ class RentCalculator extends Component {
         }    
     }
 
+    page1Answers = (e) => {
+        let temp = this.state.page1Results;
+        temp[event.target.id] = event.target.value;
+        if(temp[event.target.id] !== "Yes" || temp[event.target.id] !== "No"){ //don't do calculations for radio buttons
+            temp[10]=0; //this is field 10 --> a total --> AGI
+            for(var i = 0; i<9; i++){
+                if(temp[i] !== undefined ){
+                    temp[10]+= parseInt(temp[i]);
+                    console.log(temp[9])
+                }
+            }
+            temp[11] = temp[10]/12; //this is field 11 --> a total --> MGI
+        }
+        this.setState({
+            page1Results: temp
+        });
+    
+    }
+
     page2Answers = (event) => {
         let temp = this.state.page2Results;
         temp[event.target.id] = event.target.value
@@ -67,6 +87,9 @@ class RentCalculator extends Component {
                 inputs = <RentCalculator1 
                     //add other variables that can call functions that RentCalculator1.js might need
                     viewHandler = {this.handleViewChange}
+                    inputHandler = {this.page1Answers}
+                    total1={this.state.page1Results[10]}
+                    total2={this.state.page1Results[11]}
                 />
                 break;
             case(2):
