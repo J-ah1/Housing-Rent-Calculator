@@ -64,8 +64,8 @@ class RentCalculator extends Component {
     
         temp[9] = 0
         for(let i = 0; i < 8; i++){
-            //later we have to check, if some expected number is NaN to default to 0
-            if(!isNaN(parseInt(temp[i]))){ 
+            //later we have to check, if some expected number is NaN to default to 0 in results
+            if(!isNaN(parseFloat(temp[i]))){ 
                 temp[9] += parseFloat(temp[i])
             }
         }
@@ -78,9 +78,18 @@ class RentCalculator extends Component {
     page2Answers = (event) => {
         let temp = this.state.page2Results;
         temp[event.target.id] = event.target.value
-        temp[5] = parseFloat(temp[3]) + parseFloat(temp[4])
+        temp[5]=0
+        for(let i = 3; i < 5; i++){
+            //later we have to check, if some expected number is NaN to default to 0 in results
+            if(!isNaN(parseFloat(temp[i]))){ 
+                temp[5] += parseFloat(temp[i])
+            }
+        }
         temp[6] = (this.state.page1Results[9] * .03)
         temp[7] = parseFloat(temp[5]) - parseFloat(temp[6])
+        if(temp[7]<0){ //if temp[7] < 0 it should default to 0
+            temp[7]=0
+        }
         console.log(temp)
         this.setState({
             page2Results: temp
