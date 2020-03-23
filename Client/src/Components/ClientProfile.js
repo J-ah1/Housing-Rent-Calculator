@@ -26,20 +26,18 @@ class ClientProfile extends Component {
     }
 
     componentDidMount(){
-        this.handleGetClientInformation(parseInt(this.props.match.params.id));   
-        
-        
+        this.handleGetClientInformation(parseInt(this.props.match.params.id));     
     }
 
     handleGetClientInformation(ID){
         // Get Client Basic Client Information => Set State
-        axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
                     this.handleSettingClientInfoState(res.data.DATA[0])
                 })
 
         // Get Client Worksheets => Set State 
-        axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
                 .then(res => this.handleSettingWorksheetState(res.data.DATA));
     }
 
@@ -75,7 +73,7 @@ class ClientProfile extends Component {
         let view;
         switch(currentView){
             case('worksheet'):
-                view = <Worksheet worksheets={this.state.worksheets}/>
+                view = <Worksheet worksheets={this.state.worksheets} id={this.state.ID}/>
                 break;
             case('intake'):
             default:

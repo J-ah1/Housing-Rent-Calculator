@@ -1,8 +1,10 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 function Worksheet(props) {
     return (
         <div align="center">
+                <Link to={{pathname: '/rentcalc', state: {id: props.id}}}><button>Calculate a New Rent Worksheet</button></Link>
                 <h1>Worksheet </h1>
                     <table  border="2" cellPadding="10px">
                         <thead>
