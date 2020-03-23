@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
 import RentCalculator2 from './RentCalculator2'
+import { findByLabelText } from '@testing-library/react';
 
 class RentCalculator extends Component {
     constructor(props){
@@ -10,8 +11,8 @@ class RentCalculator extends Component {
         this.state={
             id: -1,
             page: 0,
-            page1Results: [],
-            page2Results: []
+            page1Results: new Array(11).fill(0),
+            page2Results: new Array(8).fill(0),
         }
     }
 
@@ -22,11 +23,19 @@ class RentCalculator extends Component {
     }
 
     clickedBack = (e) =>{
-        console.log('Take the user back to the client worksheets page.')
-        //this needs to be changed so that it redirects to the profile page with client ID
-        // this.props.history.push({
-        //     pathname: '/profile/${id}',
-        // })
+        if(this.state.page !== 1){
+            const page = this.state.page - 1
+            this.setState({
+                page: page
+            })
+        }
+    }
+
+    clickedNext = (e) =>{
+        const page = this.state.page + 1
+        this.setState({
+            page: page
+        })
     }
 
     handleViewChange = (e) => {
@@ -49,29 +58,29 @@ class RentCalculator extends Component {
         }    
     }
 
-    page1Answers = (e) => {
+    page1Answers = (event) => {
         let temp = this.state.page1Results;
         temp[event.target.id] = event.target.value;
-        if(temp[event.target.id] !== "Yes" || temp[event.target.id] !== "No"){ //don't do calculations for radio buttons
-            temp[10]=0; //this is field 10 --> a total --> AGI
-            for(var i = 0; i<9; i++){
-                if(temp[i] !== undefined ){
-                    temp[10]+= parseInt(temp[i]);
-                    console.log(temp[9])
-                }
+        if(event.target.id !== 8){
+            temp[9] = 0
+            for(let i = 0; i < 8; i++){
+                temp[9] += parseFloat(temp[i])
+                console.log(temp[9])
             }
-            temp[11] = temp[10]/12; //this is field 11 --> a total --> MGI
+            temp[10] = temp[9]/12;
         }
         this.setState({
             page1Results: temp
         });
-    
     }
 
     page2Answers = (event) => {
         let temp = this.state.page2Results;
         temp[event.target.id] = event.target.value
-        temp[5] = parseInt(temp[3]) + parseInt(temp[4])
+        temp[5] = parseFloat(temp[3]) + parseFloat(temp[4])
+        temp[6] = (this.state.page1Results[9] * .03)
+        temp[7] = parseFloat(temp[5]) - parseFloat(temp[6])
+        console.log(temp)
         this.setState({
             page2Results: temp
         })
@@ -85,20 +94,22 @@ class RentCalculator extends Component {
             case(1):
                 console.log("show page 1 of rent calculator")
                 inputs = <RentCalculator1 
-                    //add other variables that can call functions that RentCalculator1.js might need
                     viewHandler = {this.handleViewChange}
                     inputHandler = {this.page1Answers}
-                    total1={this.state.page1Results[10]}
-                    total2={this.state.page1Results[11]}
+                    results = {this.state.page1Results}
+                    total1={this.state.page1Results[9]}
+                    total2={this.state.page1Results[10]}
                 />
                 break;
             case(2):
                 console.log("show page 2 of rent calculator")
                 inputs = <RentCalculator2 
-                    //add other variables that can call functions that RentCalculator1.js might need
                     viewHandler = {this.handleViewChange}
                     inputHandler={this.page2Answers}
-                    answer1={this.state.page2Results[5]}
+                    results = {this.state.page2Results}
+                    total1={this.state.page2Results[5]}
+                    total2={this.state.page2Results[6]}
+                    total3={this.state.page2Results[7]}
                 />
                 break;
             case(3):
@@ -124,6 +135,11 @@ class RentCalculator extends Component {
                 <form>
                     {inputs}
                 </form>
+                <br />
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                    {this.state.page < 2 ? null : <button type="button" onClick={this.clickedBack}>Back</button>}
+                    {this.state.page === 0 ? null : <button type="button" onClick={this.clickedNext}>Next</button>}
+                </div>
             </div>
         );
     }

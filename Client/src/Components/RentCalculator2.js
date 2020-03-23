@@ -5,16 +5,16 @@ function questionType(props, type, count){
     let input
     switch(type){
         case("dollar"):
-            input = <input onChange={props.inputHandler} id={count} type="number" min="0" />
+            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
             break;
         case("number"):
-            input = <input onChange={props.inputHandler} id={count} type="number" min="0" />
+            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
             break;
         case("radio"):
-            input = <div onChange={props.inputHandler}>
-                    <input type="radio" id={count} name={count} value="Yes" />
+            input = <div>
+                    <input type="radio" id={count} name={count} onChange={props.inputHandler} checked={props.results[count] === "Yes" ? true : false} value="Yes" />
                     <label htmlFor="Yes">Yes</label>
-                    <input type="radio" id={count} name={count} value="No" />
+                    <input type="radio" id={count} name={count} onChange={props.inputHandler} checked={props.results[count] === "No" ? true : false} value="No" />
                     <label htmlFor="No">No</label>
                 </div>
             break;
@@ -58,19 +58,18 @@ export default function RentCalculator2(props){
                     <tfoot>
                         <tr>
                             <td>{results[0].label}</td>
-                            <td><input value={props.answer1 > 0 ? props.answer1 : 0} readOnly/></td>
+                            <td><input value={props.total1} readOnly/></td>
                         </tr>
                         <tr>
                             <td>{results[1].label}</td>
-                            <td><input defaultValue={props.answer > 0 ? props.answer : 0} readOnly/></td>
+                            <td><input value={props.total2} readOnly/></td>
                         </tr>
                         <tr>
                             <td>{results[2].label}</td>
-                            <td><input defaultValue={props.answer > 0 ? props.answer : 0} readOnly/></td>
+                            <td><input value={props.total3 > 0 ? props.total3 : 0} readOnly/></td>
                         </tr>
                     </tfoot>
-                </table>         
-                <button type="button" onClick={ props.viewHandler} style={{float : 'right', paddingRight : '5px'}}>Next</button>
+                </table> 
         </div>    
     )  
 }
