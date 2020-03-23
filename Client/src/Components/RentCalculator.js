@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
-import {Link, Redirect} from 'react-router-dom';
-
+//import {Link, Redirect} from 'react-router-dom';
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
+import RentCalculator2 from './RentCalculator2'
 
 class RentCalculator extends Component {
     constructor(props){
         super(props);
         this.state={
-            page: 0
+            id: -1,
+            page: 0,
+            page2Results: [],
         }
+    }
+
+    componentDidMount = () => {
+        this.setState({
+            id: this.props.location.state.id
+        })
     }
 
     clickedBack = (e) =>{
@@ -20,19 +28,13 @@ class RentCalculator extends Component {
         // })
     }
 
-    clickedLogOff = (e) =>{
-        console.log('Log the user off.')
-        this.props.history.push({
-            pathname: '/',
-        })
-    }
-
     handleViewChange = (e) => {
         switch(this.state.page){
             case(1):
                 this.setState({page:2})
                 break;
             case(2):
+                this.setState({page:3})
                 break;
             case(3):  
                 break;
@@ -44,6 +46,15 @@ class RentCalculator extends Component {
                 this.setState({page:1})
                 break;
         }    
+    }
+
+    page2Answers = (event) => {
+        let temp = this.state.page2Results;
+        temp[event.target.id] = event.target.value
+        temp[5] = parseInt(temp[3]) + parseInt(temp[4])
+        this.setState({
+            page2Results: temp
+        })
     }
 
     render(){
@@ -60,6 +71,12 @@ class RentCalculator extends Component {
                 break;
             case(2):
                 console.log("show page 2 of rent calculator")
+                inputs = <RentCalculator2 
+                    //add other variables that can call functions that RentCalculator1.js might need
+                    viewHandler = {this.handleViewChange}
+                    inputHandler={this.page2Answers}
+                    answer1={this.state.page2Results[5]}
+                />
                 break;
             case(3):
                 console.log("show page 3 of rent calculator")
