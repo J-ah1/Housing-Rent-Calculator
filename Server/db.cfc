@@ -23,7 +23,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="boolean" access="remote">
+   <cffunction name="checkUser" returntype="boolean" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -69,7 +69,7 @@
 
 
    <!--- Check if user in database and send corresponding security question --->
-   <cffunction name="forgetPassword" returntype="numeric" access="remote">
+   <cffunction name="forgetPassword" returntype="numeric" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
 
@@ -82,7 +82,7 @@
    </cffunction>
 
    <!--- Check if user answer matches corresponding database record --->
-   <cffunction name="checkSecurityAnswer" returntype="boolean" access="remote">
+   <cffunction name="checkSecurityAnswer" returntype="boolean" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="answer" type="string" required="true">
@@ -127,7 +127,7 @@
    </cffunction>
 
    <!--- Public return of clientinfo --->
-   <cffunction name="clientProfile" returntype="query" access="remote">
+   <cffunction name="clientProfile" returntype="query" returnFormat="JSON" access="remote">
       <cfargument name="clientID" type="string" required="true">
       <cfset clientInfo=getClientInfo('#clientID#')>
       <cfreturn clientInfo>
@@ -147,7 +147,7 @@
    </cffunction>
 
    <!--- Public return of clientworksheets --->
-   <cffunction name="clientWorksheetProfile" returntype="query" access="remote">
+   <cffunction name="clientWorksheetProfile" returntype="query" returnFormat="JSON" access="remote">
       <cfargument name="clientID" type="string" required="true">
       <cfset worksheets=getClientWorksheets('#clientID#')>
       <cfreturn worksheets>
@@ -155,7 +155,7 @@
 
 
    <!--- function that return clients whose name(s) match the input given --->
-   <cffunction name = "clientSearchRegex" returntype = "query" access = "private">
+   <cffunction name="clientSearchRegex" returntype="query" access="private">
       <cfargument name="clientName" type="string" required="true">
       <cfset splitCName = listToArray(clientName, " ")>
       <cfset splitCName[1] = splitCName[1]&'%'>
@@ -185,7 +185,7 @@
    </cffunction>
 
    <!--- function that return clients whose name(s) matches the input given --->
-   <cffunction name = "getCSearchRegex" access = "remote">
+   <cffunction name="getCSearchRegex" returnFormat="JSON" access="remote">
       <cfargument name="clientName" type="string" required="true">
       <cfset clients= clientSearchRegex('#clientName#')>
       <cfreturn clients>
@@ -193,7 +193,7 @@
 
 
    <!---Insert Client into database--->
-   <cffunction name= "addClient" returntype="void" access="remote">
+   <cffunction name="addClient" returntype="void" access="remote">
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
       <cfargument name="addStreet" type="string" default="" required="false">
@@ -372,3 +372,6 @@
    </cffunction>
 
 </cfcomponent>
+
+
+

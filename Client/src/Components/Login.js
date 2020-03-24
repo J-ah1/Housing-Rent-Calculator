@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-//import {users} from './Users';
-
+import axios from 'axios';
 import {Link} from 'react-router-dom';
+
+import '../Styles/Login.css';
 
 export default class Login extends Component {
     
@@ -30,20 +31,18 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            var request = new XMLHttpRequest();
-            request.open("GET", `http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, false);
-            request.send();
-            var parser = new DOMParser()
-            var xml = (parser.parseFromString(request.responseText, "text/xml"))
-            var ans = xml.getElementsByTagName("string");
-            ans = ans[0].textContent
-            if(ans == "YES"){
-                alert("Successful")
-                this.props.handler();
-            }
-            else {
-                alert('Invalid Log In');
-            }
+            axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
+                .then(res => {
+                    if(res.data === "YES"){
+                        console.log("Success")
+                        this.props.history.push({
+                            pathname: '/search',
+                        })
+                    }
+                    else {
+                        alert('Invalid Log In');
+                    }
+                })
         }
         else {
             alert("Please enter a value for both fields")
@@ -52,23 +51,28 @@ export default class Login extends Component {
 
     render() {
         return (
-            <div>
-                <form onSubmit={this.submit}>
-                    <label>Username:</label>
-                    <input value={this.state.username} onChange={this.nameChange} type="text" />
-                    <br />
-                    <label>Password:</label>
-                    <input value={this.state.password} onChange={this.passwordChange} type="text" />
-                    <br />
-                    <input type="submit" value="Submit" />
-                </form>
-                <Link to='/fpass'>
-                    <button>Forgot Password</button>
-                </Link>
-                <Link to="/register">
-                    <button>Register</button>
-                </Link>
+            <div id="login-container">
+                    <h1>Housing Rent Calcuator</h1>
+                    <div id="login-content">
+                        <form id="login-form" onSubmit={this.submit}>
+                            <label>Username</label>
+                            <br/>
+                            <input className="login-form-input" value={this.state.username} onChange={this.nameChange} type="text" />
+                            <br/>
+                            <label>Password</label>
+                            <br/>
+                            <input className="login-form-input"  value={this.state.password} onChange={this.passwordChange} type="password" />
+                            <br/>
+                            <input id="login-form-submit" type="submit" value="Log In" />
+                        </form>
 
+                        <Link id="login-link-forgot-pass" to='/forgot'>
+                            <p>Forgot Password?</p>
+                        </Link>
+                        <Link to="/register">
+                            <button id="login-link-register">Register</button>
+                        </Link>
+                    </div>
             </div>
         )
     }

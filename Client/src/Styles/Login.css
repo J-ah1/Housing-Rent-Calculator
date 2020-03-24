@@ -1,0 +1,68 @@
+#login-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10vh;
+}
+
+#login-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-container > h1 {
+    font-size: 4rem;
+}
+
+#login-form {
+    width: 25vh;
+    font-size: 1.25em;
+    font-weight: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 50vh;
+}
+
+
+#login-form > .login-form-input {
+    height: 3em;
+    width: 50vh;
+    border-radius: .5em;
+    box-shadow: .1em .1em .1em grey;
+}
+
+#login-form > .login-form-input[type=text], .login-form-input[type=password] {
+    padding-left: .5em;
+}
+
+#login-form-submit{
+    width: 50%;
+    align-self: center;
+}
+
+#login-link-forgot-pass{
+    text-decoration: none;
+    color: turquoise;
+}
+
+#login-link-register, #login-form-submit{
+    margin: 1em;
+    padding: .75em 1em;
+    background-color: turquoise;
+    border: 1px solid black;
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+}
+
+#login-form-submit:hover, #login-link-register:hover {
+    background-color: mediumturquoise;
+    cursor: pointer;
+}
+
+#login-link-forgot-pass p:hover  {
+    color: mediumturquoise;
+    text-decoration: underline;
+}

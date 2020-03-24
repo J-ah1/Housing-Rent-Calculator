@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import {Link, Redirect} from 'react-router-dom';
-
+import {Link} from 'react-router-dom';
+import axios from 'axios';
 
 import ForgotPasswordUsername from './ForgotPasswordUsername';
 import ForgotPasswordQuestion from './ForgotPasswordQuestion';
 import ResetPassword from './ResetPassword';
+
+import '../Styles/ForgotPassword.css';
 
 class ForgotPassword extends Component {
     constructor(props) {
@@ -51,57 +53,46 @@ class ForgotPassword extends Component {
     // sharkeisha
     handleViewChange = (e) => {
         switch(this.state.page){
-            case(1):
-                console.log(this.state.username)
-                var request = new XMLHttpRequest();
-                request.open("GET", `http://localhost:8500/db.cfc?method=forgetPassword&username=${this.state.username}`, false);
-                request.send();
-                var parser = new DOMParser()
-                var xml = (parser.parseFromString(request.responseText, "text/xml"))
-                var ans = xml.getElementsByTagName("number");
-                ans = parseInt(ans[0].textContent)
-                console.log(ans)
-                if (ans !== -1.0)
-                {
-                    this.setState({
-                        questionIndex: ans,
-                        page: 2,
-                    });
-                } else {
-                    alert("Username doesn't exist!")
-                }
-                break;
             case(2):
                 console.log("answer: " + this.state.answer)
-                var request = new XMLHttpRequest();
-                request.open("GET", `http://localhost:8000/db.cfc?method=checkSecurityAnswer&username=${this.state.username}&answer=${this.state.answer}`, false);
-                request.send();
-                var parser = new DOMParser()
-                var xml = (parser.parseFromString(request.responseText, "text/xml"))
-                var ans = xml.getElementsByTagName("string");
-                ans = ans[0].textContent;
-                if (ans == "YES")
-                {
-                    this.setState({
-                        page: 3,
-                    });
-                } else {
-                    alert("Answer Incorrect!")
-                }
+                axios.get(`http://localhost:8500/db.cfc?method=checkSecurityAnswer&username=${this.state.username}&answer=${this.state.answer}`)
+                .then(res => {
+                    if(res.data){
+                        this.setState({
+                            page: 3,
+                        });
+                    } else {
+                        alert("Answer Incorrect!")
+                    }
+                })
                 e.preventDefault();
                 break;
             case(3):
                 console.log("New Password: " + this.state.newPassword)
                 console.log("Check: " + this.state.checkNew)
-                if (this.state.newPassword == this.state.checkNew){
-                    var request = new XMLHttpRequest();
-                    request.open("GET", `http://localhost:8000/db.cfc?method=updateUserPassword&username=${this.state.username}&password=${this.state.newPassword}`, false);
-                    request.send();
+                if (this.state.newPassword === this.state.checkNew){
+                    axios.get(`http://localhost:8500/db.cfc?method=updateUserPassword&username=${this.state.username}&password=${this.state.newPassword}`)
+                    .then()
                     this.props.history.push('/')
                 } else {
                     console.log("NO")
                     e.preventDefault();
                 }
+                break;
+            default:
+                e.preventDefault();
+                console.log(this.state.username)
+                axios.get(`http://localhost:8500/db.cfc?method=forgetPassword&username=${this.state.username}`)
+                .then(res => {
+                    if(res.data !== -1){
+                        this.setState({
+                            questionIndex: res.data,
+                            page: 2,
+                        });
+                    } else {
+                        alert("Username doesn't exist!")
+                    }
+                })
                 break;
         }    
     }
@@ -121,7 +112,7 @@ class ForgotPassword extends Component {
                     viewHandler = {this.handleViewChange}
                     username = {this.state.username}
                     />
-                    <Link to='/'><button>Log In</button></Link>
+                    <Link to='/'><button id="forgot-password-login-button">Log In</button></Link>
                 </div>
         }
 
@@ -144,7 +135,7 @@ class ForgotPassword extends Component {
                     />
         }
         return (
-            <div>
+            <div id="forgot-password-container">
                 <h1>Forgot Password</h1>
                 <form>
                     {inputs}
