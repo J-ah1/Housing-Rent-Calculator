@@ -25,8 +25,6 @@ class RentCalculator extends Component {
         this.setState({
             id: 1
         })
-
-
     }
 
     clickedBack = (e) =>{
@@ -212,7 +210,12 @@ class RentCalculator extends Component {
                 <form>
                     {inputs}
                 </form>
-                <br />
+                
+
+                <div style={{display:'flex', justifyContent:'center', margin: '1em 0'}}>
+                    <meter value={this.state.page - 1} min="0" max="5" style={{width: '75%'}}></meter>
+                </div>
+                
                 <div style={{display: 'flex', justifyContent: 'center'}}>
                     {this.state.page < 2 ? null : <button type="button" onClick={this.clickedBack}>Back</button>}
                     {this.state.page === 0 ? null : <button type="button" onClick={this.clickedNext}>Next</button>}
