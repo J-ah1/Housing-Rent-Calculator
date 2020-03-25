@@ -26,7 +26,7 @@ class App extends Component {
               <Route path='/search' component={ClientSearch} />
               <Route path='/profile/:id' component={ClientProfile} />
               <Route path='/add' component={AddClient} />
-              <Route path='/rentcalc' component={RentCalculator} />
+              <Route path='/rentcalc/:id' component={RentCalculator} />
             </div>
           </Router>
         </div>

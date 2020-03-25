@@ -31,13 +31,13 @@ class ClientProfile extends Component {
 
     handleGetClientInformation(ID){
         // Get Client Basic Client Information => Set State
-        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
                     this.handleSettingClientInfoState(res.data.DATA[0])
                 })
 
         // Get Client Worksheets => Set State 
-        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
                 .then(res => this.handleSettingWorksheetState(res.data.DATA));
     }
 
@@ -68,12 +68,19 @@ class ClientProfile extends Component {
         })
     }
 
+
+    navigateToRentCalculator = () => {
+        this.props.history.push(`/rentcalc/${this.state.ID}`);
+    }
+
     render() {
         let currentView = this.state.view;
         let view;
         switch(currentView){
             case('worksheet'):
-                view = <Worksheet worksheets={this.state.worksheets} id={this.state.ID}/>
+                view = <Worksheet worksheets={this.state.worksheets} id={this.state.ID} 
+                toNewWorksheet={this.navigateToRentCalculator}
+                />
                 break;
             case('intake'):
             default:

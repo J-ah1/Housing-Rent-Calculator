@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 function Worksheet(props) {
     return (
         <div align="center">
-                <Link to={{pathname: '/rentcalc', state: {id: props.id}}}><button>Calculate a New Rent Worksheet</button></Link>
+                <button onClick={props.toNewWorksheet}>Calculate a new rent worksheet</button>
                 <h1>Worksheet </h1>
                     <table style={{width: '75%'}} border="2" cellPadding="10px">
                         <thead>

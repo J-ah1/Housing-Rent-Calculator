@@ -6,6 +6,7 @@ import RentCalculator1 from './RentCalculator1'
 import RentCalculator2 from './RentCalculator2'
 import { findByLabelText } from '@testing-library/react';
 import RentCalculator4 from './RentCalculator4';
+import { useParams } from 'react-router-dom';
 
 
 class RentCalculator extends Component {
@@ -23,7 +24,7 @@ class RentCalculator extends Component {
 
     componentDidMount = () => {
         this.setState({
-            id: 1
+            id: this.props.match.params.id
         })
     }
 
