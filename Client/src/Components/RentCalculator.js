@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 //import {Link, Redirect} from 'react-router-dom';
+
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
 import RentCalculator2 from './RentCalculator2'
 import { findByLabelText } from '@testing-library/react';
+import RentCalculator4 from './RentCalculator4';
+
 
 class RentCalculator extends Component {
     constructor(props){
@@ -13,13 +16,17 @@ class RentCalculator extends Component {
             page: 0,
             page1Results: new Array(11).fill(0),
             page2Results: new Array(8).fill(0),
+            page4Results: new Array(9).fill(0),
+
         }
     }
 
     componentDidMount = () => {
         this.setState({
-            id: this.props.location.state.id
+            id: 1
         })
+
+
     }
 
     clickedBack = (e) =>{
@@ -28,11 +35,24 @@ class RentCalculator extends Component {
             this.setState({
                 page: page
             })
+            if(page===4){
+                this.page4Answers()
+            }
         }
     }
 
     clickedNext = (e) =>{
         const page = this.state.page + 1
+        this.setState({
+            page: page
+        })
+        if(page===4){
+            this.page4Answers()
+        }
+    }
+
+    //page4 this is use for jump the page
+    clickedReview = (page) =>{
         this.setState({
             page: page
         })
@@ -46,26 +66,31 @@ class RentCalculator extends Component {
             case(2):
                 this.setState({page:3})
                 break;
-            case(3):  
+            case(3):
+                this.setState({page:4})
+
                 break;
             case(4):
-                break;
-            case(5):  
+
+                this.setState({page:5})
+                 break;
+            case(5):
+                this.setState({page:6})
                 break;
             default:
                 this.setState({page:1})
                 break;
-        }    
+        }
     }
 
     page1Answers = (event) => {
         let temp = this.state.page1Results;
         temp[event.target.id] = event.target.value;
-    
+
         temp[9] = 0
         for(let i = 0; i < 8; i++){
             //later we have to check, if some expected number is NaN to default to 0 in results
-            if(!isNaN(parseFloat(temp[i]))){ 
+            if(!isNaN(parseFloat(temp[i]))){
                 temp[9] += parseFloat(temp[i])
             }
         }
@@ -81,7 +106,7 @@ class RentCalculator extends Component {
         temp[5]=0
         for(let i = 3; i < 5; i++){
             //later we have to check, if some expected number is NaN to default to 0 in results
-            if(!isNaN(parseFloat(temp[i]))){ 
+            if(!isNaN(parseFloat(temp[i]))){
                 temp[5] += parseFloat(temp[i])
             }
         }
@@ -95,15 +120,41 @@ class RentCalculator extends Component {
             page2Results: temp
         })
     }
+   //page4Answers is use for inut take and set state
+    page4Answers(){
+
+
+        let temp = this.state.page4Results;
+        temp[0] = Number(this.state.page2Results[0])
+        if(this.state.page2Results[1]=="yes"){
+            temp[1] = 400
+        }else{
+            temp[1] = 0
+        }
+
+        temp[2] = Number(this.state.page2Results[2])
+        temp[3] = this.state.page2Results[7]
+        temp[4] = 20//applicableEID  this is step3 props
+        temp[5] = this.state.page1Results[9]
+
+        temp[6] = Number(temp[0] * .480)+Number(temp[1])+Number(temp[2])+Number(temp[3])+Number(temp[4])
+        temp[7] = Number(temp[5]) - Number(temp[6])
+        temp[8] = Number(Math.round(temp[7]/12).toFixed())
+
+        console.log(temp)
+        this.setState({
+            page4Results: temp
+        })
+    }
 
     render(){
         let page = this.state.page;
         var inputs;
-        
+
         switch(page){
             case(1):
                 console.log("show page 1 of rent calculator")
-                inputs = <RentCalculator1 
+                inputs = <RentCalculator1
                     viewHandler = {this.handleViewChange}
                     inputHandler = {this.page1Answers}
                     results = {this.state.page1Results}
@@ -113,7 +164,7 @@ class RentCalculator extends Component {
                 break;
             case(2):
                 console.log("show page 2 of rent calculator")
-                inputs = <RentCalculator2 
+                inputs = <RentCalculator2
                     viewHandler = {this.handleViewChange}
                     inputHandler={this.page2Answers}
                     results = {this.state.page2Results}
@@ -124,18 +175,34 @@ class RentCalculator extends Component {
                 break;
             case(3):
                 console.log("show page 3 of rent calculator")
+
                 break;
             case(4):
                 console.log("show page 4 of rent calculator")
+               //add Component for page 4
+                inputs = <RentCalculator4
+                    viewHandler = {this.handleViewChange}
+                    inputHandler = {this.page4Answers}
+                    results = {this.state.page4Results}
+                    reviewHandler={this.clickedReview}
+                    total1={this.state.page1Results[9]}
+                    total2={this.state.page4Results[6]}
+                    total3={this.state.page4Results[7]}
+                    total4={this.state.page4Results[8]}
+
+                />
                 break;
             case(5):
                 console.log("show page 5 of rent calculator")
+
                 break;
             default:
-                inputs = <RentCalculator0 
+                inputs = <RentCalculator0
                     backHandler = {this.clickedBack}
                     logOffHandler = {this.clickedLogOff}
                     viewHandler = {this.handleViewChange}
+
+
                 />
                 break;
         }
