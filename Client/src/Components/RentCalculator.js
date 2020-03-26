@@ -156,7 +156,7 @@ class RentCalculator extends Component {
 
         temp[2] = Number(this.state.page2Results[2])
         temp[3] = this.state.page2Results[7]
-        temp[4] = 20//applicableEID  this is step3 props
+        temp[4] = this.state.page3Results[8]
         temp[5] = this.state.page1Results[9]
 
         temp[6] = Number(temp[0] * .480)+Number(temp[1])+Number(temp[2])+Number(temp[3])+Number(temp[4])
