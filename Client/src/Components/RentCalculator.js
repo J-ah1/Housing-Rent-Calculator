@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
 import RentCalculator2 from './RentCalculator2'
+import RentCalculator3 from './RentCalculator3'
 import { findByLabelText } from '@testing-library/react';
 import RentCalculator4 from './RentCalculator4';
 import { useParams } from 'react-router-dom';
@@ -17,6 +18,7 @@ class RentCalculator extends Component {
             page: 0,
             page1Results: new Array(11).fill(0),
             page2Results: new Array(8).fill(0),
+            page3Results: new Array(9).fill(0),
             page4Results: new Array(9).fill(0),
 
         }
@@ -119,6 +121,27 @@ class RentCalculator extends Component {
             page2Results: temp
         })
     }
+
+    page3Answers = (event) => {
+        let temp = this.state.page3Results;
+        temp[event.target.id] = event.target.value
+        temp[8]=0;
+        for(let i = 6; i < 8; i++){
+            //later we have to check, if some expected number is NaN to default to 0 in results
+            if(!isNaN(parseFloat(temp[i]))){
+                temp[8] += parseFloat(temp[i])
+            }
+        }
+        temp[8] -= temp[5]
+        if(temp[8]<0){
+            temp[8]=0 //set to 0 if this total is negative
+        }
+
+        this.setState({
+            page3Results: temp
+        })
+    }
+
    //page4Answers is use for inut take and set state
     page4Answers(){
 
@@ -174,6 +197,12 @@ class RentCalculator extends Component {
                 break;
             case(3):
                 console.log("show page 3 of rent calculator")
+                inputs = <RentCalculator3
+                    viewHandler = {this.handleViewChange}
+                    inputHandler = {this.page3Answers}
+                    results = {this.state.page3Results}
+                    total1 = {this.state.page3Results[8]}
+                />
 
                 break;
             case(4):
