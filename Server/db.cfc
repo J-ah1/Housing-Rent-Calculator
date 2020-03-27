@@ -193,7 +193,8 @@
 
 
    <!---Insert Client into database--->
-   <cffunction name="addClient" returntype="void" access="remote">
+   <cffunction name="addClient" returntype="numeric" access="remote">
+      
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
       <cfargument name="addStreet" type="string" default="" required="false">
@@ -203,7 +204,7 @@
       <cfargument name="gender" type="string" required="true">
       <cfargument name="dob" type="date" required="true">
 
-      <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
+      <cfquery name="addC2" datasource="awsMicrosoftSQLServer" result="newClient">
          INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
          VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
                   <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
@@ -214,6 +215,8 @@
                   <cfqueryparam value='#gender#' cfsqltype='cf_sql_tinyint'>, 
                   <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
       </cfquery>
+
+      <cfreturn #newClient["GENERATEDKEY"]#>
 
    </cffunction>
 
