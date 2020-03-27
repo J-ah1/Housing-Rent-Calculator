@@ -1,232 +1,205 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 
-function yearOptions() {
-    let year = 1940;
-    let years = [];
-
-    while(year <= 2020){
-        years.push(<option value={year}>{year}</option>)
-        year++
+class AddClient extends Component {  
+    constructor(props) {
+        super(props)
+        this.state = {
+            fName: "",
+            lName: "",
+            addStreet:"",
+            addCity:"",
+            addState:"",
+            addZip:"",
+            gender:"",
+            dob:"",
+            addressFlag: false
+        }
     }
 
-    return years;
-}
-
-function dayOptions() {
-    let day = 1;
-    let days = [];
-
-    while(day <= 31){
-        days.push(<option value={day}>{day}</option>)
-        day++
+    // Change Handlers
+    changeHandler = (e) =>{
+        this.setState({
+            [e.target.name]:e.target.value
+        });
     }
 
-    return days;
-}
-
-class AddClient extends Component {  constructor(props) {
-    super(props)
-    this.state = {
-        fName: "",
-        lName: "",
-        addStreet:"",
-        addCity:"",
-        addState:"",
-        addZip:"",
-        gender:"1",
-        year:"",
-        month:"",
-        day:""
+    radioChangeHandler = (e) => {
+        let gender = e.target.value;
+        this.setState({gender});
     }
-}
 
-changeHandler = (e) =>{
-    this.setState({
-        [e.target.name]:e.target.value
-    })
-}
-submit = (e) => {
+    // Event Listener for Form Submission 
+    handleSubmit = (e) =>{
+        e.preventDefault();
+        this.requestPrep();
+    }
+
+    // async function to wait while checking addressFlag 
+    async requestPrep(){
+        await this.handleAddressFlag();
+        this.handleRequests();
+    }
+
+    handleAddressFlag(){
+        if(this.state.addStreet !== "" && this.state.addCity !== "" && this.state.addState !== "" && this.state.addZip !== ""){
+            this.setState({addressFlag: true});
+        }
+    }
+
+    handleRequests(){
+        let fName = this.state.fName;
+        let lName = this.state.lName;
+        let addStreet = this.state.addStreet;
+        let addCity = this.state.addCity;
+        let addState = this.state.addState;
+        let addZip = this.state.addZip;
+        let gender = this.state.gender;
+        let dob = this.state.dob;
+
+
+        if(this.state.addressFlag){
+            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&addStreet=${addStreet}&addCity=${addCity}&addState=${addState}&addZip=${addZip}&gender=${gender}&dob=${dob}`)
+            .then(response => {
+                this.navigatetoClientProfile(response.data);
+            })
+            .catch(error => {
+                console.log(error.response);
+                alert('Something went wrong');
+                this.props.history.push('/search');
+            });
+        }else{
+            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&gender=${gender}&dob=${dob}`) 
+                .then(response => {
+                    this.navigatetoClientProfile(response.data);
+                }) 
+                .catch(error => {
+                    console.log(error.response);
+                    alert('Something went wrong');
+                    this.props.history.push('/search');
+                });
+        } 
+    }
+
     
-    e.preventDefault();
-    if(this.state.fName !== "" && this.state.lName !== "" && this.state.addCity !=="" && this.state.addState !==""
-    && this.state.addStreet !=="" && this.state.addZip !=="" && this.state.day !=="" && this.state.year !==""
-    && this.state.month !=="" && this.state.gender !==""){
-        console.log(this.state)
-        /*console.log(this.state)
-        var request = new XMLHttpRequest();
-        request.open("GET", `http://localhost:8500/db.cfc?method=addClient&fName=${this.state.fName}&lName=${this.state.lName}&addStreet=${this.state.addStreet}&addCity=${this.state.addCity}&addState=${this.state.addState}&addZip=${this.state.addZip}&gender=${this.state.gender}&dob=${isoDate}`, false);
-        request.send();*/
-        //this.props.history.push('/')
+    navigatetoClientProfile(clientID){
+        this.props.history.push(`/profile/${clientID}`);
     }
-    else {
-        alert("Missing information")
+
+    
+
+    render() {
+        return (
+            <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
+                <h1>Add Client</h1>
+
+                <form 
+                    onSubmit={this.handleSubmit}
+                    style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '75%', border: '1px solid blue', padding:'1em'}}
+                >
+                    
+                    <div style={{flexDirection: 'row'}}>
+                        <label>First Name: </label>
+                        <input 
+                        type="text"
+                        name="fName"
+                        value={this.state.fName}
+                        onChange={this.changeHandler}
+                        required
+                        style={{width: '25%'}}></input>
+                        
+                        <label>Last Name: </label>
+                        <input 
+                            type="text"
+                            name="lName"
+                            value={this.state.lName}
+                            onChange={this.changeHandler}
+                            required
+                            style={{width: '25%'}}>
+                        </input>
+                    </div>
+
+                    <label>Address:</label>
+                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                        <input 
+                            placeholder="Street Address"
+                            type="text"
+                            name="addStreet"
+                            value={this.state.addStreet}
+                            onChange={this.changeHandler}
+                        ></input>
+                        <input 
+                            placeholder="City"
+                            type="text"
+                            name="addCity"
+                            value={this.state.addCity}
+                            onChange={this.changeHandler}
+                        ></input>
+                        <input 
+                            placeholder="State"
+                            type="text"
+                            name="addState"
+                            value={this.state.addState}
+                            onChange={this.changeHandler}
+                        ></input>
+                        <input 
+                            placeholder="Postal/Zip Code"
+                            type="text"
+                            name="addZip"
+                            value={this.state.addZip}
+                            onChange={this.changeHandler}
+                        ></input>
+                    </div>
+
+                    
+                    <div>
+                        <label>Gender: </label>
+                        <label>Male</label>
+                        <input
+                            type="radio"
+                            id="male"
+                            name="gender"
+                            value="1"
+                            onChange={this.radioChangeHandler}
+                            required
+                        >
+                        </input>
+                        <label>Female</label>
+                        <input
+                            type="radio"
+                            id="female"
+                            name="gender"
+                            value="2"
+                            onChange={this.radioChangeHandler}
+                        >
+                        </input> 
+                        <label>Other</label>
+                        <input
+                            type="radio"
+                            id="other"
+                            name="gender"
+                            value="3"
+                            onChange={this.radioChangeHandler}
+                        >
+                        </input>     
+                    </div> 
+
+                    <div>
+                        <label>Date of Birth: </label>
+                        <input
+                            type="date"
+                            name="dob"
+                            onChange={this.changeHandler}
+                            required
+                        ></input>                    
+                    </div>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+        )
     }
-}
-render() {
-    return (
-        <div align="center">
-                <h1>Client Add Page </h1>
-                <form onSubmit={this.submit} >
-            <table  width="35%"  align="center"  cellSpacing="20%" cellPadding="10%">
-               
-                <tbody>
-                 
-                       <tr>
-                            <td colSpan="3">
-                                <h5>Client's Name</h5>
-                            </td>
-                        </tr>
-                        <tr>
-                             <th colSpan="3">First Name</th>
-                        </tr>
-                        <tr>    
-                             <td colSpan="3"> 
-                                <input type="text" className="form-control" name="fName"  onChange={this.changeHandler}  placeholder="Client's First Name" required />
-                            </td>
-                        </tr>
-                        <tr>
-                             <th colSpan="3">
-                                <label htmlFor="name">Last Name</label>
-                            </th>
-                        </tr>
-                        <tr>
-                             <td colSpan="3">
-                                <input type="text" className="addwith" name="lName" onChange={this.changeHandler} placeholder="Client's Last Name" required />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th colSpan="3">
-                               
-                                Client's Gender
-                            </th>
-                        </tr>
-                        <tr>
-                             <td colSpan="3">        
-                                <select  className="addwith" name="gender"  onChange={this.changeHandler} required>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="other">Prefer not to disclose</option>
-                                </select>
-                               
-                            </td>
-                        </tr>
-                        <tr>    
-                             <th colSpan="3">
-                                <h5>Client's Date of Birth</h5>
-                            </th>
-                        </tr>
-                        
-                        <tr>
-                                <td>
-                                     <select  name="month" onChange={this.changeHandler} required>
-                                    <option value="">Month</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
-                                </td>       
-                                <td>
-                                
-                                <select name="day" onChange={this.changeHandler}>
-                                    <option value="">Day</option>
-                                    {dayOptions()}
-                                    
-                                </select>
-                            
-                                </td>
-                                <td>
-                                    <select  name="year" onChange={this.changeHandler}>
-                                        <option value="">Year</option>
-                                        {yearOptions()}
-                                    </select>
-                                </td>
-                        </tr>
-                        
-                        <tr>
-                             <td colSpan="3">
-                                <h5>Client's Current Address</h5>
-                            </td>
-                        </tr> 
-                        <tr>   
-                             <th colSpan="3">
-                                <label htmlFor="ccyear">Street</label>
-                            </th>
-                        </tr>
-                        <tr>
-                             <td colSpan="3">
-                                <input type="text" placeholder="Add Street"  className="addwith" name="addStreet"  onChange={this.changeHandler}>
-                                </input>
-                            </td>
-                        </tr>
-                        <tr>
-                             <th colSpan="3">
-                              <label htmlFor="ccyear">City</label>
-                            </th>
-                        </tr>
-                        
-                        <tr>   
-                                
-                             <td colSpan="3">
-                               
-                                <input type="text" placeholder="Add City" className="addwith" name="addCity"  onChange={this.changeHandler}>
-                                
-                                </input>
-                               
-                            </td>
-                        </tr>
-                        <tr>
-                             <th colSpan="3">
-                            <label htmlFor="ccyear">State</label>
-                            </th>    
-                        </tr> 
-                        <tr>   
-                             <td colSpan="3">
-                               
-                                
-                                <input type="text" placeholder="Add State" className="addwith" name="addState"  onChange={this.changeHandler}>
-                                
-                                </input>
-                               
-                            </td>
-                        </tr>
-                        <tr>
-                             <th colSpan="3">
-                            <label htmlFor="ccyear">Zip</label>
-                            </th>       
-                        </tr>
-                        <tr>    
-                             <td colSpan="3">
-                               
-                               
-                                <input type="text" placeholder="Add Zip" className="addwith" name="addZip"  onChange={this.changeHandler}>
-                                
-                                </input>
-                               
-                            </td>
-                        </tr>
-                        <tr>
-                            <td >
-                                <button type="submit"  size="md"  color="success"> Submit</button>
-                            </td>
-                        </tr>
-                    
-                    
-                </tbody>
-              
-            </table>
-            </form>
-        </div>
-    )
-}
 }
 
 export default AddClient
