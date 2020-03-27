@@ -194,7 +194,7 @@
 
    <!---Insert Client into database--->
    <cffunction name="addClient" returntype="numeric" access="remote">
-      
+
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
       <cfargument name="addStreet" type="string" default="" required="false">
@@ -250,7 +250,7 @@
       <cfargument name="employmentIncomeIncrease" type="string" default="0" required="false">
       <cfargument name="selfSufficientIncome" type="string" default="0" required="false">
       <cfargument name="incomeWSixMo" type="string" default="0" required="false">
-      <cfargument name="incomeIncreaseDate" type="string" default="0001-01-01" required="false">
+      <cfargument name="incomeIncreaseDate" type="string" default="" required="false">
       <cfargument name="baselineIncome" type="string" default="0.00" required="false">
       <cfargument name="incomeEID" type="string" default="0.00" required="false">
       <cfargument name="otherIncomeEID" type="string" default="0.00" required="false">
@@ -299,7 +299,7 @@
                   <cfqueryparam value='#employmentIncomeIncrease#' cfsqltype='cf_sql_bit'>, 
                   <cfqueryparam value='#selfSufficientIncome#' cfsqltype='cf_sql_bit'>,
                   <cfqueryparam value='#incomeWSixMo#' cfsqltype='cf_sql_bit'>,
-                  <cfqueryparam value='#incomeIncreaseDate#' cfsqltype='cf_sql_date'>, 
+                  <cfqueryparam value='#incomeIncreaseDate#' null='#NOT len(trim(incomeIncreaseDate))#' cfsqltype='cf_sql_date'>, 
                   <cfqueryparam value='#baselineIncome#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#incomeEID#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#otherIncomeEID#' cfsqltype='cf_sql_money'>, 
