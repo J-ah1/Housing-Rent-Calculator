@@ -6,12 +6,6 @@ import '../Styles/Calculator.css';
 function questionType(props, type, count){
     let input
     switch(type){
-        case("dollar"):
-            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
-            break;
-        case("number"):
-            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
-            break;
         case("radio"):
             input = <div>
                     <input type="radio" id={count} name={count} onChange={props.inputHandler} checked={props.results[count] === "Yes" ? true : false}  value="Yes" />
@@ -21,13 +15,11 @@ function questionType(props, type, count){
                 </div>
             break;
         default:
-            //console.log(type);
+            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
             break;
     }
     return input
 }
-
-
 
 export default function RentCalculator1(props){ 
 

@@ -11,7 +11,6 @@ export default function RentCalculator0(props){
                     Please handle the client's information properly.
                     ....
                 </p>
-                <button type="button" onClick={props.viewHandler}>Start</button>
         </div>    
     )  
 }

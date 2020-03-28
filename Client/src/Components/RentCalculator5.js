@@ -19,18 +19,16 @@ function questionType(props, type, count){
     return input
 }
 
-export default function RentCalculator2(props){ 
+export default function RentCalculator5(props){ 
+    let questions = [calcQuestions['totalMonthlyRent'], calcQuestions['currentLeasePeriod'], calcQuestions['utilitiesIncluded'], 
+                    calcQuestions['utilityAllowance']]
 
-
-    let questions = [calcQuestions['numDependents'], calcQuestions['disabledDeduction'], calcQuestions['childcareExp'], 
-                    calcQuestions['attendExp'], calcQuestions['elderlyExp']]
-
-    let results = [calcQuestions['medExp'], calcQuestions['perAGI'], calcQuestions['medDeduction']]
+    let results = [calcQuestions['tenantRentResponsibility'], calcQuestions['rentSubsidyPayment']]
     let count = -1;
 
     return(
         <div align="center">
-                <h1>Monetary Allowances</h1>
+                <h1>Results</h1>
                 <table>
                     <thead>
                         <tr>
@@ -52,28 +50,18 @@ export default function RentCalculator2(props){
                     <tfoot>
                         <tr>
                             <td>{results[0].label}</td>
+                            <td>{results[0].description}</td>
                             <td><input value={props.total1} readOnly/></td>
                         </tr>
                         <tr>
                             <td>{results[1].label}</td>
                             <td><input value={props.total2} readOnly/></td>
                         </tr>
-                        <tr>
-                            <td>{results[2].label}</td>
-                            <td><input value={props.total3 > 0 ? props.total3 : 0} readOnly/></td>
-                        </tr>
                     </tfoot>
-                </table> 
+                </table>
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: '2%'}}>
+                   <button onClick={props.submit}>Submit</button>
+                </div>
         </div>    
     )  
 }
-
-/*
-{results.map(result => {
-                            count++
-                            return (<tr key={count}>
-                                <td>{result.label}</td>
-                                <td>{questionType(props, result.type, count)}</td>
-                            </tr>)
-                        })}
-*/

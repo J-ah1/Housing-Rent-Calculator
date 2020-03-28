@@ -84,7 +84,7 @@ class Register extends Component {
                       Email: ${this.state.email},
                       Question: ${this.state.question},
                       Answer: ${this.state.answer},`);
-          axios.get(`http://localhost:8500/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`)
+          axios.get(`http://localhost:8000/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`)
             .then()
           this.props.history.push('/')
         }

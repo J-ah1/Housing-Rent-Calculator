@@ -31,7 +31,7 @@ var cid=""
        
       
       var request = new XMLHttpRequest();
-      request.open("GET", "http://localhost:8500/rentcalculator/index.cfm/worksheet/"+this.state.wid,false);
+      request.open("GET", "http://localhost:8000/rentcalculator/index.cfm/worksheet/"+this.state.wid,false);
       request.setRequestHeader("Content-Type", "application/json");
       request.send();
       console.log(request.responseText);
