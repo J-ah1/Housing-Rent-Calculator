@@ -12,6 +12,9 @@ function questionType(props, type, count){
                     <label htmlFor="No">No</label>
                 </div>
             break;
+        case("date"):
+            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
+            break;
         default:
             input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
             break;
