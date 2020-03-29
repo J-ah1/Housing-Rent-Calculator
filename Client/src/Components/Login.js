@@ -31,7 +31,7 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
+            axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
                 .then(res => {
                     if(res.data){
                         console.log("Success")

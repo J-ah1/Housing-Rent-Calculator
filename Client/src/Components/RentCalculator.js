@@ -107,6 +107,14 @@ class RentCalculator extends Component {
             temp[8]=0 //set to 0 if this total is negative
         }
 
+        //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
+        let currDate = new Date()
+        let newDate = new Date("2019-04-01")
+        let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
+        if(difference > 365){
+            temp[8] = temp[8]/2
+        }
+
         this.setState({
             page3Results: temp
         })

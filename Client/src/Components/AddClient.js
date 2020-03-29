@@ -59,7 +59,7 @@ class AddClient extends Component {
 
 
         if(this.state.addressFlag){
-            axios.get(`http://localhost:8000/db.cfc?method=addClient&fName=${fName}&lName=${lName}&addStreet=${addStreet}&addCity=${addCity}&addState=${addState}&addZip=${addZip}&gender=${gender}&dob=${dob}`)
+            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&addStreet=${addStreet}&addCity=${addCity}&addState=${addState}&addZip=${addZip}&gender=${gender}&dob=${dob}`)
             .then(response => {
                 this.navigatetoClientProfile(response.data);
             })
@@ -69,7 +69,7 @@ class AddClient extends Component {
                 this.props.history.push('/search');
             });
         }else{
-            axios.get(`http://localhost:8000/db.cfc?method=addClient&fName=${fName}&lName=${lName}&gender=${gender}&dob=${dob}`) 
+            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&gender=${gender}&dob=${dob}`) 
                 .then(response => {
                     this.navigatetoClientProfile(response.data);
                 }) 
