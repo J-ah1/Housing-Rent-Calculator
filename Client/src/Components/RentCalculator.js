@@ -109,7 +109,11 @@ class RentCalculator extends Component {
 
         //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
         let currDate = new Date()
-        let newDate = new Date(temp[4])
+        let newDate = currDate //initialize so that difference is 0
+        if(temp[4]!= 0 || temp[4] != ""){ //when a new date is added reset the value of newDate
+            newDate = new Date(temp[4])
+        }
+
         let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
         if(difference > 365){
             temp[8] = temp[8]/2

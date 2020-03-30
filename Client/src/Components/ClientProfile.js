@@ -70,7 +70,7 @@ class ClientProfile extends Component {
 
 
     navigateToRentCalculator = () => {
-        this.props.history.push(`/rentcalc/${this.state.ID}`);
+         this.props.history.push(`/rentcalc/${this.state.ID}`);
     }
 
     render() {
