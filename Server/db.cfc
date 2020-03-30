@@ -227,11 +227,10 @@
 
    </cffunction>
 
-
    <!---Insert Worksheet into database--->
    <cffunction name="addWorksheet" returntype="void" access="remote">
-      <cfargument name="userID" type="string" required="true">
       <cfargument name="clientID" type="string" required="true">
+      <!--- <cfargument name="userID" type="string" required="true"> --->
       <cfargument name="dateSubmitted" type="string" required="true">
 
 
@@ -270,7 +269,7 @@
       <cfargument name="annualAdjustedIncome" type="string" default="0.00" required="false">
       <cfargument name="monthlyAdjustedIncome" type="string" default="0.00" required="false">
       
-      <cfargument name="totalMontlyRent" type="string" default="0.00" required="false">
+      <cfargument name="totalMonthlyRent" type="string" default="0.00" required="false">
       <cfargument name="currentLeasePeriod" type="string" default="0.00" required="false">
       <cfargument name="utilitiesIncluded" type="string" default="0" required="false">
       <cfargument name="utilityAllowance" type="string" default="0.00" required="false">
@@ -278,7 +277,7 @@
       <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
       
 
-      <cfset userID = val('#userID#')>
+      <cfset userID = 12>
       <cfset clientID = val('#clientID#')>
       
       <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
@@ -337,7 +336,7 @@
                   <cfqueryparam value='#annualAdjustedIncome#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#monthlyAdjustedIncome#' cfsqltype='cf_sql_money'>,
 
-                  <cfqueryparam value='#totalMontlyRent#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#totalMonthlyRent#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#currentLeasePeriod#' cfsqltype='cf_sql_tinyint'>,
                   <cfqueryparam value='#utilitiesIncluded#' cfsqltype='cf_sql_bit'>, 
                   <cfqueryparam value='#utilityAllowance#' cfsqltype='cf_sql_money'>, 
@@ -401,6 +400,3 @@
    </cffunction>
 
 </cfcomponent>
-
-
-
