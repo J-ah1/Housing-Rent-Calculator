@@ -209,7 +209,7 @@
       <cfargument name="dob" type="string" required="true">
 
       <cfset gender = val('#gender#')>
-      <cfset dob = dateTimeFormat(dob, "yyyy-mm-dd")>
+      <cfset dob = parseDateTime(dob, "yyyy-mm-dd")>
 
       <cfquery name="addC2" datasource="awsMicrosoftSQLServer" result="newClient">
          INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
@@ -281,9 +281,9 @@
       <cfset userID = val('#userID#')>
       <cfset clientID = val('#clientID#')>
       
-      <cfset dateSubmitted = dateTimeFormat(dateSubmitted, "yyyy-mm-dd")>
+      <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
       <cfif len(trim(incomeIncreaseDate))>
-         <cfset incomeIncreaseDate = dateTimeFormat(incomeIncreaseDate, "yyyy-mm-dd")>
+         <cfset incomeIncreaseDate = parseDateTime(incomeIncreaseDate, "yyyy-mm-dd")>
       </cfif>
       
       <cfset welfareReliant = val('#welfareReliant#')>
