@@ -116,7 +116,8 @@
 
    <!--- Return clientinfo with a given client ID --->
    <cffunction name="getClientInfo" returntype="query" access="private">
-      <cfargument name="clientID" type="string" required="true">
+      <cfargument name="clientID" type="numeric" required="true">
+      
       <!--- Query for client and return query --->
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
@@ -129,6 +130,8 @@
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" returntype="query" returnFormat="JSON" access="remote">
       <cfargument name="clientID" type="string" required="true">
+      <cfset clientID = val('#clientID#')>
+
       <cfset clientInfo=getClientInfo('#clientID#')>
       <cfreturn clientInfo>
    </cffunction>
@@ -137,7 +140,7 @@
    <!--- Return clientworksheets with a given client ID --->
    <cffunction name="getClientWorksheets" returntype="query" access="private">
       <!--- Query for client and return query --->
-      <cfargument name="clientID" type="string" required="true">
+      <cfargument name="clientID" type="numeric" required="true">
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT dateSubmitted, rentSubsidyPayment
          FROM worksheet
@@ -149,6 +152,7 @@
    <!--- Public return of clientworksheets --->
    <cffunction name="clientWorksheetProfile" returntype="query" returnFormat="JSON" access="remote">
       <cfargument name="clientID" type="string" required="true">
+      <cfset clientID = val('#clientID#')>
       <cfset worksheets=getClientWorksheets('#clientID#')>
       <cfreturn worksheets>
    </cffunction>
@@ -202,7 +206,10 @@
       <cfargument name="addState" type="string" default="" required="false">
       <cfargument name="addZip" type="string" default="" required="false">
       <cfargument name="gender" type="string" required="true">
-      <cfargument name="dob" type="date" required="true">
+      <cfargument name="dob" type="string" required="true">
+
+      <cfset gender = val('#gender#')>
+      <cfset dob = dateTimeFormat(dob, "yyyy-mm-dd")>
 
       <cfquery name="addC2" datasource="awsMicrosoftSQLServer" result="newClient">
          INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
@@ -220,10 +227,13 @@
 
    </cffunction>
 
+
+   <!---Insert Worksheet into database--->
    <cffunction name="addWorksheet" returntype="void" access="remote">
       <cfargument name="userID" type="string" required="true">
       <cfargument name="clientID" type="string" required="true">
       <cfargument name="dateSubmitted" type="string" required="true">
+
 
       <cfargument name="annualHouseHoldWages" type="string" default="0.00" required="false">
       <cfargument name="periodicPayment" type="string" default="0.00" required="false">
@@ -267,6 +277,24 @@
       <cfargument name="tenantRentResponsibility" type="string" default="0.00" required="false">
       <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
       
+
+      <cfset userID = val('#userID#')>
+      <cfset clientID = val('#clientID#')>
+      
+      <cfset dateSubmitted = dateTimeFormat(dateSubmitted, "yyyy-mm-dd")>
+      <cfif len(trim(incomeIncreaseDate))>
+         <cfset incomeIncreaseDate = dateTimeFormat(incomeIncreaseDate, "yyyy-mm-dd")>
+      </cfif>
+      
+      <cfset welfareReliant = val('#welfareReliant#')>
+      <cfset inHOPWA = val('#inHOPWA#')>
+      <cfset employmentIncomeIncrease = val('#employmentIncomeIncrease#')>
+      <cfset selfSufficientIncome = val('#selfSufficientIncome#')>
+      <cfset incomeWSixMo = val('#incomeWSixMo#')>
+      <cfset utilitiesIncluded = val('#utilitiesIncluded#')>
+      
+      <cfset numDependents = val('#numDependents#')>
+      <cfset currentLeasePeriod = val('#currentLeasePeriod#')>
 
       <cfquery name="addedSheet" datasource="awsMicrosoftSQLServer">
          INSERT INTO worksheet
@@ -319,8 +347,6 @@
 
 
    </cffunction>
-
-
 
 
    <!---
