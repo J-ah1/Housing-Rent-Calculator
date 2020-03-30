@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 //import {Link, Redirect} from 'react-router-dom';
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
@@ -165,6 +166,52 @@ class RentCalculator extends Component {
     submitCalculations = (event) => {
         event.preventDefault();
         console.log(this.state.page1Results, this.state.page2Results, this.state.page3Results, this.state.page4Results, this.state.page5Results)
+        
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        today = `${today.getFullYear()}-${mm}-${dd}`
+        console.log(typeof(this.state.page4Results[4]))
+        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+                    &annualHouseHoldWages=${this.state.page1Results[0]}
+                    &periodicPayment=${this.state.page1Results[1]}
+                    &unearnedIncome=${this.state.page1Results[2]}
+                    &receivedIncome=${this.state.page1Results[3]}
+                    &businessIncome=${this.state.page1Results[4]}
+                    &investments=${this.state.page1Results[5]}
+                    &armedForcesPay=${this.state.page1Results[6]}
+                    &publicAssistanceReceived=${this.state.page1Results[7]}
+                    &welfareReliant=${this.state.page1Results[8]}
+                    &annualGrossIncome=${this.state.page1Results[9]}
+                    &monthlyGrossIncome=${this.state.page1Results[10]}
+                    &numDependents=${this.state.page2Results[0]}
+                    &disabledDeduction=${this.state.page2Results[1]}
+                    &childcareExp=${this.state.page2Results[2]}
+                    &attendExp=${this.state.page2Results[3]}
+                    &elderlyExp=${this.state.page2Results[4]}
+                    &medExp=${this.state.page2Results[5]}
+                    &perAGI=${this.state.page2Results[6]}
+                    &medDeduction=${this.state.page2Results[7]}
+                    &inHOPWA=${this.state.page3Results[0]}
+                    &employmentIncomeIncrease=${this.state.page3Results[1]}
+                    &selfSufficientIncome=${this.state.page3Results[2]}
+                    &incomeWSixMo=${this.state.page3Results[3]}
+                    &incomeIncreaseDate=${this.state.page3Results[4]}
+                    &baselineIncome=${this.state.page3Results[5]}
+                    &incomeEID=${this.state.page3Results[6]}
+                    &otherIncomeEID=${this.state.page3Results[7]}
+                    &applicableEID=${this.state.page3Results[8]}
+                    &totalAllowance=${this.state.page4Results[0]}
+                    &annualAdjustedIncome=${this.state.page4Results[1]}
+                    &monthlyAdjustedIncome=${this.state.page4Results[2]}
+                    &totalMonthlyRent=${this.state.page5Results[0]}
+                    &currentLeasePeriod=${this.state.page5Results[1]}
+                    &utilitiesIncluded=${this.state.page5Results[2]}
+                    &utilityAllowance=${this.state.page5Results[3]}
+                    &tenantRentResponsibility=${this.state.page5Results[4]}
+                    &rentSubsidyPayment=${this.state.page5Results[5]}`)
+            .then(res => console.log(res))
+            .catch(error => console.log(error))
     }
 
     render(){
