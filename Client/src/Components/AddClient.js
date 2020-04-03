@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios';
 
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
 class AddClient extends Component {  
     constructor(props) {
         super(props)
@@ -12,7 +15,7 @@ class AddClient extends Component {
             addState:"",
             addZip:"",
             gender:"",
-            dob:"",
+            dob: new Date(),
             addressFlag: false
         }
     }
@@ -25,8 +28,13 @@ class AddClient extends Component {
     }
 
     radioChangeHandler = (e) => {
-        let gender = e.target.value;
+        const gender = e.target.value;
         this.setState({gender});
+    }
+
+    hangleDateChange = (date) => {
+        const dob = date;
+        this.setState({dob});
     }
 
     // Event Listener for Form Submission 
@@ -38,7 +46,7 @@ class AddClient extends Component {
     // async function to wait while checking addressFlag 
     async requestPrep(){
         await this.handleAddressFlag();
-        this.handleRequests();
+        this.sendRequests();
     }
 
     handleAddressFlag(){
@@ -47,19 +55,20 @@ class AddClient extends Component {
         }
     }
 
-    handleRequests(){
-        let fName = this.state.fName;
-        let lName = this.state.lName;
-        let addStreet = this.state.addStreet;
-        let addCity = this.state.addCity;
-        let addState = this.state.addState;
-        let addZip = this.state.addZip;
-        let gender = this.state.gender;
-        let dob = this.state.dob;
-
+    sendRequests(){
+        const fName = this.state.fName;
+        const lName = this.state.lName;
+        const addStreet = this.state.addStreet;
+        const addCity = this.state.addCity;
+        const addState = this.state.addState;
+        const addZip = this.state.addZip;
+        const gender = this.state.gender;
+        const dob = this.state.dob;
+        const formattedDate = dob.getFullYear() + '-' + (dob.getMonth() + 1) + '-' + dob.getDate();
+        console.log(formattedDate);
 
         if(this.state.addressFlag){
-            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&addStreet=${addStreet}&addCity=${addCity}&addState=${addState}&addZip=${addZip}&gender=${gender}&dob=${dob}`)
+            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&addStreet=${addStreet}&addCity=${addCity}&addState=${addState}&addZip=${addZip}&gender=${gender}&dob=${formattedDate}`)
             .then(response => {
                 this.navigatetoClientProfile(response.data);
             })
@@ -93,10 +102,14 @@ class AddClient extends Component {
             <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
                 <h1>Add Client</h1>
 
+               
+
                 <form 
                     onSubmit={this.handleSubmit}
                     style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '75%', border: '1px solid blue', padding:'1em'}}
                 >
+
+                    
                     
                     <div style={{flexDirection: 'row'}}>
                         <label>First Name: </label>
@@ -186,12 +199,17 @@ class AddClient extends Component {
 
                     <div>
                         <label>Date of Birth: </label>
-                        <input
+                        <DatePicker
+                            selected={this.state.dob}
+                            onChange={this.hangleDateChange}
+                        />
+                        
+                        {/* <input
                             type="date"
                             name="dob"
                             onChange={this.changeHandler}
                             required
-                        ></input>                    
+                        ></input>                     */}
                     </div>
 
                     <button type="submit">Submit</button>
