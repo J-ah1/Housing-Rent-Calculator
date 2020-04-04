@@ -157,6 +157,25 @@
       <cfreturn worksheets>
    </cffunction>
 
+   <!--- Return viewCWorksheet information for viewing --->
+   <cffunction name="getCWorksheetData" returntype="query" access="private">
+      <cfargument name="id" type="numeric" required="true">
+      <cfquery name = "cWorksheetData" datasource="awsMicrosoftSQLServer">
+         SELECT *
+         FROM worksheet
+         WHERE id = <cfqueryparam value='#id#' cfsqltype='cf_sql_integer'>
+      </cfquery>
+      <cfreturn cWorksheetData>
+   </cffunction>
+
+   <!--- Public return of getCWorksheetData --->
+   <cffunction name="viewCWorksheets" returntype="query" returnFormat="JSON" access="remote">
+      <cfargument name="id" type="string" required="true">
+      <cfset id = val('#id#')>
+      <cfset worksheet=getCWorksheetData('#id#')>
+      <cfreturn worksheet>
+   </cffunction>
+
 
    <!--- function that return clients whose name(s) match the input given --->
    <cffunction name="clientSearchRegex" returntype="query" access="private">
