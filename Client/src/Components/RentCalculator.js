@@ -115,6 +115,7 @@ class RentCalculator extends Component {
             newDate = new Date(temp[4])
         }
 
+        //wishlist check for invalid future date
         let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
         if(difference > 365){
             temp[8] = temp[8]/2
@@ -123,7 +124,7 @@ class RentCalculator extends Component {
         this.setState({
             page3Results: temp
         })
-        this.page4Answers()
+        this.page3Answers()
     }
 
     page4Answers = () => {
@@ -172,7 +173,7 @@ class RentCalculator extends Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         today = `${today.getFullYear()}-${mm}-${dd}`
         console.log(typeof(this.state.page4Results[4]))
-        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+        axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                     &annualHouseHoldWages=${this.state.page1Results[0]}
                     &periodicPayment=${this.state.page1Results[1]}
                     &unearnedIncome=${this.state.page1Results[2]}
