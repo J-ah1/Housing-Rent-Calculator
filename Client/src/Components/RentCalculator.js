@@ -111,7 +111,7 @@ class RentCalculator extends Component {
         //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
         let currDate = new Date()
         let newDate = currDate //initialize so that difference is 0
-        if(temp[4]!= 0 || temp[4] != ""){ //when a new date is added reset the value of newDate
+        if(temp[4] !== 0 || temp[4] !== ""){ //when a new date is added reset the value of newDate
             newDate = new Date(temp[4])
         }
 
@@ -124,7 +124,7 @@ class RentCalculator extends Component {
         this.setState({
             page3Results: temp
         })
-        this.page3Answers()
+        this.page4Answers()
     }
 
     page4Answers = () => {
@@ -148,12 +148,11 @@ class RentCalculator extends Component {
         if(this.state.page1Results[8] === "Yes"){
             temp[4] = 0
         } else {
-            if(true) { // Fix if statement for actual conditional
-                temp[4] = (this.state.page1Results[10] * .30).toFixed(2)
+            let total = 0
+            for(let i = 0; i <= 8; i++){
+                total += this.state.page1Results[i]
             }
-            else {
-                temp[4] = (this.state.page1Results[10] * .10) > (this.state.page4Results[3] * .30) ? (this.state.page1Results[10] * .10) : (this.state.page4Results[3] * .30)
-            }
+            temp[4] = total > 0 ? (this.state.page1Results[10] * .30).toFixed(2) : ((this.state.page1Results[10] * .10) > (this.state.page4Results[2] * .30) ? (this.state.page1Results[10] * .10) : (this.state.page4Results[2] * .30))
         }
 
         temp[4] = temp[4] - (temp[2] === "No" ? parseFloat(temp[3]) : 0)
@@ -173,7 +172,7 @@ class RentCalculator extends Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         today = `${today.getFullYear()}-${mm}-${dd}`
         console.log(typeof(this.state.page4Results[4]))
-        axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                     &annualHouseHoldWages=${this.state.page1Results[0]}
                     &periodicPayment=${this.state.page1Results[1]}
                     &unearnedIncome=${this.state.page1Results[2]}

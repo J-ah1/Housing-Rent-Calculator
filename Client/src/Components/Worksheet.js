@@ -19,7 +19,7 @@ function Worksheet(props) {
                                     <tr key={index}>
                                         <td>{sheet.Date}</td>
                                         <td>${sheet.Calculation}</td>
-                                        <td><button>View</button><button>Print</button></td>
+                                        <td><button onClick={props.toView} id={sheet.ID}>View</button><button>Print</button></td>
                                     </tr>
                                 )
                             }) : null}

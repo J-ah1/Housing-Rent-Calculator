@@ -12,6 +12,7 @@ import ClientSearch from './ClientSearch';
 import ClientProfile from './ClientProfile';
 import AddClient from './AddClient';
 import RentCalculator from './RentCalculator';
+import ViewWorksheet from './ViewWorksheet';
 
 class App extends Component {
     render() {
@@ -27,6 +28,7 @@ class App extends Component {
               <Route path='/profile/:id' component={ClientProfile} />
               <Route path='/add' component={AddClient} />
               <Route path='/rentcalc/:id' component={RentCalculator} />
+              <Route path='/view/:id' component={ViewWorksheet} />
             </div>
           </Router>
         </div>
