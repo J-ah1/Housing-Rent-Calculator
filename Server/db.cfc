@@ -142,7 +142,7 @@
       <!--- Query for client and return query --->
       <cfargument name="clientID" type="numeric" required="true">
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
-         SELECT dateSubmitted, rentSubsidyPayment
+         SELECT id, dateSubmitted, rentSubsidyPayment
          FROM worksheet
          WHERE clientID = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
