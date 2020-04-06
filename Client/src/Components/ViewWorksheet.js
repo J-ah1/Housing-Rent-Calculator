@@ -22,7 +22,7 @@ class RentCalculator extends Component {
     }
 
     componentDidMount = () => {
-        axios.get(`http://localhost:8000/db.cfc?method=viewCWorksheets&id=${this.props.match.params.id}`)
+        axios.get(`http://localhost:8500/db.cfc?method=viewCWorksheets&id=${this.props.match.params.id}`)
             .then(res => {
                 this.setState({
                     date: res.data.DATA[0][3],

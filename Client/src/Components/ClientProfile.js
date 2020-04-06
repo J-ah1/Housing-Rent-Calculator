@@ -31,13 +31,13 @@ class ClientProfile extends Component {
 
     handleGetClientInformation(ID){
         // Get Client Basic Client Information => Set State
-        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
                     this.handleSettingClientInfoState(res.data.DATA[0])
                 })
 
         // Get Client Worksheets => Set State 
-        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
                 .then(res => this.handleSettingWorksheetState(res.data.DATA));
     }
 

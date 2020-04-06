@@ -17,6 +17,8 @@ class RentCalculator extends Component {
         this.state={
             id: -1,
             page: 0,
+            startDate: new Date(),
+            incomeIncreaseDate: new Date(),
             page1Results: new Array(11).fill(0),
             page2Results: new Array(8).fill(0),
             page3Results: new Array(9).fill(0),
@@ -111,12 +113,16 @@ class RentCalculator extends Component {
         //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
         let currDate = new Date()
         let newDate = currDate //initialize so that difference is 0
-        if(temp[4] !== 0 || temp[4] !== ""){ //when a new date is added reset the value of newDate
+        console.log("new date before if "+ newDate + "temp4 " +temp[4])
+        if( temp[4] !== 0 || temp[4] !== ""){ //when a new date is added reset the value of newDate
             newDate = new Date(temp[4])
+            console.log("in if stmt")
         }
-
+        console.log("new date after if "+ newDate + "temp4 " +temp[4])
+        console.log("curr " + currDate + " and new "+ newDate)
         //wishlist check for invalid future date
         let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
+        console.log(difference)
         if(difference > 365){
             temp[8] = temp[8]/2
         }
@@ -172,7 +178,7 @@ class RentCalculator extends Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         today = `${today.getFullYear()}-${mm}-${dd}`
         console.log(typeof(this.state.page4Results[4]))
-        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+        axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                     &annualHouseHoldWages=${this.state.page1Results[0]}
                     &periodicPayment=${this.state.page1Results[1]}
                     &unearnedIncome=${this.state.page1Results[2]}
@@ -243,6 +249,7 @@ class RentCalculator extends Component {
                 console.log("show page 3 of rent calculator")
                 inputs = <RentCalculator3
                     inputHandler = {this.page3Answers}
+                    startDate = {this.state.startDate}
                     results = {this.state.page3Results}
                     total1 = {this.state.page3Results[8]}
                 />

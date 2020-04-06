@@ -2,6 +2,10 @@ import React from 'react';
 import {calcQuestions} from '../Questions';
 
 import '../Styles/Calculator.css';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
+
 
 function questionType(props, type, count){
     let input
@@ -15,7 +19,15 @@ function questionType(props, type, count){
                 </div>
             break;
         case("date"):
-            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
+            // input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
+            input = <div>
+                        <DatePicker
+                            selected={props.startDate}
+                            onChange={props.inputHandler} 
+                            id={count} 
+                            value={props.results[count]}
+                        />
+                    </div>
             break;
         default:
             input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
