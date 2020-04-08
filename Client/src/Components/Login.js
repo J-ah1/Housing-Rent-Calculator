@@ -55,22 +55,22 @@ export default class Login extends Component {
                     <h1>Housing Rent Calcuator</h1>
                     <div id="login-content">
                         <form id="login-form" onSubmit={this.submit}>
-                            <label>Username</label>
-                            <br/>
-                            <input className="login-form-input" value={this.state.username} onChange={this.nameChange} type="text" />
-                            <br/>
-                            <label>Password</label>
-                            <br/>
-                            <input className="login-form-input"  value={this.state.password} onChange={this.passwordChange} type="password" />
-                            <br/>
-                            <input id="login-form-submit" type="submit" value="Log In" />
+                            <label className="font-weight-light">Username</label>
+                           
+                            <input className="login-form-input rounded mb-4" value={this.state.username} onChange={this.nameChange} type="text" />
+                            
+                            <label className="font-weight-light" >Password</label>
+                            
+                            <input className="login-form-input rounded mb-4"  value={this.state.password} onChange={this.passwordChange} type="password" />
+                            
+                            <input className="btn border" id="login-form-submit" type="submit" value="Log In" />
                         </form>
 
                         <Link id="login-link-forgot-pass" to='/forgot'>
                             <p>Forgot Password?</p>
                         </Link>
                         <Link to="/register">
-                            <button id="login-link-register">Register</button>
+                            <button className="btn border" id="login-link-register">Register</button>
                         </Link>
                     </div>
             </div>
