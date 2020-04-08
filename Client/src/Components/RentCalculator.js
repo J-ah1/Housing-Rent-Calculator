@@ -114,7 +114,7 @@ class RentCalculator extends Component {
         let currDate = new Date()
         let newDate = currDate //initialize so that difference is 0
         console.log("new date before if "+ newDate + "temp4 " +temp[4])
-        if( temp[4] !== 0 || temp[4] !== ""){ //when a new date is added reset the value of newDate
+        if( temp[4] != 0 || temp[4] != ""){ //when a new date is added reset the value of newDate
             newDate = new Date(temp[4])
             console.log("in if stmt")
         }
