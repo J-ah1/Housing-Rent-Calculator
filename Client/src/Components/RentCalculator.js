@@ -55,6 +55,15 @@ class RentCalculator extends Component {
         })
     }
 
+    handleDateChange = (date) => {
+        this.setState({
+            startDate: date
+        })
+        event.target.id = 4
+        event.target.value = date
+        this.page3Answers(event)
+    }
+
     page1Answers = (event) => {
         let temp = this.state.page1Results;
         temp[event.target.id] = event.target.value;
@@ -114,15 +123,12 @@ class RentCalculator extends Component {
         let currDate = new Date()
         let newDate = currDate //initialize so that difference is 0
         console.log("new date before if "+ newDate + "temp4 " +temp[4])
-        if( temp[4] !== 0 || temp[4] !== ""){ //when a new date is added reset the value of newDate
+        if( temp[4] != 0 || temp[4] != ""){ //when a new date is added reset the value of newDate
             newDate = new Date(temp[4])
-            console.log("in if stmt")
         }
-        console.log("new date after if "+ newDate + "temp4 " +temp[4])
-        console.log("curr " + currDate + " and new "+ newDate)
+
         //wishlist check for invalid future date
         let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
-        console.log(difference)
         if(difference > 365){
             temp[8] = temp[8]/2
         }
@@ -250,6 +256,7 @@ class RentCalculator extends Component {
                 inputs = <RentCalculator3
                     inputHandler = {this.page3Answers}
                     startDate = {this.state.startDate}
+                    dateHandler = {this.handleDateChange}
                     results = {this.state.page3Results}
                     total1 = {this.state.page3Results[8]}
                 />
