@@ -108,7 +108,8 @@ class ForgotPassword extends Component {
                     viewHandler = {this.handleViewChange}
                     username = {this.state.username}
                     />
-                    <Link to='/'><button id="forgot-password-login-button">Log In</button></Link>
+                    
+                    <Link to='/'><button className="btn text-white" id="forgot-password-login-button">Log In</button></Link>
                 </div>
         }
 
