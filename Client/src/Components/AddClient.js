@@ -4,6 +4,8 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
+import '../Styles/AddClient.css'
+
 class AddClient extends Component {  
     constructor(props) {
         super(props)
@@ -99,42 +101,44 @@ class AddClient extends Component {
 
     render() {
         return (
-            <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
+            <div className="mt-3" style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
                 <h1>Add Client</h1>
 
                
 
                 <form 
+                    id="add-client-form"
+                    className="card mt-3 mb-5"
                     onSubmit={this.handleSubmit}
-                    style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '75%', border: '1px solid blue', padding:'1em'}}
+                    style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '75%', padding:'1em'}}
                 >
-
-                    
-                    
-                    <div style={{flexDirection: 'row'}}>
-                        <label>First Name: </label>
-                        <input 
+                    <label className="font-weight-light">First Name: </label>
+                    <input 
+                        className="rounded"
                         type="text"
                         name="fName"
                         value={this.state.fName}
                         onChange={this.changeHandler}
                         required
-                        style={{width: '25%'}}></input>
-                        
-                        <label>Last Name: </label>
-                        <input 
-                            type="text"
-                            name="lName"
-                            value={this.state.lName}
-                            onChange={this.changeHandler}
-                            required
-                            style={{width: '25%'}}>
-                        </input>
-                    </div>
+                        style={{width: '25%'}}>
+                    </input>
+                    
+                    <label className="font-weight-light mt-2">Last Name: </label>
+                    <input 
+                        className="rounded"
+                        type="text"
+                        name="lName"
+                        value={this.state.lName}
+                        onChange={this.changeHandler}
+                        required
+                        style={{width: '25%'}}>
+                    </input>
+                  
 
-                    <label>Address:</label>
+                    <label className="font-weight-light mt-3">Address:</label>
                     <div style={{display: 'flex', flexWrap: 'wrap'}}>
                         <input 
+                            className="rounded mr-2"
                             placeholder="Street Address"
                             type="text"
                             name="addStreet"
@@ -142,6 +146,7 @@ class AddClient extends Component {
                             onChange={this.changeHandler}
                         ></input>
                         <input 
+                            className="rounded mr-2"
                             placeholder="City"
                             type="text"
                             name="addCity"
@@ -149,6 +154,7 @@ class AddClient extends Component {
                             onChange={this.changeHandler}
                         ></input>
                         <input 
+                            className="rounded mr-2"
                             placeholder="State"
                             type="text"
                             name="addState"
@@ -156,6 +162,7 @@ class AddClient extends Component {
                             onChange={this.changeHandler}
                         ></input>
                         <input 
+                            className="rounded mr-2"
                             placeholder="Postal/Zip Code"
                             type="text"
                             name="addZip"
@@ -164,55 +171,57 @@ class AddClient extends Component {
                         ></input>
                     </div>
 
-                    
-                    <div>
-                        <label>Gender: </label>
-                        <label>Male</label>
-                        <input
-                            type="radio"
-                            id="male"
-                            name="gender"
-                            value="1"
-                            onChange={this.radioChangeHandler}
-                            required
-                        >
-                        </input>
-                        <label>Female</label>
-                        <input
-                            type="radio"
-                            id="female"
-                            name="gender"
-                            value="2"
-                            onChange={this.radioChangeHandler}
-                        >
-                        </input> 
-                        <label>Other</label>
-                        <input
-                            type="radio"
-                            id="other"
-                            name="gender"
-                            value="3"
-                            onChange={this.radioChangeHandler}
-                        >
-                        </input>     
+                    <label className="font-weight-light mt-3">Gender: </label>
+                    <div className="ml-4" style={{display: 'flex', flexDirection: 'column'}}>
+                        <div>
+                            <input
+                                className="mr-2"
+                                type="radio"
+                                id="male"
+                                name="gender"
+                                value="1"
+                                onChange={this.radioChangeHandler}
+                                required
+                            >
+                            </input>
+                            <label className="font-weight-light">Male</label>
+                        </div>
+                        <div>
+                            <input
+                                className="mr-2"
+                                type="radio"
+                                id="female"
+                                name="gender"
+                                value="2"
+                                onChange={this.radioChangeHandler}
+                            >
+                            </input> 
+                            <label className="font-weight-light">Female</label>
+                        </div>
+                        <div>
+                            <input
+                                className="mr-2"
+                                type="radio"
+                                id="other"
+                                name="gender"
+                                value="3"
+                                onChange={this.radioChangeHandler}
+                            >
+                            </input>  
+                            <label className="font-weight-light">Other</label>
+                        </div>  
                     </div> 
 
                     <div>
-                        <label>Date of Birth: </label>
+                        <label className="font-weight-light mr-2">Date of Birth: </label>
                         <DatePicker
                             selected={this.state.dob}
                             onChange={this.hangleDateChange}
                         />
-                        
-                        {/* <input
-                            type="date"
-                            name="dob"
-                            onChange={this.changeHandler}
-                            required
-                        ></input>                     */}
+                     
                     </div>
 
-                    <button type="submit">Submit</button>
+                    <button className="btn text-white" type="submit">Submit</button>
                 </form>
             </div>
 
