@@ -8,6 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 50vw;
 }
 
 #client-search-content > h1{
@@ -15,14 +16,15 @@
     font-size: 3em;
 }
 
-#client-search-add-client{
-    padding: 1em 2em;
-    background-color: ghostwhite;
-    color: rgb(23, 83, 161);
+#client-search-add-client, #client-search-button{
+    padding: .5em 1em;
     font-size: 1rem;
     font-weight: 500;
-    border: 1px solid black;
-    border-radius: 5px;
+    background-color: turquoise;
+}
+
+#client-search-add-client:hover, #client-search-button:hover{
+    background-color: mediumturquoise;
 }
 
 
@@ -32,15 +34,12 @@
 }
 
 #client-search-content > input{
-    width: 50vh;
+    width: 100%;
     font-size: 2em;
 }
 
 #client-search-button{
     align-self: center;
-    margin-top: 1em;
-    padding: 1em 2em;
-    border-radius: 5px;
 }
 
 #client-search-button:hover, #client-search-add-client {

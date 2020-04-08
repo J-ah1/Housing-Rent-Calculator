@@ -41,28 +41,44 @@ class ClientSearch extends Component {
     }
     
     render() {
+
+        let tableTitle;
+        let tableHead;
+
+        if(this.state.clients.length){
+            tableTitle = <h3 className="font-weight-light"> Results </h3>
+
+            tableHead = <tr>
+                            <th>Name</th>
+                            <th>DOB</th>
+                        </tr>
+
+        }
+
+
+
+
         return (
             <div id="client-search-container">
                 <div id="client-search-content">
                     <h1>Client Search</h1>
-                    <Link to='/add'><button id="client-search-add-client">Add Client</button></Link>
+                    <Link to='/add'><button className="btn text-white" id="client-search-add-client">Add Client</button></Link>
 
                     
-                    <label>Client Name</label>
+                    <label className="font-weight-light" >Client Name</label>
                     
                     <input
+                        className="rounded pl-2"
                         type='text'
                         value={this.state.search}
                         onChange={this.handleChange}
                     >
                     </input>
-                    <button id="client-search-button" onClick={this.loadInfo}>Search</button>
+                    <button className="btn text-white mt-5" id="client-search-button" onClick={this.loadInfo}>Search</button>
+                    {tableTitle}
                     <table id="client-search-results">
                         <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>DOB</th>
-                            </tr>
+                            {tableHead}
                         </thead>
                         <tbody>
                             {this.state.clients.length > 0 ? this.state.clients.map(client => {
