@@ -25,19 +25,19 @@ function ClientIntake(props) {
     }
 
     return (
-        <div>
-            <ul>
-                <li>
-                    {props.name}
+        <div className="card" id="client-intake-info-container">
+            
+            <h2 className="card-header"> {props.name}</h2>
+        
+            <ul id="client-intake-info-content">
+                <li className="ml-5">
+                    <span className="font-weight-light">Date of Birth: </span> {formattedDate}
                 </li>
-                <li>
-                    Date of Birth: {formattedDate}
+                <li className="ml-5">
+                    <span className="font-weight-light">Gender: </span> {clientGender}
                 </li>
-                <li>
-                    Gender: {clientGender}
-                </li>
-                <li>
-                    Address: {props.address}
+                <li className="ml-5"> 
+                    <span className="font-weight-light">Address: </span>{props.address}
                 </li>
             </ul> 
         </div>

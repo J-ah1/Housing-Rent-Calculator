@@ -3,7 +3,7 @@ import axios from 'axios';
 import ClientIntake from './ClientIntake';
 import Worksheet from './Worksheet';
 
-// import '../Styles/ClientProfile.css'
+import '../Styles/ClientProfile.css'
 
 
 class ClientProfile extends Component {
@@ -77,6 +77,28 @@ class ClientProfile extends Component {
         this.props.history.push(`/view/${event.target.id}`);
    }
 
+
+   handleProfileNavigation = (e) => {
+       
+       const view = e.target.id;
+
+       if(view === 'intake'){
+            document.querySelector('#intake').classList.add('text-white')
+            document.querySelector('#worksheet').classList.remove('text-white')
+            this.setState({view});
+       }
+
+       if(view === 'worksheet'){
+            document.querySelector('#worksheet').classList.add('text-white');
+            document.querySelector('#intake').classList.remove('text-white');
+            this.setState({view})
+       }
+
+
+
+   }
+
+
     render() {
         let currentView = this.state.view;
         let view;
@@ -100,12 +122,12 @@ class ClientProfile extends Component {
         return (
             <div>
                 <nav>
-                    <ul>
+                    <ul id="client-intake-nav-buttons">
                         <li>
-                            <button onClick={() => this.setState({view:'intake'})}>Intake Page</button>
+                            <button className="btn text-white" id="intake" onClick={this.handleProfileNavigation}>Intake Page</button>
                         </li>
                         <li>
-                            <button onClick={() => this.setState({view:'worksheet'})}>Rent Worksheets</button>
+                            <button className="btn" id="worksheet" onClick={this.handleProfileNavigation}>Rent Worksheets</button>
                         </li>
                     </ul>
                 </nav>

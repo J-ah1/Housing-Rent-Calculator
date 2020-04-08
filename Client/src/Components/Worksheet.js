@@ -2,9 +2,13 @@ import React from 'react';
 
 function Worksheet(props) {
     return (
-        <div align="center">
-                <button onClick={props.toNewWorksheet}>Calculate a new rent worksheet</button>
+        <div className="card worksheet-container mt-5" align="center">
+
+
+             <div className="card-header worksheet-header">
+                <button className="btn text-white" id="client-profile-add-worksheet" onClick={props.toNewWorksheet}>Calculate a new rent worksheet</button>
                 <h1>Worksheet </h1>
+            </div>   
                     <table style={{width: '75%'}} border="2" cellPadding="10px">
                         <thead>
                             <tr>

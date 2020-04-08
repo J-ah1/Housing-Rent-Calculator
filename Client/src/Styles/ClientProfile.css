@@ -1,3 +1,76 @@
 ul{
    list-style: none; 
+   padding: 0;
+}
+
+
+#client-intake-nav-buttons{
+   display: flex;
+   justify-content: center;
+   margin-top: 5em;
+}
+
+#client-intake-nav-buttons > li > button {
+   padding: 1em 2em;
+   margin: 0 5vw;
+   background-color: turquoise;
+}
+
+#client-intake-nav-buttons > li > button:hover{
+   background-color: mediumturquoise;
+}
+
+
+#client-intake-info-container{
+   display: flex;
+   width: 50vw;
+   margin-left: 25%;
+   margin-top: 2em;
+} 
+
+#client-intake-info-content{
+   width: 50vw;
+   display: flex;
+   flex-direction: column;
+   padding: 2em;
+}
+
+#client-intake-info-content > li{
+   margin: 1em 0;
+}
+
+
+
+#client-profile-add-worksheet{
+   background-color: turquoise;
+}
+
+#client-profile-add-worksheet:hover{
+   background-color: mediumturquoise;
+}
+
+
+.worksheet-container{
+   width: 75%;
+   margin-top: 2em;
+   margin-left: 10%;
+   display: flex;
+   
+}
+
+
+.worksheet-header{
+   display: flex;
+   flex-direction: row-reverse;
+   justify-content: center;
+}
+
+.worksheet-header > h1 {
+   align-self: center;
+   margin-left: 5.5em;
+   flex-grow: 2;
+}
+
+.worksheet-header > button{
+   font-size: .75em;
 }
