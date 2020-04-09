@@ -67,11 +67,11 @@ class AddClient extends Component {
         const gender = this.state.gender;
         const dob = this.state.dob;
         const formattedDate = dob.getFullYear() + '-' + (dob.getMonth() + 1) + '-' + dob.getDate();
-        console.log(formattedDate);
 
         if(this.state.addressFlag){
             axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&addStreet=${addStreet}&addCity=${addCity}&addState=${addState}&addZip=${addZip}&gender=${gender}&dob=${formattedDate}`)
             .then(response => {
+                console.log(response.data);
                 this.navigatetoClientProfile(response.data);
             })
             .catch(error => {
@@ -80,7 +80,7 @@ class AddClient extends Component {
                 this.props.history.push('/search');
             });
         }else{
-            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&gender=${gender}&dob=${dob}`) 
+            axios.get(`http://localhost:8500/db.cfc?method=addClient&fName=${fName}&lName=${lName}&gender=${gender}&dob=${formattedDate}`) 
                 .then(response => {
                     this.navigatetoClientProfile(response.data);
                 }) 
