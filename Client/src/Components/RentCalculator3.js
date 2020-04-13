@@ -24,7 +24,7 @@ function questionType(props, type, count){
             input = <div>
                         <DatePicker
                             selected={props.startDate}
-                            onChange={props.dateHandler} 
+                            onChange={(date, event) => props.dateHandler(date,event)} 
                             placeholderText="mm-dd-yyyy"
                         />
                     </div>

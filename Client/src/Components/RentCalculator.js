@@ -55,7 +55,7 @@ class RentCalculator extends Component {
         })
     }
 
-    handleDateChange = (date) => {
+    handleDateChange = (date, event) => {
         this.setState({
             startDate: date
         })
@@ -122,7 +122,6 @@ class RentCalculator extends Component {
         //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
         let currDate = new Date()
         let newDate = currDate //initialize so that difference is 0
-        console.log("new date before if "+ newDate + "temp4 " +temp[4])
         if( temp[4] != 0 || temp[4] != ""){ //when a new date is added reset the value of newDate
             newDate = new Date(temp[4])
         }
@@ -147,6 +146,12 @@ class RentCalculator extends Component {
 
         temp[1] = this.state.page1Results[9] - temp[0]
         temp[2] = (temp[1] / 12).toFixed(2)
+
+        for(let i = 0; i<3; i++){
+            if(temp[i]<0){
+                temp[i]=0
+            }
+        }
 
         this.setState({
             page4Results: temp
