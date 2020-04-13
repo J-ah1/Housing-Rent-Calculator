@@ -216,7 +216,7 @@
 
 
    <!---Insert Client into database--->
-   <cffunction name="addClient" returntype="numeric" access="remote">
+   <cffunction name="addClient" returntype="numeric" returnFormat="JSON" access="remote">
 
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
