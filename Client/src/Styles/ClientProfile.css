@@ -28,6 +28,12 @@ ul{
    margin-top: 2em;
 } 
 
+
+
+#client-intake-loading{
+   margin: 2em auto;
+}
+
 #client-intake-info-content{
    width: 50vw;
    display: flex;
@@ -73,4 +79,8 @@ ul{
 
 .worksheet-header > button{
    font-size: .75em;
+}
+
+#client-worksheet-loading{
+   margin: 50vh auto;
 }
