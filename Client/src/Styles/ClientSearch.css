@@ -46,6 +46,11 @@
     cursor: pointer;
 }
 
+#client-search-loading{
+    padding-top: 5vh;
+    margin: auto;
+}
+
 #client-search-results {
     margin-top: 1em;
     border-collapse: collapse;
