@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import ReactLoading from 'react-loading';
 
 import {calcQuestions} from '../Questions';
 
@@ -17,7 +18,9 @@ class RentCalculator extends Component {
                     calcQuestions['attendExp'], calcQuestions['elderlyExp'], calcQuestions['medExp'], calcQuestions['perAGI'], calcQuestions['medDeduction'], calcQuestions['inHOPWA'], calcQuestions['employmentIncomeIncrease'], calcQuestions['selfSufficientIncome'], 
                     calcQuestions['incomeWSixMo'], calcQuestions['incomeIncreaseDate'], calcQuestions['baselineIncome'], calcQuestions['incomeEID'], 
                     calcQuestions['otherIncomeEID'], calcQuestions['applicableEID'], calcQuestions['totalAllowance'], calcQuestions['annualAdjustedIncome'], calcQuestions['monthlyAdjustedIncome'], calcQuestions['totalMonthlyRent'], calcQuestions['currentLeasePeriod'], calcQuestions['utilitiesIncluded'], 
-                    calcQuestions['utilityAllowance'], calcQuestions['tenantRentResponsibility'], calcQuestions['rentSubsidyPayment']]
+                    calcQuestions['utilityAllowance'], calcQuestions['tenantRentResponsibility'], calcQuestions['rentSubsidyPayment']
+                ],
+            loading: true
         }
     }
 
@@ -26,7 +29,8 @@ class RentCalculator extends Component {
             .then(res => {
                 this.setState({
                     date: res.data.DATA[0][3],
-                    data: res.data.DATA[0]
+                    data: res.data.DATA[0],
+                    loading: false
                 })
             })
     }
@@ -50,27 +54,41 @@ class RentCalculator extends Component {
     
     render(){
         let count = 3;
+
+        let view;
+
+        if(this.state.loading){
+            view = <div>
+                        <ReactLoading id="client-worksheet-loading" type={'spin'} color={'turquoise'} height={100} width={100}/>
+                    </div>
+        }else{
+            view = <div>
+                        <h2>{this.state.user}</h2>
+                        <h3>Date Submitted: {this.state.date}</h3>
+                        <table style={{width: '75%'}} border="2" cellPadding="10px">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.data.length > 0 ? this.state.fields.map(field => {
+                                        count++
+                                        return (<tr key={count}>
+                                            <td>{field.label}</td>
+                                            <td>{this.typeHandle(this.state.data[count])}</td>
+                                        </tr>)}) : null
+                                    }
+                                </tbody>
+                            </table>
+                    </div>
+        }
+
+
         return(
             <div>
-                <h2>{this.state.user}</h2>
-                <h3>Date Submitted: {this.state.date}</h3>
-                <table style={{width: '75%'}} border="2" cellPadding="10px">
-                        <thead>
-                            <tr>
-                                <th>Label</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.data.length > 0 ? this.state.fields.map(field => {
-                                count++
-                                return (<tr key={count}>
-                                    <td>{field.label}</td>
-                                    <td>{this.typeHandle(this.state.data[count])}</td>
-                                </tr>)}) : null
-                            }
-                        </tbody>
-                    </table>
+                {view}
             </div>
         );
     }

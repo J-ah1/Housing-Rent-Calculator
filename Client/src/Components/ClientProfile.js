@@ -12,16 +12,18 @@ class ClientProfile extends Component {
         super(props);
         this.state = {
             ID: -1,
-            FNAME: 'loading',
-            LNAME:'loading',
-            ADDSTREET:'loading',
-            ADDCITY:'loading',
-            ADDSTATE: 'loading',
-            ADDZIP:'loading',
-            GENDER:'loading',
-            DOB:'loading',
-            view: 'intake',
-            worksheets: []
+            FNAME: '',
+            LNAME:'',
+            ADDSTREET:'',
+            ADDCITY:'',
+            ADDSTATE: '',
+            ADDZIP:'',
+            GENDER:'',
+            DOB:'',
+            view: '',
+            worksheets: [],
+            loadingClientInfo: false,
+            loadingClientWorksheets: false
         }
     }
 
@@ -31,6 +33,12 @@ class ClientProfile extends Component {
 
     handleGetClientInformation(ID){
         // Get Client Basic Client Information => Set State
+
+        this.setState({
+                loadingClientInfo: true,
+                loadingClientWorksheets: true  
+                })
+
         axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
                     this.handleSettingClientInfoState(res.data.DATA[0])
@@ -51,7 +59,8 @@ class ClientProfile extends Component {
             ADDSTATE: clientData[5],
             ADDZIP: clientData[6],
             GENDER: clientData[7],
-            DOB: clientData[8]
+            DOB: clientData[8],
+            loadingClientInfo: false
         });
     }
 
@@ -64,7 +73,8 @@ class ClientProfile extends Component {
             sheets.push({ID: worksheet[0], Date: date, Calculation: worksheet[2]})
         })
         this.setState({
-            worksheets: sheets
+            worksheets: sheets,
+            loadingClientWorksheets: false
         })
     }
 
@@ -100,22 +110,28 @@ class ClientProfile extends Component {
 
 
     render() {
+
         let currentView = this.state.view;
         let view;
         switch(currentView){
             case('worksheet'):
-                view = <Worksheet worksheets={this.state.worksheets} id={this.state.ID} 
-                toNewWorksheet={this.navigateToRentCalculator} toView={this.navigateToView}
-                />
+                view = <Worksheet 
+                            worksheets={this.state.worksheets} 
+                            id={this.state.ID} 
+                            toNewWorksheet={this.navigateToRentCalculator} 
+                            toView={this.navigateToView}
+                            isLoading={this.state.loadingClientWorksheets}
+                        />
                 break;
             case('intake'):
             default:
                 view = <ClientIntake 
-                name={this.state.FNAME + ' ' + this.state.LNAME}
-                dob={this.state.DOB}
-                gender={this.state.GENDER}
-                address={this.state.ADDSTREET + ' ' + this.state.ADDCITY + ' ' + this.state.ADDZIP}
-                />
+                            name={this.state.FNAME + ' ' + this.state.LNAME}
+                            dob={this.state.DOB}
+                            gender={this.state.GENDER}
+                            address={this.state.ADDSTREET + ' ' + this.state.ADDCITY + ' ' + this.state.ADDZIP}
+                            isLoading={this.state.loadingClientInfo}
+                        />
                 break;
         }
 
