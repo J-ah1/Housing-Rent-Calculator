@@ -22,6 +22,7 @@ class RentCalculator extends Component {
                 ],
             loading: true
         }
+        
     }
 
     componentDidMount = () => {
@@ -51,11 +52,25 @@ class RentCalculator extends Component {
                 break;
         }
     }
+
     
     render(){
         let count = 3;
-
         let view;
+       
+        var self = this;
+        
+        if(window.location.href.indexOf("/print")>-1 && this.state.loading == false ){
+            
+            //wait for page to load before displaying dialog box
+            setTimeout(function() {
+                    //after print dialog box closes, redirect to profile
+                    var onPrintFinished = function(printed){console.log(self.props.history.go(-1))}
+                    //print the page
+                    onPrintFinished(window.print());
+            }, 500)
+            
+        }
 
         if(this.state.loading){
             view = <div>

@@ -2,6 +2,12 @@ import React from 'react';
 
 import ReactLoading from 'react-loading';
 
+//print function
+const printWorksheet = () => {
+    console.log('printing worksheet');
+    window.print();
+}
+
 const Worksheet = (props) => {
     if(props.isLoading){
         return(
@@ -30,7 +36,7 @@ const Worksheet = (props) => {
                                 <tr key={index}>
                                     <td>{sheet.Date}</td>
                                     <td>${sheet.Calculation}</td>
-                                    <td><button onClick={props.toView} id={sheet.ID}>View</button><button>Print</button></td>
+                                    <td><button onClick={props.toView} id={sheet.ID}>View</button><button onClick={props.print} id={sheet.ID}>Print</button></td>
                                 </tr>
                             )
                         }) : null}

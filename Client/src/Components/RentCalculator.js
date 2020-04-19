@@ -55,7 +55,7 @@ class RentCalculator extends Component {
         })
     }
 
-    handleDateChange = (date, event) => {
+    handleDateChange = (date) => {
         this.setState({
             startDate: date
         })
@@ -146,12 +146,6 @@ class RentCalculator extends Component {
 
         temp[1] = this.state.page1Results[9] - temp[0]
         temp[2] = (temp[1] / 12).toFixed(2)
-
-        for(let i = 0; i<3; i++){
-            if(temp[i]<0){
-                temp[i]=0
-            }
-        }
 
         this.setState({
             page4Results: temp

@@ -87,6 +87,11 @@ class ClientProfile extends Component {
         this.props.history.push(`/view/${event.target.id}`);
    }
 
+   printWorksheet = async event => {
+        const loadOtherPage = await this.props.history.push(`/view/${event.target.id}/print`);       
+   }
+   
+
 
    handleProfileNavigation = (e) => {
        
@@ -120,6 +125,7 @@ class ClientProfile extends Component {
                             id={this.state.ID} 
                             toNewWorksheet={this.navigateToRentCalculator} 
                             toView={this.navigateToView}
+                            print={this.printWorksheet}
                             isLoading={this.state.loadingClientWorksheets}
                         />
                 break;
