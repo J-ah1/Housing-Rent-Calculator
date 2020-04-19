@@ -2,12 +2,6 @@ import React from 'react';
 
 import ReactLoading from 'react-loading';
 
-//print function
-const printWorksheet = () => {
-    console.log('printing worksheet');
-    window.print();
-}
-
 const Worksheet = (props) => {
     if(props.isLoading){
         return(
