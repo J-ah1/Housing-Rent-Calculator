@@ -7,3 +7,35 @@ table {
 table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
     border: 1px solid black;
 }
+
+.rent-calc-container{
+    margin-top: 5vh;
+}
+
+.rent-calc-container-content{
+    margin-top: 5vh;
+    width: 50%;
+}
+
+.rent-calc-question-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.rent-calc-question-label-description{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+.rent-calc-label{
+    font-weight: 700;
+}
+
+.rent-calc-description{
+    width: 70%;
+    text-align: left;
+    margin-left: 2em;
+}
+
