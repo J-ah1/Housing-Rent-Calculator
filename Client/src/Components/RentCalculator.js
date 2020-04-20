@@ -134,10 +134,9 @@ class RentCalculator extends Component {
         //wishlist check for invalid future date
         let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
         
-        //when difference results in error because date has been cleared out
-        if(difference == 18372)
+        if(difference == (currDate - new Date('12-31-1969'))){
             difference = 0
-        
+        } 
         if(difference < 365 && this.state.incomeIncreaseDate){
             temp[8] = temp[8] * 2
             this.setState({
@@ -151,7 +150,6 @@ class RentCalculator extends Component {
             })
         }
 
-        console.log(this.state.page3Results)
         this.setState({
             page3Results: temp
         })
