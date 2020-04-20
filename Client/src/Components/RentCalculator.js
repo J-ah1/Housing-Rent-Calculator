@@ -16,7 +16,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
-            page: 3,
+            page: 0,
             startDate: null,
             incomeIncreaseDate: false,
             page1Results: new Array(11).fill(0),
@@ -132,11 +132,15 @@ class RentCalculator extends Component {
         }
 
         //wishlist check for invalid future date
-        let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
-        
-        if(difference == (currDate - new Date('12-31-1969'))){
+        let difference = Math.abs(Math.ceil((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
+
+        //Accomodate when the user clears out the datepicker field 
+        let errorDate = new Date(null)
+        let errorDifference = Math.abs(Math.ceil((currDate.getTime()-errorDate.getTime())/(1000*3600*24)))
+        if(difference == errorDifference){
             difference = 0
         } 
+
         if(difference < 365 && this.state.incomeIncreaseDate){
             temp[8] = temp[8] * 2
             this.setState({
@@ -201,7 +205,7 @@ class RentCalculator extends Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         today = `${today.getFullYear()}-${mm}-${dd}`
         console.log(typeof(this.state.page4Results[4]))
-        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+        axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                     &annualHouseHoldWages=${this.state.page1Results[0]}
                     &periodicPayment=${this.state.page1Results[1]}
                     &unearnedIncome=${this.state.page1Results[2]}
