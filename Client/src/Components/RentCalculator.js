@@ -34,6 +34,7 @@ class RentCalculator extends Component {
     }
 
     clickedBack = (e) =>{
+        window.scroll(0,0);
         if(this.state.page !== 1){
             const page = this.state.page - 1
             this.setState({
@@ -43,6 +44,7 @@ class RentCalculator extends Component {
     }
 
     clickedNext = (e) =>{
+        window.scroll(0,0);
         const page = this.state.page + 1
         this.setState({
             page: page
@@ -59,9 +61,9 @@ class RentCalculator extends Component {
         this.setState({
             startDate: date
         })
-        event.target.id = 4
-        event.target.value = date
-        this.page3Answers(event)
+        // event.target.id = 4
+        // event.target.value = date
+        // this.page3Answers(event)
     }
 
     page1Answers = (event) => {
