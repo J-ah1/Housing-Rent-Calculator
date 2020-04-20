@@ -18,6 +18,7 @@ class RentCalculator extends Component {
             id: -1,
             page: 3,
             startDate: null,
+            isDateNull: false, //boolean to check if date value should be recorded as null
             incomeIncreaseDate: false,
             page1Results: new Array(11).fill(0),
             page2Results: new Array(8).fill(0),
@@ -58,9 +59,17 @@ class RentCalculator extends Component {
     }
 
     handleDateChange = (date) => {
+        if(date == null){
+            date = new Date(),
+            this.setState({
+                isDateNull: true
+            })
+        }
+
         this.setState({
             startDate: date
         })
+        console.log(this.state.isDateNull)
         this.page3Answers(1, date)
     }
 
@@ -146,6 +155,12 @@ class RentCalculator extends Component {
             })
         }
 
+        if(this.isDateNull){
+            temp[4]= null
+        }
+
+        console.log("temp4 "+temp[4]+"\t"+this.state.isDateNull)
+        console.log(this.state.page3Results)
         this.setState({
             page3Results: temp
         })
