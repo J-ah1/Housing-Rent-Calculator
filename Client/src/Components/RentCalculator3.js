@@ -19,16 +19,14 @@ function questionType(props, type, count){
                 </div>
             break;
         case("date"):
-            input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
-            //note: make the placeholder the default view
-            // input = <div>
-            //             <DatePicker
-            //                 id={count}
-            //                 selected={props.startDate}
-            //                 onChange={props.dateHandler} 
-            //                 placeholderText="mm-dd-yyyy"
-            //             />
-            //         </div>
+            input = <div>
+                <DatePicker
+                    id={count}
+                    selected={props.startDate}
+                    onChange={props.dateHandler} 
+                    placeholderText="mm-dd-yyyy"
+                />
+            </div>
             break;
         default:
             input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />

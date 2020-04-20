@@ -16,9 +16,9 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
-            page: 0,
-            startDate: new Date(),
-            incomeIncreaseDate: new Date(),
+            page: 3,
+            startDate: null,
+            incomeIncreaseDate: false,
             page1Results: new Array(11).fill(0),
             page2Results: new Array(8).fill(0),
             page3Results: new Array(9).fill(0),
@@ -61,9 +61,7 @@ class RentCalculator extends Component {
         this.setState({
             startDate: date
         })
-        // event.target.id = 4
-        // event.target.value = date
-        // this.page3Answers(event)
+        this.page3Answers(1, date)
     }
 
     page1Answers = (event) => {
@@ -106,19 +104,24 @@ class RentCalculator extends Component {
         this.page4Answers()
     }
 
-    page3Answers = (event) => {
+    page3Answers = (event, date = false) => {
         let temp = this.state.page3Results;
-        temp[event.target.id] = event.target.value
-        temp[8]=0;
-        for(let i = 6; i < 8; i++){
-            //later we have to check, if some expected number is NaN to default to 0 in results
-            if(!isNaN(parseFloat(temp[i]))){
-                temp[8] += parseFloat(temp[i])
-            }
+        if(date){
+            temp[4] = date
         }
-        temp[8] -= temp[5]
-        if(temp[8]<0){
-            temp[8]=0 //set to 0 if this total is negative
+        else {
+            temp[event.target.id] = event.target.value
+            temp[8]=0;
+            for(let i = 6; i < 8; i++){
+                //later we have to check, if some expected number is NaN to default to 0 in results
+                if(!isNaN(parseFloat(temp[i]))){
+                    temp[8] += parseFloat(temp[i])
+                }
+            }
+            temp[8] -= temp[5]
+            if(temp[8]<0){
+                temp[8]=0 //set to 0 if this total is negative
+            }
         }
 
         //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
@@ -130,8 +133,17 @@ class RentCalculator extends Component {
 
         //wishlist check for invalid future date
         let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
-        if(difference > 365){
+        if(difference < 365 && this.state.incomeIncreaseDate){
+            temp[8] = temp[8] * 2
+            this.setState({
+                incomeIncreaseDate: false
+            })
+        }
+        else if(difference > 365 && !this.state.incomeIncreaseDate){
             temp[8] = temp[8]/2
+            this.setState({
+                incomeIncreaseDate: true
+            })
         }
 
         this.setState({
@@ -185,7 +197,7 @@ class RentCalculator extends Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         today = `${today.getFullYear()}-${mm}-${dd}`
         console.log(typeof(this.state.page4Results[4]))
-        axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                     &annualHouseHoldWages=${this.state.page1Results[0]}
                     &periodicPayment=${this.state.page1Results[1]}
                     &unearnedIncome=${this.state.page1Results[2]}
