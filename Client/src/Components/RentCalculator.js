@@ -16,7 +16,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
-            page: 3,
+            page: 0,
             startDate: null,
             incomeIncreaseDate: false,
             page1Results: new Array(11).fill(0),
@@ -309,30 +309,32 @@ class RentCalculator extends Component {
 
         switch(this.state.page){
             case(0):
-                button = <button type="button" onClick={this.clickedNext}>Start</button>
+                button = <button className="btn text-white rent-calc-button" type="button" onClick={this.clickedNext}>Start</button>
                 break;
             case(5):
-                button = <button type="button" onClick={this.clickedBack}>Back</button>
+                button = <button className="btn text-white rent-calc-button"  type="button" onClick={this.clickedBack}>Back</button>
                 break;
             default:
-                button = <div>{this.state.page < 2 ? null : <button type="button" onClick={this.clickedBack}>Back</button>}<button type="button" onClick={this.clickedNext}>Next</button></div>
+                button = <div>{this.state.page < 2 ? null : <button className="btn text-white rent-calc-button"  type="button" onClick={this.clickedBack}>Back</button>}<button className="btn text-white rent-calc-button"  type="button" onClick={this.clickedNext}>Next</button></div>
                 break;
         }
 
         return(
             <div>
-                <form>
-                    {inputs}
-                </form>
                 
+                    <form>
+                        {inputs}
+                    </form>
+                    
 
-                {this.state.page < 1 ? null : <div style={{display:'flex', justifyContent:'center', margin: '1em 0'}}>
-                    <meter value={this.state.page - 1} min="0" max="4" style={{width: '75%'}}></meter>
-                </div>}
+                    {this.state.page < 1 ? null : <div style={{display:'flex', justifyContent:'center', margin: '1em 0'}}>
+                        <meter value={this.state.page - 1} min="0" max="4" style={{width: '75%'}}></meter>
+                    </div>}
+                    
+                    <div id="rent-calc-button-container">
+                    {button} 
+                    </div>
                 
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                   {button} 
-                </div>
             </div>
         );
     }
