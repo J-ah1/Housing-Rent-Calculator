@@ -49,7 +49,9 @@ export default function RentCalculator5(props){
                     })}
                     <div className="rent-calc-question-container">
                         <div className="rent-calc-question-label-description">
-                            <p className="rent-calc-label">{results[0].label}</p>
+                            <p className="rent-calc-label">{results[0].label+"\t"}
+                                <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
+                            </p>
                             <p className="rent-calc-description">{results[0].description}</p>
                         </div>
                         <div>
@@ -57,7 +59,9 @@ export default function RentCalculator5(props){
                         </div>
                     </div>
                     <div className="rent-calc-question-container">
-                        <p className="rent-calc-label"> {results[1].label}</p>
+                        <p className="rent-calc-label"> {results[1].label+"\t"}
+                            <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
+                        </p>
                         <input className="rounded"  value={props.total2} readOnly/>
                     </div>
                 </div>

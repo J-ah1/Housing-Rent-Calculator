@@ -13,7 +13,10 @@ export default function RentCalculator4(props){
 
                     <div className="rent-calc-result-container">
                         <div>
-                            <p className="rent-calc-label">{results[0].label}</p>
+                            <p 
+                                className="rent-calc-label">{results[0].label+"\t"}
+                                <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content="Calculation: Annual Gross Income" >?</button>
+                            </p>
                         </div>
                         <div>
                             <input className="rounded" value={props.total1} onChange={props.inputHandler}  readOnly/>
@@ -25,7 +28,10 @@ export default function RentCalculator4(props){
                     </div>
                     <div className="rent-calc-result-container">
                         <div>
-                            <p className="rent-calc-label mr-5">{results[1].label}</p>
+                            <p 
+                                className="rent-calc-label mr-5">{results[1].label+"\t"}
+                                <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
+                            </p>
                         </div>
                         <div>
                         <input className="rounded"  value={props.total2} readOnly/>
@@ -37,7 +43,10 @@ export default function RentCalculator4(props){
 
                     <div className="rent-calc-result-container">
                         <div>
-                        <p className="rent-calc-label">{results[2].label}</p>
+                        <p 
+                            className="rent-calc-label">{results[2].label+"\t"}
+                            <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[2].notes} >?</button>
+                        </p>
                         </div>
                         <div>
                         <input className="rounded"  value={props.total3 } readOnly/>
@@ -49,7 +58,10 @@ export default function RentCalculator4(props){
 
                     <div className="rent-calc-result-container">
                         <div>
-                        <p className="rent-calc-label">{results[3].label}</p>
+                        <p 
+                            className="rent-calc-label">{results[3].label+"\t"}
+                            <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
+                        </p>
                         </div>
                         <div>
                         <input className="rounded"  value={props.total4} readOnly/>

@@ -67,7 +67,9 @@ export default function RentCalculator3(props){
                     )
                 }
                 <div className="rent-calc-question-container mt-3 mb-4">
-                    <p className="rent-calc-label">{results[0].label}</p>
+                    <p className="rent-calc-label">{results[0].label+"\t"}
+                        <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
+                    </p>
                     <input className="rounded" value={props.total1} readOnly/>
                 </div>
             </div>
