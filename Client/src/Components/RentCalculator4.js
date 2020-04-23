@@ -14,7 +14,7 @@ export default function RentCalculator4(props){
                     <div className="rent-calc-result-container">
                         <div>
                             <p 
-                                className="rent-calc-label">{results[0].label+"\t"}
+                                className="rent-calc-label">{"29. "+results[0].label+"\t"}
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content="Calculation: Annual Gross Income" >?</button>
                             </p>
                         </div>
@@ -29,7 +29,7 @@ export default function RentCalculator4(props){
                     <div className="rent-calc-result-container">
                         <div>
                             <p 
-                                className="rent-calc-label mr-5">{results[1].label+"\t"}
+                                className="rent-calc-label mr-5">{"30. "+results[1].label+"\t"}
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                             </p>
                         </div>
@@ -44,7 +44,7 @@ export default function RentCalculator4(props){
                     <div className="rent-calc-result-container">
                         <div>
                         <p 
-                            className="rent-calc-label">{results[2].label+"\t"}
+                            className="rent-calc-label">{"31. "+results[2].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[2].notes} >?</button>
                         </p>
                         </div>
@@ -59,7 +59,7 @@ export default function RentCalculator4(props){
                     <div className="rent-calc-result-container">
                         <div>
                         <p 
-                            className="rent-calc-label">{results[3].label+"\t"}
+                            className="rent-calc-label">{"32. "+results[3].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                         </p>
                         </div>

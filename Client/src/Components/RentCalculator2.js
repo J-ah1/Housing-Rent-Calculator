@@ -43,7 +43,7 @@ export default function RentCalculator2(props){
                                 count++
                                 return (<div className="rent-calc-question-container" key={count}>
                                     <div className="rent-calc-question-label-description">
-                                        <p className="rent-calc-label">{count + 1}. {question.label}</p>
+                                        <p className="rent-calc-label">{count + 12}. {question.label}</p>
                                         <p className="rent-calc-description">{question.description}</p>
                                     </div>
                                     <div>
@@ -53,21 +53,21 @@ export default function RentCalculator2(props){
                     })}
                     <div className="rent-calc-question-container mt-3 mb-4">
                         <p 
-                            className="rent-calc-label">{results[0].label+"\t"}
+                            className="rent-calc-label">{"17. "+results[0].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
                         </p>
                         <input className="rounded" value={props.total1} readOnly/>        
                     </div>
                     <div  className="rent-calc-question-container mb-4">
                         <p 
-                            className="rent-calc-label">{results[1].label+"\t"}
+                            className="rent-calc-label">{"18. "+results[1].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                         </p>
                         <input className="rounded" value={props.total2} readOnly/>
                     </div>
                     <div  className="rent-calc-question-container mb-4">
                         <p 
-                            className="rent-calc-label">{results[2].label+"\t"}
+                            className="rent-calc-label">{"19. "+results[2].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[2].notes} >?</button>
                         </p>
                         <input className="rounded" value={props.total3 > 0 ? props.total3 : 0} readOnly/>

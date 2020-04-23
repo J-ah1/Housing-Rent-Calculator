@@ -39,7 +39,7 @@ export default function RentCalculator5(props){
                                 count++
                                 return (<div className="rent-calc-question-container" key={count}>
                                     <div className="rent-calc-question-label-description">
-                                        <p className="rent-calc-label">{count + 1}. {question.label}</p>
+                                        <p className="rent-calc-label">{count + 33}. {question.label}</p>
                                         <p className="rent-calc-description">{question.description}</p>
                                     </div>
                                     <div>
@@ -49,7 +49,7 @@ export default function RentCalculator5(props){
                     })}
                     <div className="rent-calc-question-container">
                         <div className="rent-calc-question-label-description">
-                            <p className="rent-calc-label">{results[0].label+"\t"}
+                            <p className="rent-calc-label">{"37. "+results[0].label+"\t"}
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
                             </p>
                             <p className="rent-calc-description">{results[0].description}</p>
@@ -59,7 +59,7 @@ export default function RentCalculator5(props){
                         </div>
                     </div>
                     <div className="rent-calc-question-container">
-                        <p className="rent-calc-label"> {results[1].label+"\t"}
+                        <p className="rent-calc-label"> {"38. "+results[1].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                         </p>
                         <input className="rounded"  value={props.total2} readOnly/>
