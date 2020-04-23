@@ -6,6 +6,28 @@
    
    --->
 
+   <!--- Check user authorization --->
+   <cffunction name="checkUserAuth" returntype="boolean" access="remote">
+
+      <cflock timeout=20 scope="session" type="readonly">
+         <cfreturn structkeyexists(session, "userAuth")>
+      </cflock>
+
+   </cffunction>
+
+   <!--- Remove user authorization --->
+   <cffunction name="removeUserAuth" returntype="void" access="remote">
+
+      <cflock timeout=20 scope="session" type="exclusive">
+         <cfif structkeyexists(session, "userAuth")>
+            <cfscript>
+               structdelete(session,"userAuth",false);
+            </cfscript>
+         </cfif>
+      </cflock>
+
+   </cffunction>
+
    <!--- Return user info with a given username --->
    <cffunction name="getUserInfo" returntype="query" access="private">
       
@@ -29,6 +51,16 @@
       <cfargument name="password" type="string" required="true">
       <cfset password = Hash('#password#', "SHA-512")>
       <cfset user = getUserInfo('#username#')>
+
+      <!--- Add userAuth Session Key --->
+      <cfif user.recordCount EQ 1 AND '#password#' EQ user.pswd>
+         <cflock timeout=20 scope="session" type="exclusive">
+            <cfif not structkeyexists(session, "userAuth")>
+               <cfset session.userAuth = 1/>
+            </cfif>
+         </cflock>
+      </cfif>
+
       <cfreturn user.recordCount EQ 1 AND '#password#' EQ user.pswd>
 
    </cffunction>
@@ -36,8 +68,7 @@
 
    <!--- Validate arguments and query a new user into hcUser --->
    <cffunction name="registerUser" returntype="void" access="remote">
-      
-      
+
       <cfargument name="username" type="string" required="true">
       <cfargument name="firstname" type="string" required="true">
       <cfargument name="lastname" type="string" required="true">
@@ -46,7 +77,6 @@
       <cfargument name="phone" type="string" required="true">
       <cfargument name="squestion" type="string" required="true">
       <cfargument name="sanswer" type="string" required="true">
-
 
       <cfset password = Hash('#password#', "SHA-512")> 
       <cfset squestion = val('#squestion#')>
@@ -63,7 +93,6 @@
                   <cfqueryparam value='#sanswer#' cfsqltype='cf_sql_varchar' maxlength='50'>)
       </cfquery>
 
-
    </cffunction>
 
 
@@ -79,6 +108,7 @@
       </cfif>
 
       <cfreturn -1>
+
    </cffunction>
 
    <!--- Check if user answer matches corresponding database record --->
@@ -90,11 +120,13 @@
       <cfset user = getUserInfo('#username#')>
 
       <cfreturn user.sAnswer EQ '#answer#'>
+
    </cffunction>
    
 
    <!--- Update a user's password in database --->
    <cffunction name="updateUserPassword" returntype="void" access="remote">
+
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
@@ -105,6 +137,7 @@
             SET   pswd = <cfqueryparam value='#password#' cfsqltype='cf_sql_varchar' maxlength='128'>
             WHERE username = <cfqueryparam value='#username#' cfsqltype='cf_sql_varchar' maxlength='50'>
       </cfquery>
+
    </cffunction>
 
    <!---
@@ -116,6 +149,7 @@
 
    <!--- Return clientinfo with a given client ID --->
    <cffunction name="getClientInfo" returntype="query" access="private">
+
       <cfargument name="clientID" type="numeric" required="true">
       
       <!--- Query for client and return query --->
@@ -124,16 +158,22 @@
          FROM wfClient
          WHERE id = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
+
       <cfreturn clientInfo>
+
    </cffunction>
 
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" returntype="query" returnFormat="JSON" access="remote">
+
       <cfargument name="clientID" type="string" required="true">
+
       <cfset clientID = val('#clientID#')>
 
       <cfset clientInfo=getClientInfo('#clientID#')>
+
       <cfreturn clientInfo>
+
    </cffunction>
 
 
@@ -141,45 +181,63 @@
    <cffunction name="getClientWorksheets" returntype="query" access="private">
       <!--- Query for client and return query --->
       <cfargument name="clientID" type="numeric" required="true">
+
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
          SELECT id, dateSubmitted, rentSubsidyPayment
          FROM worksheet
          WHERE clientID = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
+
       <cfreturn clientWorksheets>
    </cffunction>
 
    <!--- Public return of clientworksheets --->
    <cffunction name="clientWorksheetProfile" returntype="query" returnFormat="JSON" access="remote">
+      
       <cfargument name="clientID" type="string" required="true">
+
       <cfset clientID = val('#clientID#')>
+
       <cfset worksheets=getClientWorksheets('#clientID#')>
+
       <cfreturn worksheets>
+
    </cffunction>
 
    <!--- Return viewCWorksheet information for viewing --->
    <cffunction name="getCWorksheetData" returntype="query" access="private">
+      
       <cfargument name="id" type="numeric" required="true">
+
       <cfquery name = "cWorksheetData" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM worksheet
          WHERE id = <cfqueryparam value='#id#' cfsqltype='cf_sql_integer'>
       </cfquery>
+
       <cfreturn cWorksheetData>
+
    </cffunction>
 
    <!--- Public return of getCWorksheetData --->
    <cffunction name="viewCWorksheets" returntype="query" returnFormat="JSON" access="remote">
+
       <cfargument name="id" type="string" required="true">
+
       <cfset id = val('#id#')>
+
       <cfset worksheet=getCWorksheetData('#id#')>
+
       <cfreturn worksheet>
+
    </cffunction>
 
 
    <!--- function that return clients whose name(s) match the input given --->
    <cffunction name="clientSearchRegex" returntype="query" access="private">
+
       <cfargument name="clientName" type="string" required="true">
+
       <cfset splitCName = listToArray(clientName, " ")>
       <cfset splitCName[1] = splitCName[1]&'%'>
       <cfif arrayLen(splitCName) GT 1>
@@ -205,13 +263,18 @@
          </cfquery>
          <cfreturn clientSearchSQL1>
       </cfif> 
+
    </cffunction>
 
    <!--- function that return clients whose name(s) matches the input given --->
    <cffunction name="getCSearchRegex" returnFormat="JSON" access="remote">
+
       <cfargument name="clientName" type="string" required="true">
+
       <cfset clients= clientSearchRegex('#clientName#')>
+
       <cfreturn clients>
+
    </cffunction>
 
 
@@ -248,7 +311,9 @@
 
    <!---Insert Worksheet into database--->
    <cffunction name="addWorksheet" returntype="void" access="remote">
+
       <cfargument name="clientID" type="string" required="true">
+      <!--- (Uncomment below when we can pass userID) --->
       <!--- <cfargument name="userID" type="string" required="true"> --->
       <cfargument name="dateSubmitted" type="string" required="true">
 
@@ -294,9 +359,8 @@
       <cfargument name="utilityAllowance" type="string" default="0.00" required="false">
       <cfargument name="tenantRentResponsibility" type="string" default="0.00" required="false">
       <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
-      
 
-      <cfset userID = 12>
+      <cfset userID = 12> <!--- (Delete this and allow front to set UserID) --->
       <cfset clientID = val('#clientID#')>
       
       <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
@@ -362,8 +426,7 @@
                   <cfqueryparam value='#tenantRentResponsibility#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#rentSubsidyPayment#' cfsqltype='cf_sql_money'>)
       </cfquery>
-
-
+      
    </cffunction>
 
 
