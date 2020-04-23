@@ -17,6 +17,7 @@ class RentCalculator extends Component {
         this.state={
             id: -1,
             page: 0,
+            progressBar: 0,
             startDate: null,
             incomeIncreaseDate: false,
             page1Results: new Array(11).fill(0),
@@ -45,10 +46,19 @@ class RentCalculator extends Component {
 
     clickedNext = (e) =>{
         window.scroll(0,0);
-        const page = this.state.page + 1
-        this.setState({
-            page: page
-        })
+
+        const {page, progressBar} = this.state;
+
+        this.setState(prevState => ({
+            page: prevState.page + 1
+        }))
+
+        if(progressBar === page){
+            this.setState(prevState => ({
+                progressBar: prevState.progressBar + 1
+            }))
+        }
+
     }
 
     handleViewChange = (page) => {
@@ -420,7 +430,7 @@ class RentCalculator extends Component {
                     
 
                     {this.state.page < 1 ? null : <div style={{display:'flex', justifyContent:'center', margin: '1em 0'}}>
-                        <meter value={this.state.page - 1} min="0" max="4" style={{width: '75%'}}></meter>
+                        <meter value={this.state.progressBar - 1} min="0" max="4" style={{width: '75%'}}></meter>
                     </div>}
                     
                     <div id="rent-calc-button-container">
