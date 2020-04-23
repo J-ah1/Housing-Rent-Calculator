@@ -16,7 +16,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
-            page: 3,
+            page: 0,
             startDate: null,
             incomeIncreaseDate: false,
             page1Results: new Array(11).fill(0),
@@ -64,9 +64,20 @@ class RentCalculator extends Component {
         this.page3Answers(1, date)
     }
 
+    defaultNegative = (arr) =>{
+        for(let i = 0; i<arr.length; i++){
+            //if the value is a number and negative, then default to zer0
+            if(!isNaN(parseFloat(arr[i])) && parseFloat(arr[i])<0){
+                arr[i]=0
+            }
+        }
+    }
+
+
     page1Answers = (event) => {
         let temp = this.state.page1Results;
         temp[event.target.id] = event.target.value;
+        this.state.page2Results[1]=400
 
         temp[9] = 0
         for(let i = 0; i < 8; i++){
@@ -75,7 +86,12 @@ class RentCalculator extends Component {
                 temp[9] += parseFloat(temp[i])
             }
         }
+        temp[9] = Math.round(100*temp[9])/100;
+
         temp[10] = temp[9]/12;
+        temp[10] = Math.round(100*temp[10])/100;
+
+        this.defaultNegative(temp)
         this.setState({
             page1Results: temp
         });
@@ -85,6 +101,7 @@ class RentCalculator extends Component {
     page2Answers = (event) => {
         let temp = this.state.page2Results;
         temp[event.target.id] = event.target.value
+        temp[1]=400
         temp[5]=0
         for(let i = 3; i < 5; i++){
             //later we have to check, if some expected number is NaN to default to 0 in results
@@ -92,11 +109,16 @@ class RentCalculator extends Component {
                 temp[5] += parseFloat(temp[i])
             }
         }
+        temp[5] = Math.round(100*temp[5])/100;
+
         temp[6] = (this.state.page1Results[9] * .03)
+        temp[6] = Math.round(100*temp[6])/100;
+
         temp[7] = parseFloat(temp[5]) - parseFloat(temp[6])
-        if(temp[7]<0){ //if temp[7] < 0 it should default to 0
-            temp[7]=0
-        }
+        temp[7] = Math.round(100*temp[7])/100;
+        
+        
+        this.defaultNegative(temp)
         console.log(temp)
         this.setState({
             page2Results: temp
@@ -106,6 +128,8 @@ class RentCalculator extends Component {
 
     page3Answers = (event, date = false) => {
         let temp = this.state.page3Results;
+        this.state.page2Results[1]=400
+
         if(date !== false){
             temp[4] = date
         }
@@ -119,9 +143,6 @@ class RentCalculator extends Component {
                 }
             }
             temp[8] -= temp[5]
-            if(temp[8]<0){
-                temp[8]=0 //set to 0 if this total is negative
-            }
         }
 
         //if currDate - incomeIncreaseDate > 12months (365 days), temp[8] = temp[8]/2
@@ -132,11 +153,15 @@ class RentCalculator extends Component {
         }
 
         //wishlist check for invalid future date
-        let difference = Math.abs(Math.floor((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
-        
-        if(difference == (currDate - new Date('12-31-1969'))){
+        let difference = Math.abs(Math.ceil((currDate.getTime()-newDate.getTime())/(1000*3600*24)))
+
+        //Accomodate when the user clears out the datepicker field 
+        let errorDate = new Date(null)
+        let errorDifference = Math.abs(Math.ceil((currDate.getTime()-errorDate.getTime())/(1000*3600*24)))
+        if(difference == errorDifference){
             difference = 0
         } 
+
         if(difference < 365 && this.state.incomeIncreaseDate){
             temp[8] = temp[8] * 2
             this.setState({
@@ -149,7 +174,10 @@ class RentCalculator extends Component {
                 incomeIncreaseDate: true
             })
         }
+        temp[8] = Math.round(100*temp[8])/100;
 
+        this.defaultNegative(temp)
+        console.log(this.state.page3Results)
         this.setState({
             page3Results: temp
         })
@@ -159,12 +187,25 @@ class RentCalculator extends Component {
     page4Answers = () => {
         let temp = this.state.page4Results;
         
-        temp[0] = (parseFloat(this.state.page2Results) * 480) + (this.state.page2Results[1] === "Yes" ? 400 : 0) + 
-                    parseFloat(this.state.page2Results[2]) + this.state.page2Results[7] + this.state.page3Results[8]
+        //field 29 comes from page1Results[9]
 
-        temp[1] = this.state.page1Results[9] - temp[0]
-        temp[2] = (temp[1] / 12).toFixed(2)
+        //field 30
+        temp[0]=0
+        temp[0] +=  !isNaN(parseFloat(this.state.page2Results[0])) ? (parseFloat(this.state.page2Results[0])*480) : 0
+        temp[0] +=  !isNaN(parseFloat(this.state.page2Results[2])) ? parseFloat(this.state.page2Results[2]) : 0
+        temp[0] +=  this.state.page2Results[1] + this.state.page2Results[7] + this.state.page3Results[8]
+        temp[0] = Math.round(100*temp[0])/100;
 
+        //field 31
+        temp[1] = parseFloat(this.state.page1Results[9]) - parseFloat(temp[0])
+        temp[1] = Math.round(100*temp[1])/100;
+
+        //field 32
+        temp[2] = temp[1]/12
+        temp[2] = Math.round(100*temp[2])/100;
+
+        this.defaultNegative(temp)
+        console.log(temp)
         this.setState({
             page4Results: temp
         })
@@ -173,19 +214,69 @@ class RentCalculator extends Component {
     page5Answers = (event) => {
         let temp = this.state.page5Results;
         temp[event.target.id] = event.target.value
+        this.state.page2Results[1]=400
+
+        let otherIncome = false;
         
         if(this.state.page1Results[8] === "Yes"){
+            //if client solely depended on public assitance
             temp[4] = 0
         } else {
-            let total = 0
-            for(let i = 0; i <= 8; i++){
-                total += this.state.page1Results[i]
+           
+            //find out if some other income was entered
+            for(let i = 0; i< 7; i++){
+                if(parseFloat(this.state.page1Results[i])>0 || this.state.page1Results[i] != ""){
+                    otherIncome = true;
+                    break;
+                }
             }
-            temp[4] = total > 0 ? (this.state.page1Results[10] * .30).toFixed(2) : ((this.state.page1Results[10] * .10) > (this.state.page4Results[2] * .30) ? (this.state.page1Results[10] * .10) : (this.state.page4Results[2] * .30))
+
+            //if input in "Public assistance received" field was deleted, default now to zero
+            if(isNaN(this.state.page1Results[7]))
+                this.state.page1Results[7]=0
+
+            //If an amount was entered for "Public assistance received"
+                //and any other income was entered then use Method 3.
+            if(this.state.page1Results[7]>0 && otherIncome){
+                temp[4]= parseFloat(this.state.page1Results[10])*.30
+            }
+
+            //Otherwise use the higher value of Method 1 or Method 2.
+            else{
+                //if Method1 > Method2, use Method 1
+                
+                if((parseFloat(this.state.page4Results[2])*.30)>parseFloat(this.state.page1Results[10])*.1){
+                    temp[4]=parseFloat(this.state.page4Results[2])*.30
+                    console.log(temp[4])
+                }
+                //else use Method 2
+                else{
+                    temp[4]=parseFloat(this.state.page1Results[10])*.10
+                }
+            }
+            
         }
 
-        temp[4] = temp[4] - (temp[2] === "No" ? parseFloat(temp[3]) : 0)
-        temp[5] = parseFloat(temp[0]) - temp[4] > 0 ? parseFloat(temp[0]) - temp[4] : parseFloat(temp[0])
+        //If utilities are paid separately then Subtract Utility allowance
+        //temp[4] = temp[4] - (temp[2] === "No" ? parseFloat(temp[3]) : 0)
+        if(temp[2] === "No"){
+            if(temp[3]!="")//treat deleted input like a zero,by ignoring if only a space
+                temp[4]-=parseFloat(temp[3])
+        }
+        temp[4] = Math.round(100*temp[4])/100;
+
+        if(!isNaN(parseFloat(temp[0])))
+            temp[5] = temp[4] < 0 ? parseFloat(temp[0]) : parseFloat(temp[0])-parseFloat(temp[4])
+        temp[5] = Math.round(100*temp[5])/100;
+
+        for(let i = 0; i<temp.length; i++){
+            //if the value is a number and negative, then default to zer0
+            if(i==4)
+                continue
+            if(!isNaN(parseFloat(temp[i])) && parseFloat(temp[i])<0){
+                temp[i]=0
+            }
+        }
         
         this.setState({
             page5Results: temp
@@ -201,7 +292,7 @@ class RentCalculator extends Component {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         today = `${today.getFullYear()}-${mm}-${dd}`
         console.log(typeof(this.state.page4Results[4]))
-        axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+        axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                     &annualHouseHoldWages=${this.state.page1Results[0]}
                     &periodicPayment=${this.state.page1Results[1]}
                     &unearnedIncome=${this.state.page1Results[2]}
@@ -282,6 +373,7 @@ class RentCalculator extends Component {
                 console.log("show page 4 of rent calculator")
                 inputs = <RentCalculator4
                     viewHandler = {this.handleViewChange}
+                    inputHandler = {this.page4Answers}
                     total1={this.state.page1Results[9]}
                     total2={this.state.page4Results[0]}
                     total3={this.state.page4Results[1]}
@@ -309,30 +401,32 @@ class RentCalculator extends Component {
 
         switch(this.state.page){
             case(0):
-                button = <button type="button" onClick={this.clickedNext}>Start</button>
+                button = <button className="btn text-white rent-calc-button" type="button" onClick={this.clickedNext}>Start</button>
                 break;
             case(5):
-                button = <button type="button" onClick={this.clickedBack}>Back</button>
+                button = <button className="btn text-white rent-calc-button"  type="button" onClick={this.clickedBack}>Back</button>
                 break;
             default:
-                button = <div>{this.state.page < 2 ? null : <button type="button" onClick={this.clickedBack}>Back</button>}<button type="button" onClick={this.clickedNext}>Next</button></div>
+                button = <div>{this.state.page < 2 ? null : <button className="btn text-white rent-calc-button"  type="button" onClick={this.clickedBack}>Back</button>}<button className="btn text-white rent-calc-button"  type="button" onClick={this.clickedNext}>Next</button></div>
                 break;
         }
 
         return(
             <div>
-                <form>
-                    {inputs}
-                </form>
                 
+                    <form>
+                        {inputs}
+                    </form>
+                    
 
-                {this.state.page < 1 ? null : <div style={{display:'flex', justifyContent:'center', margin: '1em 0'}}>
-                    <meter value={this.state.page - 1} min="0" max="4" style={{width: '75%'}}></meter>
-                </div>}
+                    {this.state.page < 1 ? null : <div style={{display:'flex', justifyContent:'center', margin: '1em 0'}}>
+                        <meter value={this.state.page - 1} min="0" max="4" style={{width: '75%'}}></meter>
+                    </div>}
+                    
+                    <div id="rent-calc-button-container">
+                    {button} 
+                    </div>
                 
-                <div style={{display: 'flex', justifyContent: 'center'}}>
-                   {button} 
-                </div>
             </div>
         );
     }

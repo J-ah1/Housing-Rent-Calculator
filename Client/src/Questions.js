@@ -62,7 +62,7 @@ export const calcQuestions = {
     "disabledDeduction": {
       "label": "$400 for elderly or disabled family member",
       "description": "This $400 deduction always applies to households with persons with HIV or AIDS if they are the head/co-head, spouse, or sole member, OR when the head/co-head, spouse, or sole member is at least 62 years of age. ($400 is given one time only at each calculation and/or re-calculation of income.)",
-      'type': 'radio'
+      'type': 'dollarDisabled'
     },
     "childcareExp": {
       "label": "Reasonable childcare expenses (Annual)",

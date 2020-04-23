@@ -37,30 +37,32 @@ export default function RentCalculator1(props){
         <div className="rent-calc-container" align="center">
                 {/* Here is where you add the contents of what will be displayed to screen */}
                 {/* <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button> */}        
-                <h1>Gross Household Income</h1>
-                <div className="rent-calc-container-content">
-                {questions.map(question => {
-                            count++
-                            return (<div className="rent-calc-question-container" key={count}>
-                                <div className="rent-calc-question-label-description">
-                                    <p className="rent-calc-label">{count + 1}. {question.label}</p>
-                                    <p className="rent-calc-description">{question.description}</p>
-                                </div>
-                                <div>
-                                {questionType(props, question.type, count)}
-                                </div>
-                            </div>)
-                })}
-                    <div className="rent-calc-question-container mt-3 mb-4">
-                        <p className="rent-calc-label">{results[0].label}</p>
-                        <input className="rounded" value={props.total1} readOnly/>
-                    </div>
-                    <div  className="rent-calc-question-container">
-                        <p className="rent-calc-label">{results[1].label}</p>
-                        <input className="rounded" value={props.total2} readOnly/>
+                
+                <div className="rent-calc-background">
+                    <h1>Gross Household Income</h1>
+                    <div className="rent-calc-container-content">
+                    {questions.map(question => {
+                                count++
+                                return (<div className="rent-calc-question-container" key={count}>
+                                    <div className="rent-calc-question-label-description">
+                                        <p className="rent-calc-label">{count + 1}. {question.label}</p>
+                                        <p className="rent-calc-description">{question.description}</p>
+                                    </div>
+                                    <div>
+                                    {questionType(props, question.type, count)}
+                                    </div>
+                                </div>)
+                    })}
+                        <div className="rent-calc-question-container mt-3 mb-4">
+                            <p className="rent-calc-label">{results[0].label}</p>
+                            <input className="rounded" value={props.total1} readOnly/>
+                        </div>
+                        <div  className="rent-calc-question-container">
+                            <p className="rent-calc-label">{results[1].label}</p>
+                            <input className="rounded" value={props.total2} readOnly/>
+                        </div>
                     </div>
                 </div>
-
                 
         </div>    
     )  
