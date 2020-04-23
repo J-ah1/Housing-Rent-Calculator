@@ -38,7 +38,6 @@ table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
     padding: 1em;
 }
 
-
 .rent-calc-container{
     margin-top: 5vh;
 }
@@ -113,3 +112,17 @@ table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
 .rent-calc-result-container > div > p{
     text-align: left;
 }
+
+.popover{
+    background: #F2E988;
+}
+.popover-header{
+    background: #F2E988;
+}
+
+.rent-calc-help{
+    background: #F2E988;
+    border-radius: 50%;
+    color: gray;
+}
+

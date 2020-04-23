@@ -7,6 +7,9 @@ export default function RentCalculator0(props){
                     <button className="btn text-white mt-2" type = "button" onClick = {props.backHandler} >Back</button>
                     <h1>Welcome to the Rent Calculator </h1>
                     <span></span>
+                    <div >
+                        <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content="Calculation Notes" data-trigger="hover" >?</button>
+                    </div>
                 </div>
 
                 <div id="rent-calc-intro-description">

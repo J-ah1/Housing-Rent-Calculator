@@ -34,7 +34,11 @@ export default function RentCalculator1(props){
     let count = -1;
 
     return(
+        
         <div className="rent-calc-container" align="center">
+            <div >
+                <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content="Calculation Notes" data-trigger="hover" >?</button>
+            </div>
                 {/* Here is where you add the contents of what will be displayed to screen */}
                 {/* <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button> */}        
                 
@@ -57,6 +61,7 @@ export default function RentCalculator1(props){
                             <p className="rent-calc-label">{results[0].label}</p>
                             <input className="rounded" value={props.total1} readOnly/>
                         </div>
+                        
                         <div  className="rent-calc-question-container">
                             <p className="rent-calc-label">{results[1].label}</p>
                             <input className="rounded" value={props.total2} readOnly/>

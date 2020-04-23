@@ -32,6 +32,7 @@ class RentCalculator extends Component {
         this.setState({
             id: this.props.match.params.id
         })
+        window.$('[data-toggle="popover"]').popover();
     }
 
     clickedBack = (e) =>{
