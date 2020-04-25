@@ -43,6 +43,10 @@ class RentCalculator extends Component {
         });
     }
 
+    goToProfile = (e) => {
+        this.props.history.push(`/profile/${this.state.id}`)
+    }
+
     clickedBack = (e) =>{
         window.scroll(0,0);
         if(this.state.page !== 1){
@@ -321,7 +325,7 @@ class RentCalculator extends Component {
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             today = `${today.getFullYear()}-${mm}-${dd}`
             console.log(today)
-            axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+            axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
                         &annualHouseHoldWages=${this.state.page1Results[0]}
                         &periodicPayment=${this.state.page1Results[1]}
                         &unearnedIncome=${this.state.page1Results[2]}
@@ -423,7 +427,7 @@ class RentCalculator extends Component {
                 break;
             default:
                 inputs = <RentCalculator0
-                    backHandler = {this.clickedBack}
+                    backHandler = {this.goToProfile}
                     logOffHandler = {this.clickedLogOff}
                     viewHandler = {this.handleViewChange}
                 />

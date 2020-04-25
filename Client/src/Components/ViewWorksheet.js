@@ -9,6 +9,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             clientName: '',
+            clientID: -1,
             date: '',
             data: [],
             fields: [calcQuestions['annualHouseholdWages'], calcQuestions['periodicPayment'], calcQuestions['unearnedIncome'], 
@@ -30,6 +31,7 @@ class RentCalculator extends Component {
             .then(res => {
                 this.setState({
                     date: res.data.DATA[0][3],
+                    clientID: res.data.DATA[0][2],
                     data: res.data.DATA[0],
                     loading: false
                 })
@@ -78,6 +80,7 @@ class RentCalculator extends Component {
                     </div>
         }else{
             view = <div>
+                        <button onClick = { (e) => this.props.history.push(`/profile/${this.state.clientID}`) } style={{float : 'left', paddingRight : '5px'}}>Back</button>
                         <h2>{this.state.user}</h2>
                         <h3>Date Submitted: {this.state.date}</h3>
                         <table style={{width: '75%'}} border="2" cellPadding="10px">

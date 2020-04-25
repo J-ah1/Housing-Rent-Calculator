@@ -90,6 +90,10 @@ class ClientProfile extends Component {
    printWorksheet = async event => {
         const loadOtherPage = await this.props.history.push(`/view/${event.target.id}/print`);       
    }
+
+   backToSearch = (event) => {
+        this.props.history.push('/search');
+   }
    
 
 
@@ -127,6 +131,7 @@ class ClientProfile extends Component {
                             toView={this.navigateToView}
                             print={this.printWorksheet}
                             isLoading={this.state.loadingClientWorksheets}
+                            searchHandler = {this.backToSearch}
                         />
                 break;
             case('intake'):
@@ -137,12 +142,16 @@ class ClientProfile extends Component {
                             gender={this.state.GENDER}
                             address={this.state.ADDSTREET + ' ' + this.state.ADDCITY + ' ' + this.state.ADDZIP}
                             isLoading={this.state.loadingClientInfo}
+                            searchHandler = {this.backToSearch}
                         />
                 break;
         }
 
         return (
             <div>
+                <p>
+                <button onClick = { (e) => this.props.history.push('/search') } style={{float : 'left', paddingRight : '5px'}}>Back To Search</button>
+                </p>
                 <nav>
                     <ul id="client-intake-nav-buttons">
                         <li>
