@@ -149,9 +149,7 @@ class ClientProfile extends Component {
 
         return (
             <div>
-                <p>
                 <button onClick = { (e) => this.props.history.push('/search') } style={{float : 'left', paddingRight : '5px'}}>Back To Search</button>
-                </p>
                 <nav>
                     <ul id="client-intake-nav-buttons">
                         <li>
