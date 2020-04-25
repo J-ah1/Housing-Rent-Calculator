@@ -364,7 +364,7 @@
       <cfset clientID = val('#clientID#')>
       
       <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
-      <cfif len(trim(incomeIncreaseDate))>
+      <cfif isNull(incomeIncreaseDate)>
          <cfset incomeIncreaseDate = parseDateTime(incomeIncreaseDate, "yyyy-mm-dd")>
       </cfif>
       
@@ -409,7 +409,7 @@
                   <cfqueryparam value='#employmentIncomeIncrease#' cfsqltype='cf_sql_bit'>, 
                   <cfqueryparam value='#selfSufficientIncome#' cfsqltype='cf_sql_bit'>,
                   <cfqueryparam value='#incomeWSixMo#' cfsqltype='cf_sql_bit'>,
-                  <cfqueryparam value='#incomeIncreaseDate#' null='#NOT len(trim(incomeIncreaseDate))#' cfsqltype='cf_sql_date'>, 
+                  <cfqueryparam value='#incomeIncreaseDate#' null='#NOT IsDate(incomeIncreaseDate)#' cfsqltype='cf_sql_date'>, 
                   <cfqueryparam value='#baselineIncome#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#incomeEID#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#otherIncomeEID#' cfsqltype='cf_sql_money'>, 
