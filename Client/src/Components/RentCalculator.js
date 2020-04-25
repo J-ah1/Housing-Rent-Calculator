@@ -436,7 +436,7 @@ class RentCalculator extends Component {
         }
 
         return(
-            <div>
+            <div id="rent-calc-background">
                 
                     <form>
                         {inputs}

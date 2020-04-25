@@ -36,6 +36,7 @@ export default function RentCalculator2(props){
 
     return(
         <div className="rent-calc-container" align="center">
+            <div className="rent-calc-foreground">
                 <h1>Monetary Allowances</h1>
 
                 <div className="rent-calc-container-content">
@@ -74,6 +75,7 @@ export default function RentCalculator2(props){
                     </div>
 
                 </div> 
+            </div>
         </div>    
     )  
 }

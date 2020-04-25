@@ -48,58 +48,32 @@ export default function RentCalculator3(props){
     return( 
         <div className="rent-calc-container" align="center">
         {/* Here is where you add the contents of what will be displayed to screen */}
-
-            {/* <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button> */}
-            <h1>Earned Income Disregard</h1>
-            <div className="rent-calc-container-content">
-                {questions.map(question => {
-                                    count++
-                                    return (<div className="rent-calc-question-container" key={count}>
-                                        <div className="rent-calc-question-label-description">
-                                            <p className="rent-calc-label">{count + 20}. {question.label}</p>
-                                            <p className="rent-calc-description">{question.description}</p>
-                                        </div>
-                                        
-                                        {questionType(props, question.type, count)}
-                                        
-                                    </div>)
-                                }
-                    )
-                }
-                <div className="rent-calc-question-container mt-3 mb-4">
-                    <p className="rent-calc-label">{"28. "+results[0].label+"\t"}
-                        <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
-                    </p>
-                    <input className="rounded" value={props.total1} readOnly/>
+            <div className="rent-calc-foreground">
+                {/* <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button> */}
+                <h1>Earned Income Disregard</h1>
+                <div className="rent-calc-container-content">
+                    {questions.map(question => {
+                                        count++
+                                        return (<div className="rent-calc-question-container" key={count}>
+                                            <div className="rent-calc-question-label-description">
+                                                <p className="rent-calc-label">{count + 20}. {question.label}</p>
+                                                <p className="rent-calc-description">{question.description}</p>
+                                            </div>
+                                            
+                                            {questionType(props, question.type, count)}
+                                            
+                                        </div>)
+                                    }
+                        )
+                    }
+                    <div className="rent-calc-question-container mt-3 mb-4">
+                        <p className="rent-calc-label">{"28. "+results[0].label+"\t"}
+                            <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
+                        </p>
+                        <input className="rounded" value={props.total1} readOnly/>
+                    </div>
                 </div>
             </div>
-
-
-            {/* <table>
-                <thead>
-                    <tr>
-                        <th>Question</th>
-                        <th>Description</th>
-                        <th>Response</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {questions.map(question => {
-                        count++
-                        return (<tr key={count}>
-                            <td>{question.label}</td>
-                            <td>{question.description}</td>
-                            <td>{questionType(props, question.type, count)}</td>
-                        </tr>)
-                    })}
-                </tbody>
-                <tfoot>
-                        <tr>
-                            <td>{results[0].label}</td>
-                            <td><input value={props.total1} readOnly/></td>
-                        </tr>
-                    </tfoot>
-            </table> */}
         </div>
     )
 }

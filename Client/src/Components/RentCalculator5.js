@@ -31,42 +31,46 @@ export default function RentCalculator5(props){
 
     return(
         <div className="rent-calc-container" align="center">
+            <div className="rent-calc-foreground">
                 <h1>Results</h1>
 
                 <div className="rent-calc-container-content">
 
-                    {questions.map(question => {
-                                count++
-                                return (<div className="rent-calc-question-container" key={count}>
-                                    <div className="rent-calc-question-label-description">
-                                        <p className="rent-calc-label">{count + 33}. {question.label}</p>
-                                        <p className="rent-calc-description">{question.description}</p>
-                                    </div>
-                                    <div>
-                                    {questionType(props, question.type, count)}
-                                    </div>
-                                </div>)
-                    })}
-                    <div className="rent-calc-question-container">
+                {questions.map(question => {
+                    count++
+                    return (
+                    <div className="rent-calc-question-container" key={count}>
                         <div className="rent-calc-question-label-description">
-                            <p className="rent-calc-label">{"37. "+results[0].label+"\t"}
-                                <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
-                            </p>
-                            <p className="rent-calc-description">{results[0].description}</p>
+                            <p className="rent-calc-label">{count + 33}. {question.label}</p>
+                            <p className="rent-calc-description">{question.description}</p>
                         </div>
                         <div>
-                            <input className="rounded"  value={props.total1} readOnly/>
+                            {questionType(props, question.type, count)}
                         </div>
                     </div>
-                    <div className="rent-calc-question-container">
-                        <p className="rent-calc-label"> {"38. "+results[1].label+"\t"}
-                            <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
+                )
+                })}
+                <div className="rent-calc-question-container">
+                    <div className="rent-calc-question-label-description">
+                        <p className="rent-calc-label">{"37. "+results[0].label+"\t"}
+                        <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
                         </p>
-                        <input className="rounded"  value={props.total2} readOnly/>
+                        <p className="rent-calc-description">{results[0].description}</p>
+                    </div>
+                    <div> test
+                        <input className="rounded"  value={props.total1} readOnly/>
                     </div>
                 </div>
-                <div className="mt-5 mb-5">
-                   <button className="btn text-white rent-calc-button" onClick={props.submit}>Submit</button>
+                <div className="rent-calc-question-container">
+                    <p className="rent-calc-label"> {"38. "+results[1].label+"\t"}
+                    <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
+                    </p>
+                    <input className="rounded"  value={props.total2} readOnly/>
+                    </div>
+                </div>
+                    <div className="mt-5 mb-5">
+                    <button className="btn text-white rent-calc-button" onClick={props.submit}>Submit</button>
+                    </div>
                 </div>
         </div>    
     )  

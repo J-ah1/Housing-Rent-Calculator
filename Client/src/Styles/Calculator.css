@@ -8,8 +8,22 @@ table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
     border: 1px solid black;
 }
 
+#rent-calc-background{
+    background-color: #f8f8ff;
+    padding: 2em;
+}
+
+.rent-calc-foreground{
+    align-self: center;
+    background-color: white;
+    width: 90%;
+    padding: 2em;
+    border: grey solid 1px;
+    border-radius: 5px;
+}
+
 #rent-calc-intro-container{
-    margin: 25vh 15% 0 15%;
+    margin: 15vh 15% 0 15%;
 }
 
 #rent-calc-intro-heading{
@@ -39,7 +53,8 @@ table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
 }
 
 .rent-calc-container{
-    margin-top: 5vh;
+    margin-top: 7.5vh;
+    /* margin: 7.5vh 5% 0 5% */
 }
 
 .rent-calc-background{
@@ -53,7 +68,7 @@ table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
 
 .rent-calc-container-content{
     margin-top: 5vh;
-    width: 70%;
+    width: 80%;
 }
 
 .rent-calc-question-container{

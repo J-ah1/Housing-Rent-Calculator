@@ -35,13 +35,12 @@ export default function RentCalculator1(props){
 
     return(
         
-        <div className="rent-calc-intro-container" align="center">
+        <div className="rent-calc-container" align="center">
                 {/* Here is where you add the contents of what will be displayed to screen */}
                 {/* <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button> */}        
                 
-                <div className="rent-calc-background">
-                    <h1>Gross Household Income</h1>
-                    
+                <div className="rent-calc-foreground">
+                    <h1>Gross Household Income</h1>                    
                     <div className="rent-calc-container-content">
                     {questions.map(question => {
                                 count++
