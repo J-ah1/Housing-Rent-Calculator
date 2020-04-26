@@ -16,7 +16,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
-            page: 0,
+            page: 4,
             progressBar: 0,
             startDate: null,
             incomeIncreaseDate: false,

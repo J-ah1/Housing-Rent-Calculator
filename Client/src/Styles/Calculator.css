@@ -83,6 +83,24 @@ table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
     flex-grow: 1;
 }
 
+
+.rent-calc-money-container{
+    position: relative;
+    display: inline;
+
+}
+
+.rent-calc-money-container::before{
+    content: '$';
+    position: absolute;
+    padding: 3px 0 0 .2rem;
+    z-index: 1;
+}
+
+.rent-calc-money-input{
+    padding-left: .75rem;
+}
+
 .rent-calc-label{
     font-weight: 700;
 }

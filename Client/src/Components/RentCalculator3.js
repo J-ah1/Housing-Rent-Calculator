@@ -25,13 +25,14 @@ function questionType(props, type, count){
                     selected={props.startDate}
                     onChange={props.dateHandler} 
                     placeholderText="mm-dd-yyyy"
+                    className="rounded pl-2"
                 />
             </div>
             break;
         default:
-            input = <div>
-            <input onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
-            </div>
+            input = <div className="rent-calc-money-container">
+                        <input className="rent-calc-money-input rounded" onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
+                    </div>
             break;
     }
     return input
@@ -70,7 +71,9 @@ export default function RentCalculator3(props){
                         <p className="rent-calc-label">{"28. "+results[0].label+"\t"}
                             <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
                         </p>
-                        <input className="rounded" value={props.total1} readOnly/>
+                        <div className="rent-calc-money-container">
+                            <input className="rent-calc-money-input rounded" value={props.total1} readOnly/>
+                        </div>
                     </div>
                 </div>
             </div>

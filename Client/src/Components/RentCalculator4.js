@@ -20,8 +20,8 @@ export default function RentCalculator4(props){
                                     <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content="Calculation: Annual Gross Income" >?</button>
                                 </p>
                             </div>
-                            <div>
-                                <input className="rounded" value={props.total1} onChange={props.inputHandler}  readOnly/>
+                            <div className="rent-calc-money-container">
+                                <input className="rounded rent-calc-money-input" value={props.total1} onChange={props.inputHandler}  readOnly/>
                             </div>
                             <div>
                                 <button className="btn text-white rent-calc-button" type="button" onClick={() => props.viewHandler(1)}>Review</button>
@@ -35,8 +35,8 @@ export default function RentCalculator4(props){
                                     <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                                 </p>
                             </div>
-                            <div>
-                            <input className="rounded"  value={props.total2} readOnly/>
+                            <div className="rent-calc-money-container">
+                                <input className="rounded rent-calc-money-input"  value={props.total2} readOnly/>
                             </div>
                             <div>
                             <button className="btn text-white rent-calc-button" type="button" onClick={() => props.viewHandler(2)}>Review</button>
@@ -50,8 +50,8 @@ export default function RentCalculator4(props){
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[2].notes} >?</button>
                             </p>
                             </div>
-                            <div>
-                            <input className="rounded"  value={props.total3 } readOnly/>
+                            <div className="rent-calc-money-container">
+                            <input className="rounded rent-calc-money-input"  value={props.total3 } readOnly/>
                             </div>
                             <div>
                             <button className="btn text-white rent-calc-button" type="button" onClick={() => props.viewHandler(3)}>Review</button>
@@ -65,11 +65,11 @@ export default function RentCalculator4(props){
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                             </p>
                             </div>
-                            <div>
-                            <input className="rounded"  value={props.total4} readOnly/>
+                            <div className="rent-calc-money-container">
+                                <input className="rounded rent-calc-money-input"  value={props.total4} readOnly/>
                             </div>
                             <div>
-                            <button className="btn text-white rent-calc-button" type="button" onClick={() => props.viewHandler(2)}>Review</button>
+                                <button className="btn text-white rent-calc-button" type="button" onClick={() => props.viewHandler(2)}>Review</button>
                             </div>
                         </div>
                     </div>

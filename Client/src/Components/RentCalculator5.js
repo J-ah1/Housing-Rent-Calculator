@@ -16,7 +16,9 @@ function questionType(props, type, count){
             input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
             break;
         default:
-            input = <input className="rounded"  onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
+            input = <div className="rent-calc-money-container">
+                        <input className="rounded rent-calc-money-input"  onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
+                    </div>
             break;
     }
     return input
@@ -33,9 +35,7 @@ export default function RentCalculator5(props){
         <div className="rent-calc-container" align="center">
             <div className="rent-calc-foreground">
                 <h1>Results</h1>
-
                 <div className="rent-calc-container-content">
-
                 {questions.map(question => {
                     count++
                     return (
@@ -57,21 +57,23 @@ export default function RentCalculator5(props){
                         </p>
                         <p className="rent-calc-description">{results[0].description}</p>
                     </div>
-                    <div> test
-                        <input className="rounded"  value={props.total1} readOnly/>
+                    <div className="rent-calc-money-container"> 
+                        <input className="rounded rent-calc-money-input"  value={props.total1} readOnly/>
                     </div>
                 </div>
                 <div className="rent-calc-question-container">
                     <p className="rent-calc-label"> {"38. "+results[1].label+"\t"}
                     <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                     </p>
-                    <input className="rounded"  value={props.total2} readOnly/>
+                    <div className="rent-calc-money-container">
+                        <input className="rounded rent-calc-money-input"  value={props.total2} readOnly/>
+                    </div>
                     </div>
                 </div>
-                    <div className="mt-5 mb-5">
+                <div className="mt-5 mb-5">
                     <button className="btn text-white rent-calc-button" onClick={props.submit}>Submit</button>
-                    </div>
                 </div>
+            </div>
         </div>    
     )  
 }
