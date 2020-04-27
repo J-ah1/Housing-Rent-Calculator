@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function RentCalculator0(props){ 
+    console.log(test())
     return(
         <div id="rent-calc-intro-container" className="card pb-5" align="center">
                 <div id="rent-calc-intro-heading" className="card-header" >

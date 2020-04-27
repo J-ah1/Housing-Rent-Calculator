@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import '../Styles/Login.css';
 
@@ -31,13 +32,15 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
+            axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
                 .then(res => {
                     if(res.data){
                         console.log("Success")
-                        this.props.history.push({
+                        Cookies.set("User", 'true')
+                        window.location.reload()
+                        /*this.props.history.push({
                             pathname: '/search',
-                        })
+                        })*/
                     }
                     else {
                         alert('Invalid Log In');
