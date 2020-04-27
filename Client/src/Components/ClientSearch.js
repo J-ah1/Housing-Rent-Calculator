@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-
 import ReactLoading from 'react-loading';
 // react-loading  https://www.npmjs.com/package/react-loading
-
 
 import '../Styles/ClientSearch.css'
 
@@ -68,11 +66,6 @@ class ClientSearch extends Component {
                             <th>DOB</th>
                         </tr>
         }
-
-
-
-
-
 
         return (
             <div id="client-search-container">

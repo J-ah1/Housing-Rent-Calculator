@@ -1,17 +1,19 @@
 import React from 'react';
 import Cookies from 'js-cookie';
 
-function test() {
+import '../Styles/Header.css';
+
+function signOut() {
     Cookies.remove("User");
     console.log("USER REMOVED")
     window.location.reload()
 }
 
-function Header(props) {
+function Header() {
     return (
         <div className="m-3" style={{display: 'flex', justifyContent: 'space-between'}}>
-            <h1>Rent Calculator</h1>
-            <button onClick={test}>Sign Out</button>
+            <h1><a href="/" id="header">Rent Calculator</a></h1>
+            <button id='signOut' onClick={signOut}>Sign Out</button>
         </div>
     );
 }
