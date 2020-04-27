@@ -1,0 +1,18 @@
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: turquoise;
+}
+
+#signOut {
+    border-radius: 50%;
+    background-color: turquoise;
+    border: black 2px solid;
+}
+
+#signOut:hover {
+    background-color: mediumturquoise;
+}
