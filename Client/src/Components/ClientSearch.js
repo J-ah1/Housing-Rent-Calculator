@@ -23,7 +23,7 @@ class ClientSearch extends Component {
             clients: [],        
             loadingData: true});
         e.preventDefault()
-        axios.get(`http://localhost:8000/db.cfc?method=getCSearchRegex&clientName=${this.state.search}`)
+        axios.get(`http://localhost:8500/db.cfc?method=getCSearchRegex&clientName=${this.state.search}`)
             .then(res => this.createClients(res.data.DATA))
     }
 
