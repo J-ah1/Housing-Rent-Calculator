@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import ReactLoading from 'react-loading';
 
 import '../Styles/Login.css';
 
@@ -11,6 +12,7 @@ export default class Login extends Component {
         this.state = {
             username: "",
             password: "",
+            isLoading: false
         }
     }
 
@@ -31,6 +33,7 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
+            this.setState({isLoading:true});
             axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
                 .then(res => {
                     if(res.data){
@@ -41,7 +44,18 @@ export default class Login extends Component {
                     }
                     else {
                         alert('Invalid Log In');
+                        this.setState({
+                            username: "",
+                            password: "",
+                            isLoading: false
+                        })
                     }
+                }).catch(() => {
+                    this.setState({
+                        username: "",
+                        password: "",
+                        isLoading: false
+                    })
                 })
         }
         else {
@@ -49,7 +63,25 @@ export default class Login extends Component {
         }
     }
 
+
     render() {
+
+        let loading;
+        let loginRoutes;
+
+        if(this.state.isLoading){
+            loading = <ReactLoading id="client-search-loading" type={'spin'} color={'turquoise'} height={100} width={100}/>
+        }else{
+            loginRoutes = <div>
+                            <Link id="login-link-forgot-pass" to='/forgot'>
+                                <p className="pl-3">Forgot Password?</p>
+                            </Link>
+                            <Link to="/register">
+                                <button className="btn border" id="login-link-register">Register</button>
+                            </Link>
+                         </div>
+        }
+
         return (
             <div id="login-container">
                     <h1>Housing Rent Calcuator</h1>
@@ -65,13 +97,8 @@ export default class Login extends Component {
                             
                             <input className="btn border" id="login-form-submit" type="submit" value="Log In" />
                         </form>
-
-                        <Link id="login-link-forgot-pass" to='/forgot'>
-                            <p>Forgot Password?</p>
-                        </Link>
-                        <Link to="/register">
-                            <button className="btn border" id="login-link-register">Register</button>
-                        </Link>
+                        {loading}
+                        {loginRoutes}
                     </div>
             </div>
         )
