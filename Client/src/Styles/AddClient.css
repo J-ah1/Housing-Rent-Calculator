@@ -1,8 +1,59 @@
-#add-client-form > button{
+#add-client-form{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    width: 75vw; 
+    padding: 1em;
+}
+
+
+
+
+.add-client-form-input{
+    border: solid grey;
+    border-width: thin;
+    border-radius: .2rem;
+    width: 20%;
+}
+
+#add-client-form-input-address{
+    width: 30%;
+}
+
+#add-client-form-datepicker{
+    border: solid grey .5px;
+    border-radius: .2rem
+}
+
+.add-client-divider{
+    margin: 1em 0 1em 0;
+    border-bottom: solid rgb(221, 218, 218) 1px;
+    width: 75vw;
+    align-self: center;
+    height: 1px;
+}
+
+
+
+#add-client-button-wrapper{
+    text-align: right;
+}
+
+#add-client-button-back{
+    /* margin: 1em; */
+    color: grey
+}
+
+#add-client-button-back:hover{
+    color: black;
+}
+
+#add-client-button-submit{
+    margin: .5em;
     align-self: center;
     background-color: turquoise;
 }
 
-#add-client-form > button:hover{
+#add-client-button-submit:hover{
     background-color: mediumturquoise;
 }
