@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import ReactLoading from 'react-loading';
 import Cookies from 'js-cookie';
 
 import '../Styles/Login.css';
@@ -13,7 +12,6 @@ export default class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            isLoading: false
         }
     }
 
@@ -34,12 +32,13 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            this.setState({isLoading:true});
-            axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
+            axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
                 .then(res => {
-                    if(res.data){
-                        console.log("Success")
-                        Cookies.set("User", 'true')
+                    console.log(res.data.BOOL)
+                    if(res.data.BOOL){
+                        //console.log("Success")
+                        console.log(res.data.UID)
+                        Cookies.set("userID", res.data.UID)
                         window.location.reload()
                         /*this.props.history.push({
                             pathname: '/search',
@@ -47,18 +46,7 @@ export default class Login extends Component {
                     }
                     else {
                         alert('Invalid Log In');
-                        this.setState({
-                            username: "",
-                            password: "",
-                            isLoading: false
-                        })
                     }
-                }).catch(() => {
-                    this.setState({
-                        username: "",
-                        password: "",
-                        isLoading: false
-                    })
                 })
         }
         else {
@@ -66,25 +54,7 @@ export default class Login extends Component {
         }
     }
 
-
     render() {
-
-        let loading;
-        let loginRoutes;
-
-        if(this.state.isLoading){
-            loading = <ReactLoading id="client-search-loading" type={'spin'} color={'turquoise'} height={100} width={100}/>
-        }else{
-            loginRoutes = <div>
-                            <Link id="login-link-forgot-pass" to='/forgot'>
-                                <p className="pl-3">Forgot Password?</p>
-                            </Link>
-                            <Link to="/register">
-                                <button className="btn border" id="login-link-register">Register</button>
-                            </Link>
-                         </div>
-        }
-
         return (
             <div id="login-container">
                     <h1>Housing Rent Calcuator</h1>
@@ -100,8 +70,13 @@ export default class Login extends Component {
                             
                             <input className="btn border" id="login-form-submit" type="submit" value="Log In" />
                         </form>
-                        {loading}
-                        {loginRoutes}
+
+                        <Link id="login-link-forgot-pass" to='/forgot'>
+                            <p>Forgot Password?</p>
+                        </Link>
+                        <Link to="/register">
+                            <button className="btn border" id="login-link-register">Register</button>
+                        </Link>
                     </div>
             </div>
         )

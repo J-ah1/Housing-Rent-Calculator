@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Redirect to previous page
+
 function NotFound() {
     return (
         <div className="p-5">

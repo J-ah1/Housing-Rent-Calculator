@@ -19,10 +19,9 @@ import ViewWorksheet from './ViewWorksheet';
 import NotFound from './404';
 
 class App extends Component {
-
     render() {
       return (
-        Cookies.get('User') === 'true' ? <div>
+        Cookies.get('userID') !== undefined ? <div>
           <Header />
           <Router>
             <div>

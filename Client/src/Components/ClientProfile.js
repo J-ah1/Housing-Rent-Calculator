@@ -31,7 +31,7 @@ class ClientProfile extends Component {
         this.handleGetClientInformation(parseInt(this.props.match.params.id));     
     }
 
-    handleGetClientInformation(ID){
+    handleGetClientInformation = async(ID) => {
         // Get Client Basic Client Information => Set State
 
         this.setState({
@@ -39,14 +39,17 @@ class ClientProfile extends Component {
                 loadingClientWorksheets: true  
                 })
 
-        axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
+                    console.log(res)
                     this.handleSettingClientInfoState(res.data.DATA[0])
+                    console.log(res)
                 })
 
-        // Get Client Worksheets => Set State 
-        axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
-                .then(res => this.handleSettingWorksheetState(res.data.DATA));
+        // Get Client Worksheets => Set State
+        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+            .then(res => this.handleSettingWorksheetState(res.data.DATA));
+        
     }
 
     handleSettingClientInfoState = (clientData) => {

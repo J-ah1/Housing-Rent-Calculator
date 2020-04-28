@@ -1,10 +1,13 @@
 import React from 'react';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 import '../Styles/Header.css';
 
 function signOut() {
-    Cookies.remove("User");
+    Cookies.remove("userID");
+    axios.get(`http://localhost:8000/db.cfc?method=removeUserAuth`)
+        .then(res => console.log(res))
     console.log("USER REMOVED")
     window.location.reload()
 }

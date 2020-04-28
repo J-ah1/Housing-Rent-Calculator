@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 //import {Link, Redirect} from 'react-router-dom';
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
@@ -16,6 +17,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
+            userID: -1,
             page: 0,
             progressBar: 0,
             startDate: null,
@@ -30,7 +32,8 @@ class RentCalculator extends Component {
 
     componentDidMount = () => {
         this.setState({
-            id: this.props.match.params.id
+            id: this.props.match.params.id,
+            userID: Cookies.get('userID')
         })
         window.$('[data-toggle="popover"]').popover({
             trigger:'hover'
@@ -325,7 +328,7 @@ class RentCalculator extends Component {
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             today = `${today.getFullYear()}-${mm}-${dd}`
             console.log(today)
-            axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+            axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
                         &annualHouseHoldWages=${this.state.page1Results[0]}
                         &periodicPayment=${this.state.page1Results[1]}
                         &unearnedIncome=${this.state.page1Results[2]}
@@ -363,9 +366,11 @@ class RentCalculator extends Component {
                         &utilityAllowance=${this.state.page5Results[3]}
                         &tenantRentResponsibility=${this.state.page5Results[4]}
                         &rentSubsidyPayment=${this.state.page5Results[5]}`)
-                .then(res => console.log(res))
+                .then(res => {
+                    console.log(res)
+                    this.props.history.push(`/profile/${this.state.id}`);
+                })
                 .catch(error => console.log(error))
-                this.props.history.push(`/profile/${this.state.id}`);
         }
     }
 
