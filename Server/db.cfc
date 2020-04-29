@@ -1,5 +1,10 @@
 <cfcomponent displayname="User">
 
+   <cfheader name="Access-Control-Allow-Origin" value='http://localhost:3000'>
+   <cfheader name="Access-Control-Allow-Credentials" value='true'>
+   <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
+   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
+
    <!---
       
       User Based Functions
@@ -73,7 +78,7 @@
 
 
    <!--- Validate arguments and query a new user into hcUser --->
-   <cffunction name="registerUser" returntype="void" access="remote">
+   <cffunction name="registerUser" returntype="void" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="firstname" type="string" required="true">
@@ -98,6 +103,9 @@
                   <cfqueryparam value='#squestion#' cfsqltype='cf_sql_tinyint'>,
                   <cfqueryparam value='#sanswer#' cfsqltype='cf_sql_varchar' maxlength='50'>)
       </cfquery>
+
+      <!--- <cfset check = checkUser('#username#', '#password#')>
+      <cfreturn check> --->
 
    </cffunction>
 
