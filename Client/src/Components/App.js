@@ -6,6 +6,7 @@ import {
   Route
 } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 import Header from './Header';
 import Login from './Login';
@@ -19,9 +20,27 @@ import ViewWorksheet from './ViewWorksheet';
 import NotFound from './404';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+        user: false
+    }
+}
+
+    // login & signout & register
+    componentDidMount = async() => {
+      let user = null
+      await axios.get(`http://localhost:8000/db.cfc?method=checkUserAuth`, {withCredentials: true})
+      .then(res => {
+        console.log(res)
+        this.setState({user: res.data})
+      })
+    }
+
     render() {
       return (
-        Cookies.get('userID') !== undefined ? <div>
+        Cookies.get('userID') !== undefined && this.state.user ? <div>
           <Header />
           <Router>
             <div>

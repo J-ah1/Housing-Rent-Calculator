@@ -15,6 +15,11 @@ export default class Login extends Component {
         }
     }
 
+    componentDidMount = () => {
+        axios.get(`http://localhost:8000/db.cfc?method=checkUserAuth`, {withCredentials: true})
+            .then(res => console.log(res))
+    }
+
     nameChange = (e) => {
         this.setState({
             username: e.target.value
@@ -32,9 +37,10 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`)
+            axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, {withCredentials: true})
                 .then(res => {
                     console.log(res.data.BOOL)
+                    console.log(res.data)
                     if(res.data.BOOL){
                         //console.log("Success")
                         console.log(res.data.UID)

@@ -6,7 +6,7 @@ import '../Styles/Header.css';
 
 function signOut() {
     Cookies.remove("userID");
-    axios.get(`http://localhost:8000/db.cfc?method=removeUserAuth`)
+    axios.get(`http://localhost:8000/db.cfc?method=removeUserAuth`, {withCredentials: true})
         .then(res => console.log(res))
     console.log("USER REMOVED")
     window.location.reload()
