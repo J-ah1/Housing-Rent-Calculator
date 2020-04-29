@@ -7,7 +7,7 @@
    --->
 
    <!--- Check user authorization --->
-   <cffunction name="checkUserAuth" returntype="boolean" access="remote">
+   <cffunction name="checkUserAuth" returntype="boolean" returnFormat="JSON" access="remote">
 
       <cflock timeout=20 scope="session" type="readonly">
          <cfreturn structkeyexists(session, "userAuth")>
@@ -45,7 +45,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="boolean" returnFormat="JSON" access="remote">
+   <cffunction name="checkUser" returntype="any" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -61,7 +61,13 @@
          </cflock>
       </cfif>
 
-      <cfreturn user.recordCount EQ 1 AND '#password#' EQ user.pswd>
+      <cfscript>
+         result = structNew();
+         result.bool = user.recordCount EQ 1 AND '#password#' EQ user.pswd
+         result.uID = user.id;
+       </cfscript>
+
+      <cfreturn result>
 
    </cffunction>
 
@@ -314,7 +320,7 @@
 
       <cfargument name="clientID" type="string" required="true">
       <!--- (Uncomment below when we can pass userID) --->
-      <!--- <cfargument name="userID" type="string" required="true"> --->
+      <cfargument name="userID" type="string" required="true">
       <cfargument name="dateSubmitted" type="string" required="true">
 
 
@@ -360,7 +366,7 @@
       <cfargument name="tenantRentResponsibility" type="string" default="0.00" required="false">
       <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
 
-      <cfset userID = 12> <!--- (Delete this and allow front to set UserID) --->
+      <cfset userID = val('#userID#')> <!--- (Delete this and allow front to set UserID) --->
       <cfset clientID = val('#clientID#')>
       
       <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
