@@ -14,10 +14,10 @@ function signOut() {
 
 function Header() {
     return (
-        <div className="m-3" style={{display: 'flex', justifyContent: 'space-between'}}>
-            <h1><a href="/" id="header">Rent Calculator</a></h1>
-            <button id='signOut' onClick={signOut}>Sign Out</button>
-        </div>
+        <nav id="header">
+            <a id="header-title" className="navbar-brand" href="/" >Rent Calculator</a>
+            <button className="btn btn-light" id='signOut' onClick={signOut}>Sign Out</button>
+        </nav>
     );
 }
 

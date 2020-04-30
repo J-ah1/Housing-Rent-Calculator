@@ -1,18 +1,29 @@
-a {
-    color: black;
-}
-
-a:hover {
-    text-decoration: none;
-    color: turquoise;
-}
-
-#signOut {
-    border-radius: 50%;
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
     background-color: turquoise;
-    border: black 2px solid;
+
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+#header-title{
+    font-size: 2em;
+    color: white;
+}
+
+#header-title:hover{
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#signOut{
+    margin: .5em;
 }
 
 #signOut:hover {
-    background-color: mediumturquoise;
-}
+    background-color: rgba(0, 0, 0, 0.523);
+    color: white;
+} 
