@@ -246,37 +246,65 @@
 
    </cffunction>
 
+   <!--- Turn UserID into a name for the worksheet view/print --->
+   <cffunction name="idToName" returntype="query" access="private">
+      <cfargument name="id" type="numeric" required="true">
+
+      <cfquery name="getName" datasource="awsMicrosoftSQLServer">
+         SELECT fName, lName
+         FROM hcUser
+         WHERE id = <cfqueryparam value='#id#' cfsqltype='cf_sql_integer'>
+      </cfquery>
+
+      <cfreturn getName>
+   </cffunction>
+
+   <cffunction name="getHCName" returntype="string" returnFormat="JSON" access="remote">
+      <cfargument name="id" type="string" required="true">
+      <cfset id = val('#id#')>
+      <cfset result = idToName('#id#')>
+      <cfset hcName = result.fName & " " & result.lName>
+      <cfreturn hcName>
+   </cffunction>
+
 
    <!--- function that return clients whose name(s) match the input given --->
    <cffunction name="clientSearchRegex" returntype="query" access="private">
 
       <cfargument name="clientName" type="string" required="true">
-
-      <cfset splitCName = listToArray(clientName, " ")>
-      <cfset splitCName[1] = splitCName[1]&'%'>
-      <cfif arrayLen(splitCName) GT 1>
-         <cfset splitCName[2] = splitCName[2]&'%'>
-      </cfif>
-
-
-      <!--- if first and last name have been entered --->
-      <cfif ArrayLen(splitCName) GT 1> 
-         <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
-               SELECT fName, lName, dob, id
-               FROM wfClient
-               WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> AND lName LIKE <cfqueryparam value='#splitCName[2]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+      <cfif #clientName# EQ ''>
+         <cfquery name = "clientSearchSQL3" datasource="awsMicrosoftSQLServer">
+            SELECT fName, lName, dob, id
+            FROM wfClient
          </cfquery>
-         <cfreturn clientSearchSQL2>
+         <cfreturn clientSearchSQL3>
 
-      <!--- if only one name has been entered --->
       <cfelse>
-         <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
-               SELECT fName, lName, dob, id
-               FROM wfClient
-               WHERE fName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> OR lName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'>
-         </cfquery>
-         <cfreturn clientSearchSQL1>
-      </cfif> 
+         <cfset splitCName = listToArray(clientName, " ")>
+         <cfset splitCName[1] = splitCName[1]&'%'>
+         <cfif arrayLen(splitCName) GT 1>
+            <cfset splitCName[2] = splitCName[2]&'%'>
+         </cfif>
+
+         <!--- if first and last name have been entered --->
+         <cfif ArrayLen(splitCName) GT 1> 
+            <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
+                  SELECT fName, lName, dob, id
+                  FROM wfClient
+                  WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> AND lName LIKE <cfqueryparam value='#splitCName[2]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+            </cfquery>
+            <cfreturn clientSearchSQL2>
+
+         <!--- if only one name has been entered --->
+         <cfelse>
+            <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
+                  SELECT fName, lName, dob, id
+                  FROM wfClient
+                  WHERE fName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> OR lName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+            </cfquery>
+            <cfreturn clientSearchSQL1>
+         </cfif> 
+      </cfif>
 
    </cffunction>
 
