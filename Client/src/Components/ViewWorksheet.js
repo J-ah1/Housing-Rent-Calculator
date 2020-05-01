@@ -11,6 +11,7 @@ class RentCalculator extends Component {
             clientName: '',
             clientID: -1,
             userID: -1,
+            hcName: "",
             date: '',
             data: [],
             fields: [calcQuestions['annualHouseholdWages'], calcQuestions['periodicPayment'], calcQuestions['unearnedIncome'], 
@@ -37,6 +38,8 @@ class RentCalculator extends Component {
                     data: res.data.DATA[0],
                     loading: false
                 })
+                axios.get(`http://localhost:8000/db.cfc?method=getHCName&id=${res.data.DATA[0][1]}`)
+                .then(res => this.setState({hcName: res.data}))
             })
     }
 
@@ -85,7 +88,7 @@ class RentCalculator extends Component {
                         <button onClick = { (e) => this.props.history.push(`/profile/${this.state.clientID}`) } style={{float : 'left', paddingRight : '5px'}}>Back</button>
                         <h2>{this.state.user}</h2>
                         <h3>Date Submitted: {this.state.date}</h3>
-                        <h3>Submitted by: {this.state.userID}</h3>
+                        <h3>Submitted by: {this.state.hcName}</h3>
                         <table style={{width: '75%'}} border="2" cellPadding="10px">
                                 <thead>
                                     <tr>
