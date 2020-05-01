@@ -329,7 +329,11 @@ class RentCalculator extends Component {
             today = `${today.getFullYear()}-${mm}-${dd}`
             console.log(today)
 <<<<<<< HEAD
+<<<<<<< HEAD
             axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
+=======
+            axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
 =======
             axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
 >>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466

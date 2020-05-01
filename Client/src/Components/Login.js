@@ -17,7 +17,11 @@ export default class Login extends Component {
 
     componentDidMount = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
         axios.get(`http://localhost:8500/db.cfc?method=checkUserAuth`, {withCredentials: true})
+=======
+        axios.get(`http://localhost:8000/db.cfc?method=checkUserAuth`, {withCredentials: true})
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
 =======
         axios.get(`http://localhost:8000/db.cfc?method=checkUserAuth`, {withCredentials: true})
 >>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
@@ -42,7 +46,11 @@ export default class Login extends Component {
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
 <<<<<<< HEAD
+<<<<<<< HEAD
             axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, {withCredentials: true})
+=======
+            axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, {withCredentials: true})
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
 =======
             axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, {withCredentials: true})
 >>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466

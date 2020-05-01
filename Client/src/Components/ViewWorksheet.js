@@ -12,7 +12,10 @@ class RentCalculator extends Component {
             clientID: -1,
             userID: -1,
 <<<<<<< HEAD
+<<<<<<< HEAD
             hcName: '',
+=======
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
 =======
 >>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
             date: '',
@@ -94,7 +97,11 @@ class RentCalculator extends Component {
                         <h2>{this.state.user}</h2>
                         <h3>Date Submitted: {this.state.date}</h3>
 <<<<<<< HEAD
+<<<<<<< HEAD
                         <h3>Submitted by: {this.state.hcName}</h3>
+=======
+                        <h3>Submitted by: {this.state.userID}</h3>
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
 =======
                         <h3>Submitted by: {this.state.userID}</h3>
 >>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
