@@ -11,7 +11,10 @@ class RentCalculator extends Component {
             clientName: '',
             clientID: -1,
             userID: -1,
+<<<<<<< HEAD
             hcName: '',
+=======
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
             date: '',
             data: [],
             fields: [calcQuestions['annualHouseholdWages'], calcQuestions['periodicPayment'], calcQuestions['unearnedIncome'], 
@@ -29,7 +32,7 @@ class RentCalculator extends Component {
     }
 
     componentDidMount = () => {
-        axios.get(`http://localhost:8500/db.cfc?method=viewCWorksheets&id=${this.props.match.params.id}`)
+        axios.get(`http://localhost:8000/db.cfc?method=viewCWorksheets&id=${this.props.match.params.id}`)
             .then(res => {
                 this.setState({
                     userID: res.data.DATA[0][1],
@@ -90,7 +93,11 @@ class RentCalculator extends Component {
                         <button onClick = { (e) => this.props.history.push(`/profile/${this.state.clientID}`) } style={{float : 'left', paddingRight : '5px'}}>Back</button>
                         <h2>{this.state.user}</h2>
                         <h3>Date Submitted: {this.state.date}</h3>
+<<<<<<< HEAD
                         <h3>Submitted by: {this.state.hcName}</h3>
+=======
+                        <h3>Submitted by: {this.state.userID}</h3>
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
                         <table style={{width: '75%'}} border="2" cellPadding="10px">
                                 <thead>
                                     <tr>

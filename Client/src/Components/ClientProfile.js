@@ -39,7 +39,7 @@ class ClientProfile extends Component {
                 loadingClientWorksheets: true  
                 })
 
-        axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
+        axios.get(`http://localhost:8000/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
                     console.log(res)
                     this.handleSettingClientInfoState(res.data.DATA[0])
@@ -47,7 +47,11 @@ class ClientProfile extends Component {
                 })
 
         // Get Client Worksheets => Set State
+<<<<<<< HEAD
         axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+=======
+        axios.get(`http://localhost:8000/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
             .then(res => this.handleSettingWorksheetState(res.data.DATA));
         
     }

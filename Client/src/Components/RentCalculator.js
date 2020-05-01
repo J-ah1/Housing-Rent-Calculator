@@ -328,7 +328,11 @@ class RentCalculator extends Component {
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             today = `${today.getFullYear()}-${mm}-${dd}`
             console.log(today)
+<<<<<<< HEAD
             axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
+=======
+            axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
                         &annualHouseHoldWages=${this.state.page1Results[0]}
                         &periodicPayment=${this.state.page1Results[1]}
                         &unearnedIncome=${this.state.page1Results[2]}

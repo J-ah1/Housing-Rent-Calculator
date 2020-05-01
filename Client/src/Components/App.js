@@ -31,7 +31,11 @@ class App extends Component {
     // login & signout & register
     componentDidMount = async() => {
       let user = null
+<<<<<<< HEAD
       await axios.get(`http://localhost:8500/db.cfc?method=checkUserAuth`, {withCredentials: true})
+=======
+      await axios.get(`http://localhost:8000/db.cfc?method=checkUserAuth`, {withCredentials: true})
+>>>>>>> 2b6e3e9942a929e2465261e657bce21f95450466
       .then(res => {
         console.log(res)
         this.setState({user: res.data})
