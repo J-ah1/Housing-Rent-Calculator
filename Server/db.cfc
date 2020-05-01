@@ -1,5 +1,10 @@
 <cfcomponent displayname="User">
 
+   <cfheader name="Access-Control-Allow-Origin" value='http://localhost:3000'>
+   <cfheader name="Access-Control-Allow-Credentials" value='true'>
+   <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
+   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
+
    <!---
       
       User Based Functions
@@ -7,7 +12,7 @@
    --->
 
    <!--- Check user authorization --->
-   <cffunction name="checkUserAuth" returntype="boolean" access="remote">
+   <cffunction name="checkUserAuth" returntype="boolean" returnFormat="JSON" access="remote">
 
       <cflock timeout=20 scope="session" type="readonly">
          <cfreturn structkeyexists(session, "userAuth")>
@@ -45,7 +50,7 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="boolean" returnFormat="JSON" access="remote">
+   <cffunction name="checkUser" returntype="any" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
@@ -61,13 +66,19 @@
          </cflock>
       </cfif>
 
-      <cfreturn user.recordCount EQ 1 AND '#password#' EQ user.pswd>
+      <cfscript>
+         result = structNew();
+         result.bool = user.recordCount EQ 1 AND '#password#' EQ user.pswd
+         result.uID = user.id;
+       </cfscript>
+
+      <cfreturn result>
 
    </cffunction>
 
 
    <!--- Validate arguments and query a new user into hcUser --->
-   <cffunction name="registerUser" returntype="void" access="remote">
+   <cffunction name="registerUser" returntype="void" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="firstname" type="string" required="true">
@@ -92,6 +103,9 @@
                   <cfqueryparam value='#squestion#' cfsqltype='cf_sql_tinyint'>,
                   <cfqueryparam value='#sanswer#' cfsqltype='cf_sql_varchar' maxlength='50'>)
       </cfquery>
+
+      <!--- <cfset check = checkUser('#username#', '#password#')>
+      <cfreturn check> --->
 
    </cffunction>
 
@@ -314,7 +328,7 @@
 
       <cfargument name="clientID" type="string" required="true">
       <!--- (Uncomment below when we can pass userID) --->
-      <!--- <cfargument name="userID" type="string" required="true"> --->
+      <cfargument name="userID" type="string" required="true">
       <cfargument name="dateSubmitted" type="string" required="true">
 
 
@@ -360,11 +374,11 @@
       <cfargument name="tenantRentResponsibility" type="string" default="0.00" required="false">
       <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
 
-      <cfset userID = 12> <!--- (Delete this and allow front to set UserID) --->
+      <cfset userID = val('#userID#')> <!--- (Delete this and allow front to set UserID) --->
       <cfset clientID = val('#clientID#')>
       
       <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
-      <cfif len(trim(incomeIncreaseDate))>
+      <cfif isNull(incomeIncreaseDate)>
          <cfset incomeIncreaseDate = parseDateTime(incomeIncreaseDate, "yyyy-mm-dd")>
       </cfif>
       
@@ -409,7 +423,7 @@
                   <cfqueryparam value='#employmentIncomeIncrease#' cfsqltype='cf_sql_bit'>, 
                   <cfqueryparam value='#selfSufficientIncome#' cfsqltype='cf_sql_bit'>,
                   <cfqueryparam value='#incomeWSixMo#' cfsqltype='cf_sql_bit'>,
-                  <cfqueryparam value='#incomeIncreaseDate#' null='#NOT len(trim(incomeIncreaseDate))#' cfsqltype='cf_sql_date'>, 
+                  <cfqueryparam value='#incomeIncreaseDate#' null='#NOT IsDate(incomeIncreaseDate)#' cfsqltype='cf_sql_date'>, 
                   <cfqueryparam value='#baselineIncome#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#incomeEID#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#otherIncomeEID#' cfsqltype='cf_sql_money'>, 

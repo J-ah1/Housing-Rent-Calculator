@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 //import {Link, Redirect} from 'react-router-dom';
 import RentCalculator0 from './RentCalculator0'
 import RentCalculator1 from './RentCalculator1'
@@ -16,6 +17,7 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             id: -1,
+            userID: -1,
             page: 0,
             progressBar: 0,
             startDate: null,
@@ -30,7 +32,8 @@ class RentCalculator extends Component {
 
     componentDidMount = () => {
         this.setState({
-            id: this.props.match.params.id
+            id: this.props.match.params.id,
+            userID: Cookies.get('userID')
         })
         window.$('[data-toggle="popover"]').popover({
             trigger:'hover'
@@ -41,6 +44,10 @@ class RentCalculator extends Component {
         window.$('[data-toggle="popover"]').popover({
             trigger:'hover'
         });
+    }
+
+    goToProfile = (e) => {
+        this.props.history.push(`/profile/${this.state.id}`)
     }
 
     clickedBack = (e) =>{
@@ -83,6 +90,12 @@ class RentCalculator extends Component {
         this.setState({
             startDate: date
         })
+
+        if(date !== null){
+            const dd = String(date.getDate()).padStart(2, '0');
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            date = `${date.getFullYear()}-${mm}-${dd}`
+        }
         this.page3Answers(1, date)
     }
 
@@ -314,7 +327,8 @@ class RentCalculator extends Component {
             var dd = String(today.getDate()).padStart(2, '0');
             var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             today = `${today.getFullYear()}-${mm}-${dd}`
-            axios.get(`http://localhost:8000/db.cfc?method=addWorksheet&clientID=${this.state.id}&dateSubmitted=${today}
+            console.log(today)
+            axios.get(`http://localhost:8500/db.cfc?method=addWorksheet&userID=${this.state.userID}&clientID=${this.state.id}&dateSubmitted=${today}
                         &annualHouseHoldWages=${this.state.page1Results[0]}
                         &periodicPayment=${this.state.page1Results[1]}
                         &unearnedIncome=${this.state.page1Results[2]}
@@ -338,7 +352,7 @@ class RentCalculator extends Component {
                         &employmentIncomeIncrease=${this.state.page3Results[1]}
                         &selfSufficientIncome=${this.state.page3Results[2]}
                         &incomeWSixMo=${this.state.page3Results[3]}
-                        &incomeIncreaseDate=${this.state.page3Results[4]}
+                        &incomeIncreaseDate=${this.state.page3Results[4] !== 0 ? this.state.page3Results[4] : null}
                         &baselineIncome=${this.state.page3Results[5]}
                         &incomeEID=${this.state.page3Results[6]}
                         &otherIncomeEID=${this.state.page3Results[7]}
@@ -352,9 +366,11 @@ class RentCalculator extends Component {
                         &utilityAllowance=${this.state.page5Results[3]}
                         &tenantRentResponsibility=${this.state.page5Results[4]}
                         &rentSubsidyPayment=${this.state.page5Results[5]}`)
-                .then(res => console.log(res))
+                .then(res => {
+                    console.log(res)
+                    this.props.history.push(`/profile/${this.state.id}`);
+                })
                 .catch(error => console.log(error))
-                this.props.history.push(`/profile/${this.state.id}`);
         }
     }
 
@@ -416,7 +432,7 @@ class RentCalculator extends Component {
                 break;
             default:
                 inputs = <RentCalculator0
-                    backHandler = {this.clickedBack}
+                    backHandler = {this.goToProfile}
                     logOffHandler = {this.clickedLogOff}
                     viewHandler = {this.handleViewChange}
                 />
@@ -436,7 +452,7 @@ class RentCalculator extends Component {
         }
 
         return(
-            <div>
+            <div id="rent-calc-background">
                 
                     <form>
                         {inputs}

@@ -31,7 +31,7 @@ class ClientProfile extends Component {
         this.handleGetClientInformation(parseInt(this.props.match.params.id));     
     }
 
-    handleGetClientInformation(ID){
+    handleGetClientInformation = async(ID) => {
         // Get Client Basic Client Information => Set State
 
         this.setState({
@@ -41,12 +41,15 @@ class ClientProfile extends Component {
 
         axios.get(`http://localhost:8500/db.cfc?method=clientProfile&clientID=${ID}`)
                 .then(res => {
+                    console.log(res)
                     this.handleSettingClientInfoState(res.data.DATA[0])
+                    console.log(res)
                 })
 
-        // Get Client Worksheets => Set State 
+        // Get Client Worksheets => Set State
         axios.get(`http://localhost:8500/db.cfc?method=clientWorksheetProfile&clientID=${ID}`)
-                .then(res => this.handleSettingWorksheetState(res.data.DATA));
+            .then(res => this.handleSettingWorksheetState(res.data.DATA));
+        
     }
 
     handleSettingClientInfoState = (clientData) => {
@@ -90,6 +93,10 @@ class ClientProfile extends Component {
    printWorksheet = async event => {
         const loadOtherPage = await this.props.history.push(`/view/${event.target.id}/print`);       
    }
+
+   backToSearch = (event) => {
+        this.props.history.push('/search');
+   }
    
 
 
@@ -127,6 +134,7 @@ class ClientProfile extends Component {
                             toView={this.navigateToView}
                             print={this.printWorksheet}
                             isLoading={this.state.loadingClientWorksheets}
+                            searchHandler = {this.backToSearch}
                         />
                 break;
             case('intake'):
@@ -137,12 +145,14 @@ class ClientProfile extends Component {
                             gender={this.state.GENDER}
                             address={this.state.ADDSTREET + ' ' + this.state.ADDCITY + ' ' + this.state.ADDZIP}
                             isLoading={this.state.loadingClientInfo}
+                            searchHandler = {this.backToSearch}
                         />
                 break;
         }
 
         return (
             <div>
+                <button onClick = { (e) => this.props.history.push('/search') } style={{float : 'left', paddingRight : '5px'}}>Back To Search</button>
                 <nav>
                     <ul id="client-intake-nav-buttons">
                         <li>

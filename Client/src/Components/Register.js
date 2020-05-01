@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 class Register extends Component {
     constructor(props) {
@@ -84,9 +85,17 @@ class Register extends Component {
                       Email: ${this.state.email},
                       Question: ${this.state.question},
                       Answer: ${this.state.answer},`);
-          axios.get(`http://localhost:8500/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`)
-            .then()
-          this.props.history.push('/')
+          axios.get(`http://localhost:8500/db.cfc?method=registerUser&username=${this.state.username}&password=${this.state.pswd}&firstname=${this.state.fName}&lastname=${this.state.lName}&email=${this.state.email}&phone=${this.state.phone}&squestion=${this.state.question}&sanswer=${this.state.answer}`, {withCredentials: true})
+            .then(res => {
+                axios.get(`http://localhost:8500/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.pswd}`, {withCredentials: true})
+                .then(res => {
+                    Cookies.set("userID", res.data.UID)
+                    this.props.history.push({
+                        pathname: '/search',
+                    })
+                    window.location.reload()
+                })
+            })
         }
         else {
             alert("Please enter information in all fields")

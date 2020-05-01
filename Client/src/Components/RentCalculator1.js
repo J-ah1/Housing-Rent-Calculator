@@ -18,7 +18,10 @@ function questionType(props, type, count){
             input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
             break;
         default:
-            input = <input className="rounded" onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
+            input = 
+                    <div className="rent-calc-money-container">
+                        <input className="rounded rent-calc-money-input" onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
+                    </div>
             break;
     }
     return input
@@ -35,13 +38,12 @@ export default function RentCalculator1(props){
 
     return(
         
-        <div className="rent-calc-intro-container" align="center">
+        <div className="rent-calc-container" align="center">
                 {/* Here is where you add the contents of what will be displayed to screen */}
                 {/* <button type = "button" onClick = { props.logOffHandler} style={{float : 'right', paddingRight : '5px'}}>Sign Out</button> */}        
                 
-                <div className="rent-calc-background">
-                    <h1>Gross Household Income</h1>
-                    
+                <div className="rent-calc-foreground">
+                    <h1>Gross Household Income</h1>                    
                     <div className="rent-calc-container-content">
                     {questions.map(question => {
                                 count++
@@ -50,25 +52,30 @@ export default function RentCalculator1(props){
                                         <p className="rent-calc-label">{count + 1}. {question.label}</p>
                                         <p className="rent-calc-description">{question.description}</p>
                                     </div>
-                                    <div>
+                                    <div style={{diplay: 'flex', flexDirection: 'row'}} >
                                     {questionType(props, question.type, count)}
                                     </div>
                                 </div>)
                     })}
                         <div className="rent-calc-question-container mt-3 mb-4">
                             <p 
-                                className="rent-calc-label">{results[0].label+"\t"}
+                                className="rent-calc-label">{"10. "+results[0].label+"\t"}
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[0].notes} >?</button>
                             </p>
-                            <input className="rounded" value={props.total1} readOnly/>
+                            <div className="rent-calc-money-container">
+                                <input className="rounded rent-calc-money-input" value={props.total1} readOnly/>
+                            </div>
                         </div>
                         
                         <div  className="rent-calc-question-container">
                             <p 
-                                className="rent-calc-label">{results[1].label+"\t"}
+                                className="rent-calc-label">{"11. "+results[1].label+"\t"}
                                 <button type="button" className="rent-calc-help" data-toggle="popover" title="Calculation Explanation" data-content={results[1].notes} >?</button>
                             </p>
-                            <input className="rounded" value={props.total2} readOnly/>
+                            <div className="rent-calc-money-container">
+                                <input className="rounded rent-calc-money-input" value={props.total2} readOnly/>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,9 @@ class RentCalculator extends Component {
         super(props);
         this.state={
             clientName: '',
+            clientID: -1,
+            userID: -1,
+            hcName: '',
             date: '',
             data: [],
             fields: [calcQuestions['annualHouseholdWages'], calcQuestions['periodicPayment'], calcQuestions['unearnedIncome'], 
@@ -29,11 +32,17 @@ class RentCalculator extends Component {
         axios.get(`http://localhost:8500/db.cfc?method=viewCWorksheets&id=${this.props.match.params.id}`)
             .then(res => {
                 this.setState({
+                    userID: res.data.DATA[0][1],
                     date: res.data.DATA[0][3],
+                    clientID: res.data.DATA[0][2],
                     data: res.data.DATA[0],
                     loading: false
                 })
+                axios.get(`http://localhost:8500/db.cfc?method=getHCName&id=${this.state.userID}`).then(res =>{
+                    this.setState({hcName: res.data})
+                })
             })
+        
     }
 
     typeHandle = (value) => {
@@ -78,8 +87,10 @@ class RentCalculator extends Component {
                     </div>
         }else{
             view = <div>
+                        <button onClick = { (e) => this.props.history.push(`/profile/${this.state.clientID}`) } style={{float : 'left', paddingRight : '5px'}}>Back</button>
                         <h2>{this.state.user}</h2>
                         <h3>Date Submitted: {this.state.date}</h3>
+                        <h3>Submitted by: {this.state.hcName}</h3>
                         <table style={{width: '75%'}} border="2" cellPadding="10px">
                                 <thead>
                                     <tr>
