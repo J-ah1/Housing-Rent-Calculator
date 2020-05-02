@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+import '../Styles/Register.css'
+
 class Register extends Component {
     constructor(props) {
         super(props)
@@ -18,46 +20,21 @@ class Register extends Component {
         }
     }
 
-    nameChange = (e) => {
+
+    handleInputChange = (e) => {
         this.setState({
-            username: e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
-    fNameChange = (e) => {
-        this.setState({
-            fName: e.target.value
-        })
-    }
+    handlePhoneNumberChange = (e) => {
 
-    lNameChange = (e) => {
-        this.setState({
-            lName: e.target.value
-        })
-    }
+        const phone = e.target.value;
 
-    pswdChange = (e) => {
-        this.setState({
-            pswd: e.target.value
-        })
-    }
-
-    cpswdChange = (e) => {
-        this.setState({
-            cpswd: e.target.value
-        })
-    }
-
-    emailChange = (e) => {
-        this.setState({
-            email: e.target.value
-        })
-    }
-
-    phoneChange = (e) => {
-        this.setState({
-            phone: e.target.value
-        })
+        const numbers = /^[0-9] || [-]+$/;
+        if(phone.match(numbers) || phone === ""){
+            this.setState({phone})
+        }
     }
 
     questionChange = (e) => {
@@ -66,10 +43,8 @@ class Register extends Component {
       })
     }
 
-    answerChange = (e) => {
-      this.setState({
-          answer: e.target.value
-      })
+    handleBack = () => {
+        this.props.history.push('/');
     }
 
     submit = (e) => {
@@ -104,67 +79,84 @@ class Register extends Component {
     
     render() {
         return (
-            <div id="mydiv">
-                <h1>Create Your Profile</h1>
-                <div className={ this.state.errorMessage?"alert":"" }>
-                {
-                    this.state.errorMessage &&
-                     this.state.errorMessage
-                }
+
+
+            <div className="mt-5 mb-5" id="register-card-container">
+                <div className="card" id="register-card-content-container">
+                    <div className="card-header" style={{textAlign:'center'}}>
+                            <h1>Create New User</h1>
+                    </div>
+                    <form  id="register-form" onSubmit={this.submit}>  
+                        <div className="register-form-question-container">
+                            <label className="font-weight-light pr-2"> Username: </label>
+                            <input name="username"  onChange={this.handleInputChange} value={this.state.username} type="text"  required/>
+                        </div>
+
+                        <div className="register-form-divider">
+                        </div>
+
+                        <div className="register-form-question-group" >
+                            <div className="register-form-question-container">
+                                <label  className="font-weight-light pr-2">First Name:</label>
+                                <input name="fName"  onChange={this.handleInputChange}    value={this.state.fName} type="text" required/>
+                            </div>
+                            <div className="register-form-question-container">
+                            <label  className="font-weight-light pr-2">Last Name:</label>
+                            <input name="lName"  onChange={this.handleInputChange}    value={this.state.lName} type="text" required/>
+                        </div>
+                        </div>
+                        <div className="register-form-question-group">
+                        <div className="register-form-question-container">
+                            <label>Password:</label>
+                            <input name="pswd" onChange={this.handleInputChange}  value={this.state.pswd} type="password" required />
+                        </div>
+
+                        <div className="register-form-question-container">
+                            <label>Confirm Password:</label>
+                            <input name="cpswd"  onChange={this.handleInputChange}  value={this.state.cpswd} type="password" required />
+                        </div>
+                        </div>
+                        
+
+                        <div className="register-form-question-container">
+                             <label>Email:</label>
+                             <input name="email"  onChange={this.handleInputChange}  value={this.state.email} type="email" required />
+                        </div>
+
+                        <div className="register-form-question-container">
+                             <label>Phone Number:</label>
+                             <input name="phone"  onChange={this.handlePhoneNumberChange}  value={this.state.phone} type="tel" placeholder="000-000-0000" required/>
+                         </div>
+                        <div className="register-form-divider">
+                        </div>
+
+                        <div className="register-form-question-container">
+                             <label>Security Question:</label>
+                             <select style={{width: '30vw'}} value={this.state.question} onChange={this.questionChange}>
+                                 <option defaultValue value="0">What is your mother’s maiden name?</option>
+                                 <option value="1">What was the name of your first pet?</option>
+                                 <option value="2">What was the name of your elementary school?</option>
+                                 <option value="3">What is your favorite movie?</option>
+                                 <option value='4'>What is your favorite book?</option>
+                               </select>
+                        </div>
+
+                        <div className="register-form-question-container">
+                            <label>Security Answer:</label>
+                            <input name="answer"  onChange={this.handleInputChange}  value={this.state.answer}  type="text" required/>
+                        </div>
+
+                        <div className="card-footer">
+                            <div id="register-form-button-container">
+                                
+                                <button id="register-button-back" className="btn" onClick={this.handleBack}>Back</button>
+                                <button id="register-button-submit" className="btn text-white" onClick={this.submit}>Submit</button>
+                            </div>
+
+                        </div>
+
+                    </form>
                 </div>
-                 <form onSubmit={this.submit}>
-                    <table align="center">
-                        <tbody>
-                        <tr>
-                            <th><label>Username:</label></th>
-                            <td><input  value={this.state.username} onChange={this.nameChange} type="text"  required/></td>
-                        </tr>
-                        <tr>
-                            <th><label>First Name:</label></th>
-                            <td><input  value={this.state.fName} onChange={this.fNameChange} type="text" required/></td>
-                        </tr>
-                        <tr>
-                            <th><label>Last Name:</label></th>
-                            <td><input value={this.state.LName} onChange={this.lNameChange} type="text" required/></td>
-                        </tr>
-                        <tr>
-                            <th><label>Password:</label></th>
-                            <td><input value={this.state.pswd} onChange={this.pswdChange} type="password" required /></td>
-                        </tr>
-                        <tr>
-                            <th><label>Confirm Password:</label></th>
-                            <td><input value={this.state.cpswd} onChange={this.cpswdChange} type="password" required /></td>
-                        </tr>
-                        <tr>
-                            <th><label>Email:</label></th>
-                            <td><input value={this.state.email} onChange={this.emailChange} type="email" required /></td>
-                        </tr>
-                        <tr>
-                            <th><label>Phone Number:</label></th>
-                            <td><input value={this.state.phone} onChange={this.phoneChange} type="text" required/></td>
-                        </tr>
-                        <tr>
-                            <th><label>Security Question:</label></th>
-                            <td><select value={this.state.question} onChange={this.questionChange}>
-                                <option defaultValue value="0">What is your mother’s maiden name?</option>
-                                <option value="1">What was the name of your first pet?</option>
-                                <option value="2">What was the name of your elementary school?</option>
-                                <option value="3">What is your favorite movie?</option>
-                                <option value='4'>What is your favorite book?</option>
-                              </select></td>
-                        </tr>
-                        <tr>
-                            <th><label>Security Answer:</label></th>
-                            <td><input value={this.state.answer} onChange={this.answerChange} type="text" required/></td>
-                        </tr>
-                        <tr>
-                            <td colSpan="2"><input type="submit" value="SIGN UP" required/></td>
-                        </tr>
-
-                    </tbody>
-                    </table>
-                 </form>
-
             </div>
         )
     }

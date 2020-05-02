@@ -1,0 +1,60 @@
+#register-card-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#register-card-content-container{
+    display: flex;
+    width: 80vw;
+}
+
+
+.register-form-question-group{
+    display: flex;
+}
+
+.register-form-question-container{
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}
+
+
+
+.register-form-question-container > input{
+    background-color: #f8f9fa;
+    border: solid grey;
+    border-width: thin;
+    border-radius: .2em;
+}
+
+.register-form-divider{
+    margin: 1em 0 1em 0;
+    border-bottom: solid rgb(221, 218, 218) 1px;
+    width: 80vw;
+    align-self: flex-start;
+    height: 1px;
+}
+
+#register-form-button-container{
+    text-align: right;
+}
+
+
+#register-button-back{
+    color: grey;
+}
+
+#register-button-back:hover{
+    color: black;
+}
+
+#register-button-submit{
+    background: turquoise;
+}
+
+#register-button-submit:hover{
+    background: mediumturquoise;
+}
