@@ -1,13 +1,3 @@
-table {
-    margin-top: 1em;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
-    border: 1px solid black;
-}
-
 #rent-calc-background{
     background-color: #f8f8ff;
     padding: 2em;
