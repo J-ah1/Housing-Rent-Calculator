@@ -1,6 +1,9 @@
 import React from 'react';
-
 import ReactLoading from 'react-loading';
+
+import view from  '../Icons/view.png'
+import print from '../Icons/print.png'
+
 
 const Worksheet = (props) => {
     if(props.isLoading){
@@ -11,26 +14,36 @@ const Worksheet = (props) => {
         );
     }else{
         return(
-            <div className="card worksheet-container mt-5" align="center">
-                <div className="card-header worksheet-header">
-                    <button className="btn text-white" id="client-profile-add-worksheet" onClick={props.toNewWorksheet}>Calculate a new rent worksheet</button>
-                    <h1>Worksheet </h1>
+            <div className="card worksheet-container mt-5">
+                <div className="card-header" id="worksheet-header"> 
+                    <button className="btn" id="dummy-button"> button for spacing</button>
+                    <h1>Worksheet</h1>
+                    <button className="btn text-white" id="client-profile-add-worksheet" onClick={props.toNewWorksheet}> <b>+</b> New Worksheet</button>
                 </div>   
-                <table style={{width: '75%'}} border="2" cellPadding="10px">
-                    <thead>
-                        <tr>
+                <table className="table">
+                    <thead className="thead-light" align="center">
+                        <tr > 
                             <th>Date of Submission</th>
                             <th>Rent Calculation</th>
-                            <th>Action</th>
+                            <th className="pl-5">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody align="center">
                         {props.worksheets.length > 0 ? props.worksheets.map((sheet, index)=> {
                             return(
                                 <tr key={index}>
                                     <td>{sheet.Date}</td>
                                     <td>${sheet.Calculation}</td>
-                                    <td><button onClick={props.toView} id={sheet.ID}>View</button><button onClick={props.print} id={sheet.ID}>Print</button></td>
+                                    <td style={{display: 'flex', justifyContent: 'flex-end'}} className="pl-5"> 
+                                        <div onClick={props.toView} className="worksheet-container-button-icon">
+                                            <img className="worksheet-icons" src={view} id={sheet.ID} ></img> 
+                                            <button className="btn text-white client-profile-worksheet-action-button" id={sheet.ID}>View</button>
+                                        </div>
+                                        <div onClick={props.print} className="pl-2" >
+                                            <img  className="worksheet-icons"  src={print} id={sheet.ID}></img>
+                                            <button className="btn text-white client-profile-worksheet-action-button" id={sheet.ID}>Print</button> 
+                                        </div>
+                                    </td>
                                 </tr>
                             )
                         }) : null}
@@ -39,8 +52,6 @@ const Worksheet = (props) => {
             </div>
         );
     }
-    
-
 }
 
 export default Worksheet;

@@ -7,7 +7,7 @@ ul{
 #client-intake-nav-buttons{
    display: flex;
    justify-content: center;
-   margin-top: 5em;
+   margin-top: 5vh;
 }
 
 #client-intake-nav-buttons > li > button {
@@ -23,9 +23,10 @@ ul{
 
 #client-intake-info-container{
    display: flex;
-   width: 50vw;
-   margin-left: 25%;
-   margin-top: 2em;
+   width: 70%;
+   margin: auto;
+   /* margin-left: 25%;
+   margin-top: 2em; */
 } 
 
 
@@ -45,6 +46,17 @@ ul{
    margin: 1em 0;
 }
 
+#worksheet-header{
+   display: flex;
+   justify-content: space-between;
+}
+
+#dummy-button{
+   color: rgba(0,0,0,0); 
+}
+#dummy-button:hover{
+   cursor: none;
+}
 
 
 #client-profile-add-worksheet{
@@ -58,10 +70,8 @@ ul{
 
 .worksheet-container{
    width: 75%;
-   margin-top: 2em;
-   margin-left: 10%;
+   margin: 5vh 0 5vh 10% ;
    display: flex;
-   
 }
 
 
@@ -80,6 +90,25 @@ ul{
 .worksheet-header > button{
    font-size: .75em;
 }
+
+.worksheet-container-button-icon{
+   
+}
+
+.worksheet-icons{
+   height: 1.75em;
+   padding-right: .5em;
+}
+
+.worksheet-icons:hover{
+   cursor: pointer;
+}
+
+.client-profile-worksheet-action-button{
+   background-color: turquoise;
+   margin: 0 5px;
+}
+
 
 #client-worksheet-loading{
    margin: 50vh auto;
