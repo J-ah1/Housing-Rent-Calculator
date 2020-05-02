@@ -39,7 +39,7 @@ class ClientSearch extends Component {
                 clients: clients,
                 loadingData: false});
     }
-    // change the state after the request?
+
 
     handleChange(event) {
         this.setState({search: event.target.value});
@@ -86,8 +86,8 @@ class ClientSearch extends Component {
                     <button className="btn text-white mt-5" id="client-search-button" onClick={this.loadInfo}>Search</button>
                     {tableTitle}
                     {loadingView}
-                    <table id="client-search-results">
-                        <thead>
+                    <table id="client-search-results" className="table">
+                        <thead className="thead-light">
                             {tableHead}
                         </thead>
                         <tbody>
