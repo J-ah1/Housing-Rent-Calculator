@@ -44,3 +44,13 @@
     margin-bottom: 2em;
     width: 80%;
 }
+
+.no-print {
+    display: none;
+}
+
+@media print { 
+    #header, .btn { 
+        display: none; 
+    } 
+}
