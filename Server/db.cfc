@@ -276,6 +276,7 @@
          <cfquery name = "clientSearchSQL3" datasource="awsMicrosoftSQLServer">
             SELECT fName, lName, dob, id
             FROM wfClient
+            ORDER BY fName ASC, lName ASC
          </cfquery>
          <cfreturn clientSearchSQL3>
 
@@ -292,6 +293,7 @@
                   SELECT fName, lName, dob, id
                   FROM wfClient
                   WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> AND lName LIKE <cfqueryparam value='#splitCName[2]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+                  ORDER BY fName ASC, lName ASC
             </cfquery>
             <cfreturn clientSearchSQL2>
 
@@ -301,6 +303,7 @@
                   SELECT fName, lName, dob, id
                   FROM wfClient
                   WHERE fName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> OR lName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+                  ORDER BY fName ASC, lName ASC
             </cfquery>
             <cfreturn clientSearchSQL1>
          </cfif> 
