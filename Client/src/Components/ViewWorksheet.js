@@ -11,7 +11,7 @@ class RentCalculator extends Component {
             clientName: '',
             clientID: -1,
             userID: -1,
-            hcName: "",
+            hcName: '',
             date: '',
             data: [],
             fields: [calcQuestions['annualHouseholdWages'], calcQuestions['periodicPayment'], calcQuestions['unearnedIncome'], 
@@ -67,7 +67,7 @@ class RentCalculator extends Component {
        
         var self = this;
         
-        if(window.location.href.indexOf("/print")>-1 && this.state.loading == false ){
+        if(window.location.href.indexOf("/print")>-1 && this.state.loading == false && this.state.hcName != ''){
             
             //wait for page to load before displaying dialog box
             setTimeout(function() {
