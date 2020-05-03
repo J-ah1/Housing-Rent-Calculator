@@ -17,7 +17,7 @@ const Worksheet = (props) => {
             <div className="card worksheet-container mt-5">
                 <div className="card-header" id="worksheet-header"> 
                     <button className="btn" id="dummy-button"> button for spacing</button>
-                    <h1>Worksheet</h1>
+                    <h1>Worksheets</h1>
                     <button className="btn text-white" id="client-profile-add-worksheet" onClick={props.toNewWorksheet}> <b>+</b> New Worksheet</button>
                 </div>   
                 <table className="table">
@@ -25,7 +25,8 @@ const Worksheet = (props) => {
                         <tr > 
                             <th>Date of Submission</th>
                             <th>Rent Calculation</th>
-                            <th className="pl-5">Action</th>
+                            <th className="pl-5">View</th>
+                            <th>Print</th>
                         </tr>
                     </thead>
                     <tbody align="center">
@@ -34,15 +35,11 @@ const Worksheet = (props) => {
                                 <tr key={index}>
                                     <td>{sheet.Date}</td>
                                     <td>${sheet.Calculation}</td>
-                                    <td style={{display: 'flex', justifyContent: 'flex-end'}} className="pl-5"> 
-                                        <div onClick={props.toView} className="worksheet-container-button-icon">
-                                            <img className="worksheet-icons" src={view} id={sheet.ID} ></img> 
-                                            <button className="btn text-white client-profile-worksheet-action-button" id={sheet.ID}>View</button>
-                                        </div>
-                                        <div onClick={props.print} className="pl-2" >
-                                            <img  className="worksheet-icons"  src={print} id={sheet.ID}></img>
-                                            <button className="btn text-white client-profile-worksheet-action-button" id={sheet.ID}>Print</button> 
-                                        </div>
+                                    <td>
+                                        <img className="worksheet-icons pl-5" src={view} id={sheet.ID} onClick={props.toView} ></img>
+                                    </td>
+                                    <td>
+                                        <img className="worksheet-icons pl-2"  src={print} id={sheet.ID} onClick={props.print} ></img>
                                     </td>
                                 </tr>
                             )
