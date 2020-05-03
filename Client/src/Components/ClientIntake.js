@@ -28,6 +28,11 @@ const ClientIntake = (props) => {
             break;
     }
 
+    let address;
+
+    if(props.address === "  "){
+        address = "No Address Provided"
+    }
 
     // Handling loading views
     if(props.isLoading){
@@ -48,7 +53,7 @@ const ClientIntake = (props) => {
                         <span className="font-weight-light">Gender: </span> {clientGender}
                     </li>
                     <li className="ml-5"> 
-                        <span className="font-weight-light">Address: </span>{props.address}
+                        <span className="font-weight-light">Address: </span>{address}
                     </li>
                 </ul> 
             </div>
