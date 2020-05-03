@@ -1,8 +1,21 @@
+#login-background{
+    background-color: turquoise;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
 #login-container{
+    width: 80%;
+    height: 90vh;
+    background-color: white;
+    border: solid 1px grey;
+    border-radius: 1em;
+    padding: 2em;
     display: flex;
     flex-direction: column;
+    align-self: center;
     align-items: center;
-    margin-top: 5vh;
 }
 
 #login-content{
@@ -13,6 +26,8 @@
 
 #login-container > h1 {
     font-size: 4rem;
+    text-decoration: underline;
+    text-align: center;
 }
 
 #login-form {
@@ -55,4 +70,15 @@
 #login-link-forgot-pass p:hover  {
     color: mediumturquoise;
     text-decoration: underline;
+}
+
+
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+    #login-container{
+        height: 90vw;
+        width: 90%;
+    }
 }

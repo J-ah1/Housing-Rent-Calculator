@@ -39,7 +39,7 @@ export default class Login extends Component {
 
         // password == userPassword
         if(this.state.username !== "" && this.state.password !== ""){
-            this.set({isLoading: true});
+            this.setState({isLoading: true});
             axios.get(`http://localhost:8000/db.cfc?method=checkUser&username=${this.state.username}&password=${this.state.password}`, {withCredentials: true})
                 .then(res => {
                     console.log(res.data.BOOL)
@@ -73,7 +73,7 @@ export default class Login extends Component {
         }else{
             loginRoutes = <div>
                             <Link id="login-link-forgot-pass" to='/forgot'>
-                                <p className="pl-3">Forgot Password?</p>
+                                <p className="pl-3 pt-2">Forgot Password?</p>
                             </Link>
                             <Link to="/register">
                                 <button className="btn border" id="login-link-register">Register</button>
@@ -83,25 +83,27 @@ export default class Login extends Component {
 
 
         return (
-            <div id="login-container">
-                    <h1>Housing Rent Calcuator</h1>
-                    <div id="login-content">
-                        <form id="login-form" onSubmit={this.submit}>
-                            <label className="font-weight-light">Username</label>
-                           
-                            <input className="login-form-input rounded mb-4" value={this.state.username} onChange={this.nameChange} type="text" />
+            <div id="login-background"> 
+                <div id="login-container">
+                        <h1>Housing Rent Calcuator</h1>
+                        <div id="login-content">
+                            <form id="login-form" onSubmit={this.submit}>
+                                <label className="font-weight-light">Username</label>
                             
-                            <label className="font-weight-light" >Password</label>
-                            
-                            <input className="login-form-input rounded mb-4"  value={this.state.password} onChange={this.passwordChange} type="password" />
-                            
-                            <input className="btn border" id="login-form-submit" type="submit" value="Log In" />
-                        </form>
+                                <input className="login-form-input rounded mb-4" value={this.state.username} onChange={this.nameChange} type="text" />
+                                
+                                <label className="font-weight-light" >Password</label>
+                                
+                                <input className="login-form-input rounded mb-4"  value={this.state.password} onChange={this.passwordChange} type="password" />
+                                
+                                <input className="btn border" id="login-form-submit" type="submit" value="Log In" />
+                            </form>
 
-                        {loading}
-                        {loginRoutes}
-                    </div>
-            </div>
+                            {loading}
+                            {loginRoutes}
+                        </div>
+                </div>
+             </div>
         )
     }
 }
