@@ -1,0 +1,46 @@
+#view-worksheet-container{
+    display: flex;
+    flex-direction: column;
+}
+
+#view-worksheet-container > button{
+    align-self: flex-start;
+    background: turquoise;
+    margin: 1em;
+}
+
+#view-worksheet-container > button:hover{
+    background: mediumturquoise;
+}
+
+#view-worksheet-content{
+    display: flex;
+    flex-direction: column;
+    margin: 1em;
+    padding: .5em;
+    border: 1px solid black;
+}
+
+#view-worksheet-info-container{
+    margin: 1em 0 0 10%;
+    padding: .5em;
+    align-self: flex-start;
+    border: 1px solid black;
+}
+
+
+#view-worksheet-info-container > p{
+    margin: .5em;
+    line-height: 1em;
+}
+
+#view-worksheet-content > h1{
+    align-self: center;
+    margin: 1em;
+}
+
+#view-worksheet-content > table{
+    align-self: center;
+    margin-bottom: 2em;
+    width: 80%;
+}

@@ -4,6 +4,8 @@ import ReactLoading from 'react-loading';
 
 import {calcQuestions} from '../Questions';
 
+import '../Styles/ViewWorksheet.css'
+
 class RentCalculator extends Component {
     constructor(props){
         super(props);
@@ -60,6 +62,10 @@ class RentCalculator extends Component {
         }
     }
 
+
+    handleBack = (e) => {
+        this.props.history.push(`/profile/${this.state.clientID}`);
+    }
     
     render(){
         let count = 3;
@@ -84,28 +90,36 @@ class RentCalculator extends Component {
                         <ReactLoading id="client-worksheet-loading" type={'spin'} color={'turquoise'} height={100} width={100}/>
                     </div>
         }else{
-            view = <div>
-                        <button onClick = { (e) => this.props.history.push(`/profile/${this.state.clientID}`) } style={{float : 'left', paddingRight : '5px'}}>Back</button>
-                        <h2>{this.state.user}</h2>
-                        <h3>Date Submitted: {this.state.date}</h3>
-                        <h3>Submitted by: {this.state.hcName}</h3>
-                        <table style={{width: '75%'}} border="2" cellPadding="10px">
-                                <thead>
-                                    <tr>
-                                        <th>Label</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.data.length > 0 ? this.state.fields.map(field => {
-                                        count++
-                                        return (<tr key={count}>
-                                            <td>{field.label}</td>
-                                            <td>{this.typeHandle(this.state.data[count])}</td>
-                                        </tr>)}) : null
-                                    }
-                                </tbody>
-                            </table>
+            view = <div id="view-worksheet-container">
+                        <button className="btn text-white" onClick={this.handleBack}>Back To Profile</button>
+
+                        <div id="view-worksheet-content">  
+                            <div id="view-worksheet-info-container">
+                                <p> Client Name: {this.state.clientName}</p>
+                                <p>Submitted by: {this.state.hcName}</p>
+                                <p>Date Submitted: {this.state.date}</p>
+                            </div>
+
+                            <h1>HOPWA Calculation</h1>
+
+                            <table border="2" cellPadding="10px">
+                                    <thead>
+                                        <tr>
+                                            <th>Label</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.state.data.length > 0 ? this.state.fields.map(field => {
+                                            count++
+                                            return (<tr key={count}>
+                                                <td>{field.label}</td>
+                                                <td>{this.typeHandle(this.state.data[count])}</td>
+                                            </tr>)}) : null
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
         }
 
