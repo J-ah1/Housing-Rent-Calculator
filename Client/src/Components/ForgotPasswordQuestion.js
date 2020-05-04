@@ -11,7 +11,7 @@ function ForgotPasswordQuestion(props) {
                 value={props.answer}
             >
             </input>
-            <button className="mt-5 btn text-white" onClick={props.viewHandler}>Submit</button>
+            <button   className="mt-5 btn text-white" onClick={props.viewHandler}>Submit</button>
         </div>
     );
 }
