@@ -60,7 +60,7 @@ class ClientSearch extends Component {
         }
 
         if(this.state.clients.length){
-            tableTitle = <h3 className="font-weight-light"> Results </h3>
+            tableTitle = <h3 className="font-weight-light ml-3"> Results </h3>
             tableHead = <tr>
                             <th>Name</th>
                             <th>DOB</th>
@@ -69,21 +69,24 @@ class ClientSearch extends Component {
 
         return (
             <div id="client-search-container">
-                <div id="client-search-content">
-                    <h1>Client Search</h1>
+                <div id="client-search-content" className="card">
+                    <div className="card-header" id="client-search-content-header">
+                        <h1>Client Search</h1>
+                    </div>
+                   
                     <Link to='/add'><button className="btn text-white" id="client-search-add-client">Add Client</button></Link>
 
-                    
-                    <label className="font-weight-light" >Client Name</label>
-                    
-                    <input
-                        className="rounded pl-2"
-                        type='text'
-                        value={this.state.search}
-                        onChange={this.handleChange}
-                    >
-                    </input>
-                    <button className="btn text-white mt-5" id="client-search-button" onClick={this.loadInfo}>Search</button>
+                    <div id="client-search-tools">
+                        <label className="font-weight-light" >Client Name:</label>
+                        <input
+                            className="rounded pl-2"
+                            type='text'
+                            value={this.state.search}
+                            onChange={this.handleChange}
+                        >
+                        </input>
+                        <button className="btn text-white mt-5" id="client-search-button" onClick={this.loadInfo}>Search</button>
+                    </div>
                     {tableTitle}
                     {loadingView}
                     <table id="client-search-results" className="table">
