@@ -188,7 +188,7 @@ export const calcQuestions = {
     "totalMonthlyRent": {
       "label": "Total monthly rent per current lease agreement",
       "description": "",
-      'type': 'dollar',
+      'type': 'number',
       'notes': ''
     },
     "currentLeasePeriod": {

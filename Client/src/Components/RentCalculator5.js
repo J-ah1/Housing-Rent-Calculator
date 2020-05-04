@@ -15,6 +15,9 @@ function questionType(props, type, count){
         case("date"):
             input = <input onChange={props.inputHandler} id={count} value={props.results[count]} type="date"  />
             break;
+        case("number"):
+            input = <input className="rounded pl-2" onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
+            break;
         default:
             input = <div className="rent-calc-money-container">
                         <input className="rounded rent-calc-money-input"  onChange={props.inputHandler} id={count} value={props.results[count]} type="number" min="0" />
