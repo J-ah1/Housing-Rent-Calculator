@@ -5,7 +5,8 @@ import ReactLoading from 'react-loading';
 
 
 const ClientIntake = (props) => {
-    
+
+    console.log("ADDRESS:" + props.address)
 
     //handle formatting date
     const date = new Date(props.dob);
@@ -28,11 +29,7 @@ const ClientIntake = (props) => {
             break;
     }
 
-    let address;
-
-    if(props.address === "  "){
-        address = "No Address Provided"
-    }
+    let address = (props.address === `${null} ${null} ${null}`) ? "No Address Provided" : props.address
 
     // Handling loading views
     if(props.isLoading){
