@@ -95,7 +95,7 @@ class RentCalculator extends Component {
 
                         <div id="view-worksheet-content">  
                             <div id="view-worksheet-info-container">
-                                <p> Client Name: {this.state.clientName}</p>
+                                <p> Client Name: {this.props.location.state.clientName}</p>
                                 <p>Submitted by: {this.state.hcName}</p>
                                 <p>Date Submitted: {this.state.date}</p>
                             </div>

@@ -87,12 +87,18 @@ class ClientProfile extends Component {
     }
 
     navigateToView = (event) => {
-        this.props.history.push(`/view/${event.target.id}`);
-   }
-
-   printWorksheet = async event => {
-        const loadOtherPage = await this.props.history.push(`/view/${event.target.id}/print`);       
-   }
+        this.props.history.push({
+            pathname: `/view/${event.target.id}`,
+            state: {clientName: `${this.state.FNAME} ${this.state.LNAME}`}
+       });
+    }
+    
+    printWorksheet = async event => {
+        const loadOtherPage = await this.props.history.push({
+            pathname: `/view/${event.target.id}/print`,
+            state: {clientName: `${this.state.FNAME} ${this.state.LNAME}`}
+       });      
+    }
 
    backToSearch = (event) => {
         this.props.history.push('/search');
