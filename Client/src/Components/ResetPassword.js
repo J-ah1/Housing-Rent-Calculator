@@ -7,7 +7,7 @@ function ResetPassword(props) {
             <label className="font-weight-light mb-4">Enter your new password:</label>
             <input
                 className="rounded"
-                type='text'
+                type='password'
                 value={props.newPass}
                 onChange={props.passHandler}
             >
@@ -16,7 +16,7 @@ function ResetPassword(props) {
             <label className="font-weight-light mb-4">Re-enter your new password:</label>
             <input
                 className="rounded"
-                type='text'
+                type='password'
                 value={props.checkPass}
                 onChange={props.checkHandler}
             >
