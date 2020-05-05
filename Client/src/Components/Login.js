@@ -85,7 +85,7 @@ export default class Login extends Component {
         return (
             <div id="login-background"> 
                 <div id="login-container">
-                        <h1>Housing Rent Calcuator</h1>
+                        <h1>Housing Rent Calculator</h1>
                         <div id="login-content">
                             <form id="login-form" onSubmit={this.submit}>
                                 <label className="font-weight-light">Username</label>
