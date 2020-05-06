@@ -16,6 +16,12 @@ Change api calls accordingly. The current client code calls “http://localhost:
  
 ---
 
+For Server Files…
+
+Change the cfheader tag for origin accordingly. The current tag value in db.cfc is 'http://localhost:3000'.
+ 
+---
+
 In ColdFusion Admin…
 
 Make sure session variables are enabled.
