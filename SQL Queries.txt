@@ -1,0 +1,74 @@
+CREATE TABLE hcUser (
+	id					int		IDENTITY(1,1)	PRIMARY KEY,
+	username				varchar(50)	UNIQUE,
+	fName					varchar(50)	NOT NULL,
+	lName					varchar(50)	NOT NULL,
+	pswd					varchar(128)	NOT NULL,
+	email					varchar(50)	NOT NULL,
+	phone					varchar(50)	NOT NULL,
+	sQuestion				tinyint		NOT NULL,
+	sAnswer				varchar(50)	NOT NULL,
+);
+
+
+CREATE TABLE wfClient (
+	id					int		IDENTITY(1,1)	PRIMARY KEY,
+	fName					varchar(50)	NOT NULL,
+	lName					varchar(50)	NOT NULL,
+	addStreet				varchar(100),
+	addCity					varchar(50),
+	addState				varchar(50),
+	addZip					varchar(10),
+	gender					tinyint		NOT NULL,
+	dob					date		NOT NULL
+);
+
+
+CREATE TABLE worksheet (
+	id					int		IDENTITY(1,1)	PRIMARY KEY,
+	userId					int		NOT NULL REFERENCES hcUser(id),
+	clientId					int		NOT NULL REFERENCES wfClient(id),
+	dateSubmitted				date		NOT NULL,
+
+	annualHouseHoldWages		money		NOT NULL,
+	periodicPayment			money		NOT NULL,
+	unearnedIncome			money		NOT NULL,
+	receivedIncome				money		NOT NULL,
+	businessIncome			money		NOT NULL,
+	investments				money		NOT NULL,
+	armedForcesPay			money		NOT NULL,
+	publicAssistanceReceived		money		NOT NULL,
+	welfareReliant				bit		NOT NULL,
+	annualGrossIncome			money		NOT NULL,
+	monthlyGrossIncome			money		NOT NULL,
+
+	numDependents			tinyint		NOT NULL,
+	disabledDeduction			money		NOT NULL,
+	childcareExp				money		NOT NULL,
+	attendExp				money		NOT NULL,
+	elderlyExp				money		NOT NULL,
+	medExp				money		NOT NULL,
+	perAGI					money		NOT NULL,
+	medDeduction				money		NOT NULL,
+
+	inHOPWA				bit		NOT NULL,
+	employmentIncomeIncrease		bit		NOT NULL,
+	selfSufficientIncome			bit		NOT NULL,
+	incomeWSixMo				bit		NOT NULL,
+	incomeIncreaseDate			date,
+	baselineIncome				money		NOT NULL,
+	incomeEID				money		NOT NULL,
+	otherIncomeEID			money		NOT NULL,
+	applicableEID				money		NOT NULL,
+
+	totalAllowance				money		NOT NULL,
+	annualAdjustedIncome			money		NOT NULL,
+	monthlyAdjustedIncome			money		NOT NULL,
+
+	totalMontlyRent				money		NOT NULL,
+	currentLeasePeriod			tinyint		NOT NULL,
+	utilitiesIncluded				bit		NOT NULL,
+	utilityAllowance				money		NOT NULL,
+	tenantRentResponsibility		money		NOT NULL,
+	rentSubsidyPayment			money		NOT NULL
+);
