@@ -1,3 +1,115 @@
 ul{
    list-style: none; 
+   padding: 0;
+}
+
+
+#client-intake-nav-buttons{
+   display: flex;
+   justify-content: center;
+   margin-top: 5vh;
+}
+
+#client-intake-nav-buttons > li > button {
+   padding: 1em 2em;
+   margin: 0 5vw;
+   background-color: turquoise;
+}
+
+#client-intake-nav-buttons > li > button:hover{
+   background-color: mediumturquoise;
+}
+
+
+#client-intake-info-container{
+   display: flex;
+   width: 70%;
+   margin: auto;
+   /* margin-left: 25%;
+   margin-top: 2em; */
+} 
+
+
+
+#client-intake-loading{
+   margin: 2em auto;
+}
+
+#client-intake-info-content{
+   width: 50vw;
+   display: flex;
+   flex-direction: column;
+   padding: 2em;
+}
+
+#client-intake-info-content > li{
+   margin: 1em 0;
+}
+
+#worksheet-header{
+   display: flex;
+   justify-content: space-between;
+}
+
+#dummy-button{
+   color: rgba(0,0,0,0); 
+}
+#dummy-button:hover{
+   cursor: none;
+}
+
+
+#client-profile-add-worksheet{
+   background-color: turquoise;
+}
+
+#client-profile-add-worksheet:hover{
+   background-color: mediumturquoise;
+}
+
+
+.worksheet-container{
+   width: 75%;
+   margin: 5vh 0 5vh 10% ;
+   display: flex;
+}
+
+
+.worksheet-header{
+   display: flex;
+   flex-direction: row-reverse;
+   justify-content: center;
+}
+
+.worksheet-header > h1 {
+   align-self: center;
+   margin-left: 5.5em;
+   flex-grow: 2;
+}
+
+.worksheet-header > button{
+   font-size: .75em;
+}
+
+.worksheet-container-button-icon{
+   
+}
+
+.worksheet-icons{
+   height: 1.75em;
+   padding-right: .5em;
+}
+
+.worksheet-icons:hover{
+   cursor: pointer;
+}
+
+.client-profile-worksheet-action-button{
+   background-color: turquoise;
+   margin: 0 5px;
+}
+
+
+#client-worksheet-loading{
+   margin: 50vh auto;
 }

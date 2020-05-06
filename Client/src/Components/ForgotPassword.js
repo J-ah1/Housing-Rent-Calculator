@@ -97,10 +97,6 @@ class ForgotPassword extends Component {
         }    
     }
 
-    // emptyAnswer
-    checkAnswer = () => {
-    }
-    
     render() {
         let page = this.state.page;
         var inputs;
@@ -112,7 +108,8 @@ class ForgotPassword extends Component {
                     viewHandler = {this.handleViewChange}
                     username = {this.state.username}
                     />
-                    <Link to='/'><button id="forgot-password-login-button">Log In</button></Link>
+                    
+                    <Link to='/' id="forgot-password-login-link"><button className="btn text-white" id="forgot-password-login-button">Log In</button></Link>
                 </div>
         }
 
@@ -135,11 +132,13 @@ class ForgotPassword extends Component {
                     />
         }
         return (
-            <div id="forgot-password-container">
-                <h1>Forgot Password</h1>
-                <form>
-                    {inputs}
-                </form>
+            <div id="forgot-password-background">
+                <div id="forgot-password-container">
+                    <h1>Forgot Password</h1>
+                    <form>
+                        {inputs}
+                    </form>
+                </div>
             </div>
         );
     }

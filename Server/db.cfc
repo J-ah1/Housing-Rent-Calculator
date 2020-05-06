@@ -1,10 +1,37 @@
 <cfcomponent displayname="User">
 
+   <cfheader name="Access-Control-Allow-Origin" value='http://localhost:3000'>
+   <cfheader name="Access-Control-Allow-Credentials" value='true'>
+   <cfheader name="Access-Control-Allow-Methods" value="GET,PUT,POST,DELETE">
+   <cfheader name="Access-Control-Allow-Headers" value="Content-Type">
+
    <!---
       
       User Based Functions
    
    --->
+
+   <!--- Check user authorization --->
+   <cffunction name="checkUserAuth" returntype="boolean" returnFormat="JSON" access="remote">
+
+      <cflock timeout=20 scope="session" type="readonly">
+         <cfreturn structkeyexists(session, "userAuth")>
+      </cflock>
+
+   </cffunction>
+
+   <!--- Remove user authorization --->
+   <cffunction name="removeUserAuth" returntype="void" access="remote">
+
+      <cflock timeout=20 scope="session" type="exclusive">
+         <cfif structkeyexists(session, "userAuth")>
+            <cfscript>
+               structdelete(session,"userAuth",false);
+            </cfscript>
+         </cfif>
+      </cflock>
+
+   </cffunction>
 
    <!--- Return user info with a given username --->
    <cffunction name="getUserInfo" returntype="query" access="private">
@@ -23,21 +50,36 @@
 
 
    <!--- Check if username and password combination match --->
-   <cffunction name="checkUser" returntype="boolean" returnFormat="JSON" access="remote">
+   <cffunction name="checkUser" returntype="any" returnFormat="JSON" access="remote">
 
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
       <cfset password = Hash('#password#', "SHA-512")>
       <cfset user = getUserInfo('#username#')>
-      <cfreturn user.recordCount EQ 1 AND '#password#' EQ user.pswd>
+
+      <!--- Add userAuth Session Key --->
+      <cfif user.recordCount EQ 1 AND '#password#' EQ user.pswd>
+         <cflock timeout=20 scope="session" type="exclusive">
+            <cfif not structkeyexists(session, "userAuth")>
+               <cfset session.userAuth = 1/>
+            </cfif>
+         </cflock>
+      </cfif>
+
+      <cfscript>
+         result = structNew();
+         result.bool = user.recordCount EQ 1 AND '#password#' EQ user.pswd
+         result.uID = user.id;
+       </cfscript>
+
+      <cfreturn result>
 
    </cffunction>
 
 
    <!--- Validate arguments and query a new user into hcUser --->
-   <cffunction name="registerUser" returntype="void" access="remote">
-      
-      
+   <cffunction name="registerUser" returntype="void" returnFormat="JSON" access="remote">
+
       <cfargument name="username" type="string" required="true">
       <cfargument name="firstname" type="string" required="true">
       <cfargument name="lastname" type="string" required="true">
@@ -46,7 +88,6 @@
       <cfargument name="phone" type="string" required="true">
       <cfargument name="squestion" type="string" required="true">
       <cfargument name="sanswer" type="string" required="true">
-
 
       <cfset password = Hash('#password#', "SHA-512")> 
       <cfset squestion = val('#squestion#')>
@@ -63,6 +104,8 @@
                   <cfqueryparam value='#sanswer#' cfsqltype='cf_sql_varchar' maxlength='50'>)
       </cfquery>
 
+      <!--- <cfset check = checkUser('#username#', '#password#')>
+      <cfreturn check> --->
 
    </cffunction>
 
@@ -79,6 +122,7 @@
       </cfif>
 
       <cfreturn -1>
+
    </cffunction>
 
    <!--- Check if user answer matches corresponding database record --->
@@ -90,11 +134,13 @@
       <cfset user = getUserInfo('#username#')>
 
       <cfreturn user.sAnswer EQ '#answer#'>
+
    </cffunction>
    
 
    <!--- Update a user's password in database --->
    <cffunction name="updateUserPassword" returntype="void" access="remote">
+
       <cfargument name="username" type="string" required="true">
       <cfargument name="password" type="string" required="true">
 
@@ -105,6 +151,7 @@
             SET   pswd = <cfqueryparam value='#password#' cfsqltype='cf_sql_varchar' maxlength='128'>
             WHERE username = <cfqueryparam value='#username#' cfsqltype='cf_sql_varchar' maxlength='50'>
       </cfquery>
+
    </cffunction>
 
    <!---
@@ -116,84 +163,169 @@
 
    <!--- Return clientinfo with a given client ID --->
    <cffunction name="getClientInfo" returntype="query" access="private">
-      <cfargument name="clientID" type="string" required="true">
+
+      <cfargument name="clientID" type="numeric" required="true">
+      
       <!--- Query for client and return query --->
       <cfquery name="clientInfo" datasource="awsMicrosoftSQLServer">
          SELECT *
          FROM wfClient
          WHERE id = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
+
       <cfreturn clientInfo>
+
    </cffunction>
 
    <!--- Public return of clientinfo --->
    <cffunction name="clientProfile" returntype="query" returnFormat="JSON" access="remote">
+
       <cfargument name="clientID" type="string" required="true">
+
+      <cfset clientID = val('#clientID#')>
+
       <cfset clientInfo=getClientInfo('#clientID#')>
+
       <cfreturn clientInfo>
+
    </cffunction>
 
 
    <!--- Return clientworksheets with a given client ID --->
    <cffunction name="getClientWorksheets" returntype="query" access="private">
       <!--- Query for client and return query --->
-      <cfargument name="clientID" type="string" required="true">
+      <cfargument name="clientID" type="numeric" required="true">
+
       <cfquery name="clientWorksheets" datasource="awsMicrosoftSQLServer">
-         SELECT dateSubmitted, rentSubsidyPayment
+         SELECT id, dateSubmitted, rentSubsidyPayment
          FROM worksheet
          WHERE clientID = <cfqueryparam value='#clientID#' cfsqltype='cf_sql_integer'>
       </cfquery>
+
       <cfreturn clientWorksheets>
    </cffunction>
 
    <!--- Public return of clientworksheets --->
    <cffunction name="clientWorksheetProfile" returntype="query" returnFormat="JSON" access="remote">
+      
       <cfargument name="clientID" type="string" required="true">
+
+      <cfset clientID = val('#clientID#')>
+
       <cfset worksheets=getClientWorksheets('#clientID#')>
+
       <cfreturn worksheets>
+
+   </cffunction>
+
+   <!--- Return viewCWorksheet information for viewing --->
+   <cffunction name="getCWorksheetData" returntype="query" access="private">
+      
+      <cfargument name="id" type="numeric" required="true">
+
+      <cfquery name = "cWorksheetData" datasource="awsMicrosoftSQLServer">
+         SELECT *
+         FROM worksheet
+         WHERE id = <cfqueryparam value='#id#' cfsqltype='cf_sql_integer'>
+      </cfquery>
+
+      <cfreturn cWorksheetData>
+
+   </cffunction>
+
+   <!--- Public return of getCWorksheetData --->
+   <cffunction name="viewCWorksheets" returntype="query" returnFormat="JSON" access="remote">
+
+      <cfargument name="id" type="string" required="true">
+
+      <cfset id = val('#id#')>
+
+      <cfset worksheet=getCWorksheetData('#id#')>
+
+      <cfreturn worksheet>
+
+   </cffunction>
+
+   <!--- Turn UserID into a name for the worksheet view/print --->
+   <cffunction name="idToName" returntype="query" access="private">
+      <cfargument name="id" type="numeric" required="true">
+
+      <cfquery name="getName" datasource="awsMicrosoftSQLServer">
+         SELECT fName, lName
+         FROM hcUser
+         WHERE id = <cfqueryparam value='#id#' cfsqltype='cf_sql_integer'>
+      </cfquery>
+
+      <cfreturn getName>
+   </cffunction>
+
+   <cffunction name="getHCName" returntype="string" returnFormat="JSON" access="remote">
+      <cfargument name="id" type="string" required="true">
+      <cfset id = val('#id#')>
+      <cfset result = idToName('#id#')>
+      <cfset hcName = result.fName & " " & result.lName>
+      <cfreturn hcName>
    </cffunction>
 
 
    <!--- function that return clients whose name(s) match the input given --->
    <cffunction name="clientSearchRegex" returntype="query" access="private">
+
       <cfargument name="clientName" type="string" required="true">
-      <cfset splitCName = listToArray(clientName, " ")>
-      <cfset splitCName[1] = splitCName[1]&'%'>
-      <cfif arrayLen(splitCName) GT 1>
-         <cfset splitCName[2] = splitCName[2]&'%'>
+      <cfif #clientName# EQ ''>
+         <cfquery name = "clientSearchSQL3" datasource="awsMicrosoftSQLServer">
+            SELECT fName, lName, dob, id
+            FROM wfClient
+            ORDER BY fName ASC, lName ASC
+         </cfquery>
+         <cfreturn clientSearchSQL3>
+
+      <cfelse>
+         <cfset splitCName = listToArray(clientName, " ")>
+         <cfset splitCName[1] = splitCName[1]&'%'>
+         <cfif arrayLen(splitCName) GT 1>
+            <cfset splitCName[2] = splitCName[2]&'%'>
+         </cfif>
+
+         <!--- if first and last name have been entered --->
+         <cfif ArrayLen(splitCName) GT 1> 
+            <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
+                  SELECT fName, lName, dob, id
+                  FROM wfClient
+                  WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> AND lName LIKE <cfqueryparam value='#splitCName[2]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+                  ORDER BY fName ASC, lName ASC
+            </cfquery>
+            <cfreturn clientSearchSQL2>
+
+         <!--- if only one name has been entered --->
+         <cfelse>
+            <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
+                  SELECT fName, lName, dob, id
+                  FROM wfClient
+                  WHERE fName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> OR lName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'>
+                  ORDER BY fName ASC, lName ASC
+            </cfquery>
+            <cfreturn clientSearchSQL1>
+         </cfif> 
       </cfif>
 
-
-      <!--- if first and last name have been entered --->
-      <cfif ArrayLen(splitCName) GT 1> 
-         <cfquery name = "clientSearchSQL2" datasource="awsMicrosoftSQLServer">
-               SELECT fName, lName, dob, id
-               FROM wfClient
-               WHERE fName LIKE  <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> AND lName LIKE <cfqueryparam value='#splitCName[2]#' cfsqltype='cf_sql_varchar' maxlength='50'>
-         </cfquery>
-         <cfreturn clientSearchSQL2>
-
-      <!--- if only one name has been entered --->
-      <cfelse>
-         <cfquery name = "clientSearchSQL1" datasource="awsMicrosoftSQLServer">
-               SELECT fName, lName, dob, id
-               FROM wfClient
-               WHERE fName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'> OR lName LIKE <cfqueryparam value='#splitCName[1]#' cfsqltype='cf_sql_varchar' maxlength='50'>
-         </cfquery>
-         <cfreturn clientSearchSQL1>
-      </cfif> 
    </cffunction>
 
    <!--- function that return clients whose name(s) matches the input given --->
    <cffunction name="getCSearchRegex" returnFormat="JSON" access="remote">
+
       <cfargument name="clientName" type="string" required="true">
+
       <cfset clients= clientSearchRegex('#clientName#')>
+
       <cfreturn clients>
+
    </cffunction>
 
 
    <!---Insert Client into database--->
-   <cffunction name="addClient" returntype="void" access="remote">
+   <cffunction name="addClient" returntype="numeric" returnFormat="JSON" access="remote">
+
       <cfargument name="fName" type="string" required="true">
       <cfargument name="lName" type="string" required="true">
       <cfargument name="addStreet" type="string" default="" required="false">
@@ -201,9 +333,12 @@
       <cfargument name="addState" type="string" default="" required="false">
       <cfargument name="addZip" type="string" default="" required="false">
       <cfargument name="gender" type="string" required="true">
-      <cfargument name="dob" type="date" required="true">
+      <cfargument name="dob" type="string" required="true">
 
-      <cfquery name="addC2" datasource="awsMicrosoftSQLServer">
+      <cfset gender = val('#gender#')>
+      <cfset dob = parseDateTime(dob, "yyyy-mm-dd")>
+
+      <cfquery name="addC2" datasource="awsMicrosoftSQLServer" result="newClient">
          INSERT INTO wfClient (fName, lName, addStreet, addCity, addState, addZip, gender, dob)
          VALUES (<cfqueryparam value='#fName#' cfsqltype='cf_sql_varchar' maxlength='50'>,
                   <cfqueryparam value='#lName#' cfsqltype='cf_sql_varchar' maxlength='50'>, 
@@ -215,12 +350,18 @@
                   <cfqueryparam value='#dob#' cfsqltype='cf_sql_date'>)
       </cfquery>
 
+      <cfreturn #newClient["GENERATEDKEY"]#>
+
    </cffunction>
 
+   <!---Insert Worksheet into database--->
    <cffunction name="addWorksheet" returntype="void" access="remote">
-      <cfargument name="userID" type="string" required="true">
+
       <cfargument name="clientID" type="string" required="true">
+      <!--- (Uncomment below when we can pass userID) --->
+      <cfargument name="userID" type="string" required="true">
       <cfargument name="dateSubmitted" type="string" required="true">
+
 
       <cfargument name="annualHouseHoldWages" type="string" default="0.00" required="false">
       <cfargument name="periodicPayment" type="string" default="0.00" required="false">
@@ -247,7 +388,7 @@
       <cfargument name="employmentIncomeIncrease" type="string" default="0" required="false">
       <cfargument name="selfSufficientIncome" type="string" default="0" required="false">
       <cfargument name="incomeWSixMo" type="string" default="0" required="false">
-      <cfargument name="incomeIncreaseDate" type="string" default="0001-01-01" required="false">
+      <cfargument name="incomeIncreaseDate" type="string" default="" required="false">
       <cfargument name="baselineIncome" type="string" default="0.00" required="false">
       <cfargument name="incomeEID" type="string" default="0.00" required="false">
       <cfargument name="otherIncomeEID" type="string" default="0.00" required="false">
@@ -257,13 +398,30 @@
       <cfargument name="annualAdjustedIncome" type="string" default="0.00" required="false">
       <cfargument name="monthlyAdjustedIncome" type="string" default="0.00" required="false">
       
-      <cfargument name="totalMontlyRent" type="string" default="0.00" required="false">
+      <cfargument name="totalMonthlyRent" type="string" default="0.00" required="false">
       <cfargument name="currentLeasePeriod" type="string" default="0.00" required="false">
       <cfargument name="utilitiesIncluded" type="string" default="0" required="false">
       <cfargument name="utilityAllowance" type="string" default="0.00" required="false">
       <cfargument name="tenantRentResponsibility" type="string" default="0.00" required="false">
       <cfargument name="rentSubsidyPayment" type="string" default="0.00" required="false">
+
+      <cfset userID = val('#userID#')> <!--- (Delete this and allow front to set UserID) --->
+      <cfset clientID = val('#clientID#')>
       
+      <cfset dateSubmitted = parseDateTime(dateSubmitted, "yyyy-mm-dd")>
+      <cfif isNull(incomeIncreaseDate)>
+         <cfset incomeIncreaseDate = parseDateTime(incomeIncreaseDate, "yyyy-mm-dd")>
+      </cfif>
+      
+      <cfset welfareReliant = val('#welfareReliant#')>
+      <cfset inHOPWA = val('#inHOPWA#')>
+      <cfset employmentIncomeIncrease = val('#employmentIncomeIncrease#')>
+      <cfset selfSufficientIncome = val('#selfSufficientIncome#')>
+      <cfset incomeWSixMo = val('#incomeWSixMo#')>
+      <cfset utilitiesIncluded = val('#utilitiesIncluded#')>
+      
+      <cfset numDependents = val('#numDependents#')>
+      <cfset currentLeasePeriod = val('#currentLeasePeriod#')>
 
       <cfquery name="addedSheet" datasource="awsMicrosoftSQLServer">
          INSERT INTO worksheet
@@ -296,7 +454,7 @@
                   <cfqueryparam value='#employmentIncomeIncrease#' cfsqltype='cf_sql_bit'>, 
                   <cfqueryparam value='#selfSufficientIncome#' cfsqltype='cf_sql_bit'>,
                   <cfqueryparam value='#incomeWSixMo#' cfsqltype='cf_sql_bit'>,
-                  <cfqueryparam value='#incomeIncreaseDate#' cfsqltype='cf_sql_date'>, 
+                  <cfqueryparam value='#incomeIncreaseDate#' null='#NOT IsDate(incomeIncreaseDate)#' cfsqltype='cf_sql_date'>, 
                   <cfqueryparam value='#baselineIncome#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#incomeEID#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#otherIncomeEID#' cfsqltype='cf_sql_money'>, 
@@ -306,18 +464,15 @@
                   <cfqueryparam value='#annualAdjustedIncome#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#monthlyAdjustedIncome#' cfsqltype='cf_sql_money'>,
 
-                  <cfqueryparam value='#totalMontlyRent#' cfsqltype='cf_sql_money'>, 
+                  <cfqueryparam value='#totalMonthlyRent#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#currentLeasePeriod#' cfsqltype='cf_sql_tinyint'>,
                   <cfqueryparam value='#utilitiesIncluded#' cfsqltype='cf_sql_bit'>, 
                   <cfqueryparam value='#utilityAllowance#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#tenantRentResponsibility#' cfsqltype='cf_sql_money'>, 
                   <cfqueryparam value='#rentSubsidyPayment#' cfsqltype='cf_sql_money'>)
       </cfquery>
-
-
+      
    </cffunction>
-
-
 
 
    <!---
@@ -372,6 +527,3 @@
    </cffunction>
 
 </cfcomponent>
-
-
-

@@ -1,8 +1,21 @@
+#login-background{
+    background-color: #f8f8ff;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
 #login-container{
+    width: 80%;
+    height: 90vh;
+    background-color: white;
+    border: solid 1px grey;
+    border-radius: 1em;
+    padding: 2em;
     display: flex;
     flex-direction: column;
+    align-self: center;
     align-items: center;
-    margin-top: 10vh;
 }
 
 #login-content{
@@ -13,12 +26,13 @@
 
 #login-container > h1 {
     font-size: 4rem;
+    text-decoration: underline;
+    text-align: center;
 }
 
 #login-form {
     width: 25vh;
     font-size: 1.25em;
-    font-weight: 100;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -27,19 +41,12 @@
 
 
 #login-form > .login-form-input {
-    height: 3em;
+    height: 2em;
     width: 50vh;
-    border-radius: .5em;
-    box-shadow: .1em .1em .1em grey;
 }
 
 #login-form > .login-form-input[type=text], .login-form-input[type=password] {
     padding-left: .5em;
-}
-
-#login-form-submit{
-    width: 50%;
-    align-self: center;
 }
 
 #login-link-forgot-pass{
@@ -49,12 +56,10 @@
 
 #login-link-register, #login-form-submit{
     margin: 1em;
-    padding: .75em 1em;
+    padding: .5em 2em;
     background-color: turquoise;
-    border: 1px solid black;
-    border-radius: 10px;
     color: white;
-    font-size: 1rem;
+    align-self: center;
 }
 
 #login-form-submit:hover, #login-link-register:hover {
@@ -65,4 +70,15 @@
 #login-link-forgot-pass p:hover  {
     color: mediumturquoise;
     text-decoration: underline;
+}
+
+
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : portrait) {
+    #login-container{
+        height: 90vw;
+        width: 90%;
+    }
 }

@@ -2,15 +2,16 @@ import React from 'react';
 
 function ForgotPasswordQuestion(props) {
     return (
-        <div>
-            <label>{props.question}</label>
+        <div className="forgot-password-input-container mt-2">
+            <label className="font-weight-light mb-4">{props.question}</label>
             <input
+                className="rounded"
                 type='text'
                 onChange={props.inputHandler}
                 value={props.answer}
             >
             </input>
-            <button onClick={props.viewHandler}>Submit</button>
+            <button   className="mt-5 btn text-white" onClick={props.viewHandler}>Submit</button>
         </div>
     );
 }

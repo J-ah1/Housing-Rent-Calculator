@@ -1,9 +1,151 @@
-table {
-    margin-top: 1em;
-    border-collapse: collapse;
-    width: 100%;
+#rent-calc-background{
+    background-color: #f8f8ff;
+    padding: 2em;
 }
 
-table, thead > tr > th, tbody > tr > td, tfoot > tr > td {
-    border: 1px solid black;
+.rent-calc-foreground{
+    align-self: center;
+    background-color: white;
+    width: 90%;
+    padding: 2em;
+    border: grey solid 1px;
+    border-radius: 5px;
 }
+
+#rent-calc-intro-container{
+    margin: 15vh 15% 0 15%;
+}
+
+#rent-calc-intro-heading{
+    display: flex;
+    justify-content: space-between;
+}
+
+#rent-calc-intro-heading > button{
+    background: turquoise;
+    justify-self: left;
+    height: 2.5em;
+}
+
+#rent-calc-intro-heading > button:hover{
+    background: mediumturquoise;
+}
+
+#rent-calc-intro-description{
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    margin-top: 2em;
+}
+
+#rent-calc-intro-description > p{
+    padding: 1em;
+}
+
+.rent-calc-container{
+    margin-top: 7.5vh;
+    /* margin: 7.5vh 5% 0 5% */
+}
+
+.rent-calc-background{
+    align-self: center;
+    background-color: whitesmoke;
+    width: 90%;
+    padding: 2em;
+    border: grey solid 2px;
+    border-radius: 5px;
+}
+
+.rent-calc-container-content{
+    margin-top: 5vh;
+    width: 80%;
+}
+
+.rent-calc-question-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.rent-calc-question-label-description{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-grow: 1;
+}
+
+
+.rent-calc-money-container{
+    position: relative;
+    display: inline;
+
+}
+
+.rent-calc-money-container::before{
+    content: '$';
+    position: absolute;
+    padding: 3px 0 0 .2rem;
+    z-index: 1;
+}
+
+.rent-calc-money-input{
+    padding-left: .75rem;
+}
+
+.rent-calc-label{
+    font-weight: 700;
+}
+
+.rent-calc-description{
+    width: 70%;
+    text-align: left;
+    margin-left: 2em;
+}
+
+.rent-calc-radio-container{
+    display: flex;
+}
+
+#rent-calc-button-container{
+    display: flex;
+    justify-content: center;
+    margin: 2em 0 3em 0;
+}
+
+.rent-calc-button{
+    background: turquoise;
+    margin-right: 2em;
+}
+
+.rent-calc-button:hover{
+    background: mediumturquoise;
+}
+
+.rent-calc-result-container{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin-bottom: 2em;
+}
+
+.rent-calc-result-container > *{
+    width: 33%;
+    /* margin: 2em 1em; */
+}
+
+.rent-calc-result-container > div > p{
+    text-align: left;
+}
+
+.popover{
+    background: #FDF6B7;
+}
+.popover-header{
+    background: #FDF6B7;
+}
+
+.rent-calc-help{
+    background: #F2E988;
+    border-radius: 50%;
+    color: gray;
+}
+

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import ReactLoading from 'react-loading';
+// react-loading  https://www.npmjs.com/package/react-loading
 
 import '../Styles/ClientSearch.css'
 
@@ -10,14 +12,18 @@ class ClientSearch extends Component {
         this.state = {
             userID: null,
             search: "",
-            clients: []
+            clients: [],
+            loadingData: false
         }
         this.handleChange = this.handleChange.bind(this);
     }
 
     loadInfo = (e) => {
+        this.setState({
+            clients: [],        
+            loadingData: true});
         e.preventDefault()
-        axios.get(`http://localhost:8500/db.cfc?method=getCSearchRegex&clientName=${this.state.search}`)
+        axios.get(`http://localhost:8000/db.cfc?method=getCSearchRegex&clientName=${this.state.search}`)
             .then(res => this.createClients(res.data.DATA))
     }
 
@@ -29,8 +35,11 @@ class ClientSearch extends Component {
             DOB = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
             clients.push([`${clientData[0]} ${clientData[1]}`, DOB, clientData[3]])
         })
-        this.setState({clients: clients})
+        this.setState({
+                clients: clients,
+                loadingData: false});
     }
+
 
     handleChange(event) {
         this.setState({search: event.target.value});
@@ -41,28 +50,48 @@ class ClientSearch extends Component {
     }
     
     render() {
+
+        let tableTitle;
+        let tableHead;
+        let loadingView;
+
+        if(this.state.loadingData){
+            loadingView = <ReactLoading id="client-search-loading" type={'spin'} color={'turquoise'} height={100} width={100}/>
+        }
+
+        if(this.state.clients.length){
+            tableTitle = <h3 className="font-weight-light ml-3"> Results </h3>
+            tableHead = <tr>
+                            <th>Name</th>
+                            <th>DOB</th>
+                        </tr>
+        }
+
         return (
             <div id="client-search-container">
-                <div id="client-search-content">
-                    <h1>Client Search</h1>
-                    <Link to='/add'><button id="client-search-add-client">Add Client</button></Link>
+                <div id="client-search-content" className="card">
+                    <div className="card-header" id="client-search-content-header">
+                        <h1>Client Search</h1>
+                    </div>
+                   
+                    <Link to='/add'><button className="btn text-white" id="client-search-add-client">Add Client</button></Link>
 
-                    
-                    <label>Client Name</label>
-                    
-                    <input
-                        type='text'
-                        value={this.state.search}
-                        onChange={this.handleChange}
-                    >
-                    </input>
-                    <button id="client-search-button" onClick={this.loadInfo}>Search</button>
-                    <table id="client-search-results">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>DOB</th>
-                            </tr>
+                    <div id="client-search-tools">
+                        <label className="font-weight-light" >Client Name:</label>
+                        <input
+                            className="rounded pl-2"
+                            type='text'
+                            value={this.state.search}
+                            onChange={this.handleChange}
+                        >
+                        </input>
+                        <button className="btn text-white mt-5" id="client-search-button" onClick={this.loadInfo}>Search</button>
+                    </div>
+                    {tableTitle}
+                    {loadingView}
+                    <table id="client-search-results" className="table">
+                        <thead className="thead-light">
+                            {tableHead}
                         </thead>
                         <tbody>
                             {this.state.clients.length > 0 ? this.state.clients.map(client => {
